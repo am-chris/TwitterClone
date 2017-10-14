@@ -1,0 +1,23 @@
+.text-primary-hover:hover,
+a.text-primary-hover:hover {
+    color: theme-color("primary") !important;
+}
+
+.text-success-hover:hover,
+a.text-success-hover:hover {
+    color: theme-color("success") !important;
+}
+
+.text-danger-hover:hover,
+a.text-danger-hover:hover {
+    color: theme-color("danger") !important;
+}
+
+.text-no-underline,
+.text-no-underline:hover {
+    text-decoration: none;
+}
+
+.text-bold {
+    font-weight: $font-weight-bold;
+}
