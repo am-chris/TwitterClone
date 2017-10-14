@@ -1,0 +1,18 @@
+ul.posts {
+    border: 1px solid #DDD;
+    li.post {
+        padding: 20px 10px;
+        border-bottom: 1px solid #DDD;
+        &:hover {
+            background-color: #FAFAFA;
+        }
+        .media > .media-body {
+            p {
+                margin-bottom: 7px;
+            }
+            p:last-of-type {
+                margin-bottom: 0;
+            }
+        }
+    }
+}

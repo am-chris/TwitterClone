@@ -1,0 +1,18 @@
+.navbar {
+    border-bottom: 2px solid #DEE0E3;
+}
+
+body {
+    padding-top: 70px;
+}
+
+.navbar.navbar-light .navbar-nav > li.nav-item {
+    border-bottom: 2px solid transparent;
+}
+
+.navbar.navbar-light .navbar-nav > li.nav-item.active {
+    border-bottom-color: theme-color(primary);
+    &> a.nav-link {
+        color: theme-color(primary);
+    }
+}
