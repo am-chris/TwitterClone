@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Session;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -48,6 +49,10 @@ class UserController extends Controller
     {
         $user = User::where('username', $username)
             ->first();
+
+        if (count($user) == 0) {
+            abort(404);
+        }
 
         return view('users.show', compact('user'));
     }

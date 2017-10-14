@@ -6,8 +6,8 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item @if (Request::is('home')) active @endif">
-                    <a class="nav-link" href="{{ url('home') }}">
+                <li class="nav-item @if (Request::is('/')) active @endif">
+                    <a class="nav-link" href="{{ url('/') }}">
                         <i class="fa fa-home"></i> Home
                     </a>
                 </li>
