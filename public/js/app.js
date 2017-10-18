@@ -44057,6 +44057,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
@@ -44080,6 +44083,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
     methods: {
+        blockUser: function blockUser(userId) {
+            axios.post('/u/' + userId + '/block', {
+                current_user_id: this.currentUserId,
+                user_id: userId
+            }).then(function (response) {}).catch(function (error) {
+                console.log(error.response);
+            });
+        },
         deletePost: function deletePost(postId) {
             var self = this;
 
@@ -44222,7 +44233,18 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       attrs: {
         "aria-labelledby": "dropdownMenuButton"
       }
-    }, [(_vm.currentUserId == post.user_id) ? _c('span', [_c('a', {
+    }, [(_vm.currentUserId !== post.user_id) ? _c('span', [_c('a', {
+      staticClass: "dropdown-item",
+      attrs: {
+        "href": "#"
+      },
+      on: {
+        "click": function($event) {
+          $event.preventDefault();
+          _vm.blockUser(post.user_id)
+        }
+      }
+    }, [_vm._v("Block @" + _vm._s(post.user.username))])]) : _vm._e(), _vm._v(" "), (_vm.currentUserId == post.user_id) ? _c('span', [_c('a', {
       staticClass: "dropdown-item",
       attrs: {
         "href": "#"

@@ -6,6 +6,7 @@ use Auth;
 use App\User;
 use App\Models\Follow;
 use App\Models\Post;
+use App\Models\User\Block;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -35,8 +36,13 @@ class HomeController extends Controller
 
         array_push($users_im_following, Auth::id()); // Add current user to array
 
+        $blocked_user_ids = Block::where('blocker_id', Auth::id())
+            ->pluck('blocked_id')
+            ->toArray();
+
         $follow_suggestions = User::where('id', '!=', Auth::id())
             ->whereNotIn('id', $users_im_following)
+            ->whereNotIn('id', $blocked_user_ids)
             ->get()
             ->take(3);
 
