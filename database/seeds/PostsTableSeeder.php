@@ -15,16 +15,13 @@ class PostsTableSeeder extends Seeder
     public function run()
     {
         $faker = Faker\Factory::create();
-        $limit = 500;
-        $date = Carbon::create(2016, 5, 28, 0, 0, 0); // Used to get random date
+        $limit = 400;
 
         for ($i = 0; $i < $limit; $i++) {
-            $date = $date->addMinutes(rand(30, 120)); // Used to get random date
-
-            DB::table('posts')->insert([ //,
+            DB::table('posts')->insert([
                 'user_id' => rand(1, 20),
                 'content' => $faker->paragraph,
-                'created_at' => $date->addDays(1, 450),
+                'created_at' => Carbon::now()->subDays(rand(1, 400)),
             ]);
         }
     }

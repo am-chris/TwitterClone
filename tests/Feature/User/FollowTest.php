@@ -8,6 +8,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class FollowTest extends TestCase
 {
+    use RefreshDatabase;
+    
     public function test_user_can_follow_another_user()
     {
         $user1 = factory(User::class)->create();

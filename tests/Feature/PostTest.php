@@ -9,6 +9,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class PostTest extends TestCase
 {
+    use RefreshDatabase;
+    
     public function test_user_can_create_post()
     {
         $user = factory(User::class)->create();
