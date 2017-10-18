@@ -30,6 +30,9 @@
                                                 <i class="fa fa-angle-down"></i>
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <span v-if="currentUserId !== post.user_id">
+                                                    <a class="dropdown-item" href="#" @click.prevent="blockUser(post.user_id)">Block @{{ post.user.username }}</a>
+                                                </span>
                                                 <span v-if="currentUserId == post.user_id">
                                                     <a class="dropdown-item" href="#" @click.prevent="deletePost(post.id)">Delete Post</a>
                                                 </span>
@@ -84,6 +87,19 @@ export default {
     },
 
     methods: {
+        blockUser(userId) {
+            axios.post('/u/' + userId + '/block', {
+                current_user_id: this.currentUserId,
+                user_id: userId,
+            })
+            .then(function (response) {
+
+            })
+            .catch(function (error) {
+                console.log(error.response);
+            });
+        },
+
         deletePost(postId) {
             var self = this;
 

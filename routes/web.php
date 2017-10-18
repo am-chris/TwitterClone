@@ -29,6 +29,9 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::post('p/{post}/report', 'Post\ReportController@store');
 
+    Route::post('u/{user}/block', 'User\BlockController@block');
+    Route::post('u/{user}/unblock', 'User\BlockController@unblock');
+
     Route::post('u/{user}/follow', 'User\FollowController@follow');
     Route::post('u/{user}/unfollow', 'User\FollowController@unfollow');
 });
