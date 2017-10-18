@@ -30,7 +30,9 @@
                                                 <i class="fa fa-angle-down"></i>
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <a class="dropdown-item" href="#" @click.prevent="deletePost(post.id)">Delete Post</a>
+                                                <span v-if="currentUserId == post.user_id">
+                                                    <a class="dropdown-item" href="#" @click.prevent="deletePost(post.id)">Delete Post</a>
+                                                </span>
                                             </div>
                                         </div>
                                     </li>

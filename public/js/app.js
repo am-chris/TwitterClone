@@ -44055,6 +44055,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
@@ -44220,7 +44222,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       attrs: {
         "aria-labelledby": "dropdownMenuButton"
       }
-    }, [_c('a', {
+    }, [(_vm.currentUserId == post.user_id) ? _c('span', [_c('a', {
       staticClass: "dropdown-item",
       attrs: {
         "href": "#"
@@ -44231,7 +44233,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.deletePost(post.id)
         }
       }
-    }, [_vm._v("Delete Post")])])])])])]), _vm._v(" "), _c('pre', {
+    }, [_vm._v("Delete Post")])]) : _vm._e()])])])])]), _vm._v(" "), _c('pre', {
       staticClass: "mb-1",
       staticStyle: {
         "font-family": "'Roboto', arial",
