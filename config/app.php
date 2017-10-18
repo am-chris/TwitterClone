@@ -17,6 +17,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Company/Business Name
+    |--------------------------------------------------------------------------
+    |
+    | This value will be shown throughout appropriate areas of your application.
+    | e.g. "Business Inc." will be shown as "Copyright Business Inc."
+    |
+    */
+
+    'biz_name' => env('BIZ_NAME', 'Business'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Environment
     |--------------------------------------------------------------------------
     |
