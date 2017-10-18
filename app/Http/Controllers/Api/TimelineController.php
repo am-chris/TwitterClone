@@ -6,6 +6,7 @@ use Auth;
 use Response;
 use App\Models\Follow;
 use App\Models\Post;
+use App\Models\User\Block;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -26,8 +27,13 @@ class TimelineController extends Controller
 
         array_push($users_im_following, $user_id); // Add current user to array
 
+        $blocked_user_ids = Block::where('blocker_id', $user_id)
+            ->pluck('blocked_id')
+            ->toArray();
+
         $posts = Post::with('user')
             ->whereIn('user_id', $users_im_following)
+            ->whereNotIn('user_id', $blocked_user_ids)
             ->orderBy('created_at', 'desc')
             ->paginate(20);
 

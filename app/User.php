@@ -44,19 +44,24 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Post\Share');
     }
 
+    public function blocked()
+    {
+       return $this->belongsToMany(self::class, 'blocked_users', 'blocker_id', 'blocked_id');
+    }
+
+    public function block($user_id)
+    {
+       return $this->blocked()->attach($user_id);
+    }
+
     public function follows()
     {
        return $this->belongsToMany(self::class, 'follows', 'follower_id', 'followed_id');
     }
 
-    public function followers()
+    public function follow($user_id)
     {
-       return $this->belongsToMany(self::class, 'follows', 'followed_id', 'follower_id');
-    }
-
-    public function follow($userIdToFollow)
-    {
-       return $this->follows()->attach($userIdToFollow);
+       return $this->follows()->attach($user_id);
     }
 
     public function followingUser($user_id)
@@ -70,6 +75,11 @@ class User extends Authenticatable
         } else {
             return false;
         }
+    }
+
+    public function followers()
+    {
+       return $this->belongsToMany(self::class, 'follows', 'followed_id', 'follower_id');
     }
 
     public function photo($user_id)
