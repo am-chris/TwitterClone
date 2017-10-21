@@ -16,7 +16,7 @@
 
 <script>
 export default {
-    props: ['sharedOriginal', 'countOriginal'],
+    props: ['countOriginal', 'postId', 'sharedOriginal', 'userId'],
 
     data() {
         return {
@@ -31,6 +31,19 @@ export default {
 
     methods: {
         share() {
+            var self = this;
+
+            axios.post('/p/' + this.postId + '/share', {
+                post_id: this.postId,
+                user_id: this.userId,
+            })
+            .then(function (response) {
+
+            })
+            .catch(function (error) {
+                console.log(error.response);
+            });
+
             if (isNaN(this.count)) this.count = 0;
 
             this.count = this.count + 1;

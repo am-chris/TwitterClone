@@ -24,11 +24,16 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('notifications', 'NotificationController@index');
 
+    // Post Routes
     Route::post('p/{post}/like', 'Post\LikeController@like');
     Route::delete('p/{post}/like', 'Post\LikeController@unlike');
 
     Route::post('p/{post}/report', 'Post\ReportController@store');
 
+    Route::post('p/{post}/share', 'Post\ShareController@share');
+    Route::post('p/{post}/unshare', 'Post\ShareController@unshare');
+
+    // User Routes
     Route::post('u/{user}/block', 'User\BlockController@block');
     Route::post('u/{user}/unblock', 'User\BlockController@unblock');
 
