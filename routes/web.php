@@ -26,7 +26,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Post Routes
     Route::post('p/{post}/like', 'Post\LikeController@like');
-    Route::delete('p/{post}/like', 'Post\LikeController@unlike');
+    Route::post('p/{post}/unlike', 'Post\LikeController@unlike');
 
     Route::post('p/{post}/report', 'Post\ReportController@store');
 

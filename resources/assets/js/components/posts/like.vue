@@ -16,7 +16,7 @@
 
 <script>
 export default {
-    props: ['userId', 'postId', 'likedOriginal', 'countOriginal'],
+    props: ['countOriginal', 'likedOriginal', 'postId', 'userId'],
 
     data() {
         return {
@@ -51,6 +51,21 @@ export default {
         },
 
         unlike() {
+            var self = this;
+
+            axios.post('/p/' + this.postId + '/unlike', {
+                user_id: this.userId,
+                post_id: this.postId,
+            })
+            .then(function (response) {
+
+            })
+            .catch(function (error) {
+                console.log(error.response);
+            });
+
+            if (isNaN(this.count)) this.count = 0;
+
             this.count = this.count - 1;
             this.liked = false;
         }

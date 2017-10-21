@@ -58,8 +58,24 @@ class LikeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function unlike(Request $request, $post_id)
     {
-        //
+        $post_like = Like::where('post_id', $request->post_id)
+            ->where('user_id', $request->user_id)
+            ->first();
+        $post_like->delete();
+
+        $post = Post::where('id', $request->post_id)
+            ->first();
+
+        $post->like_count = $post->like_count - 1;
+        $post->save();
+
+        if ($request->ajax()) {
+            return response(['status' => 'The post was unliked.']);
+        } else {
+            Session::flash('success', 'The post was unliked.');
+            return redirect()->back();
+        }
     }
 }

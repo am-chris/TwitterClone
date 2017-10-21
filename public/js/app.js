@@ -44387,7 +44387,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['userId', 'postId', 'likedOriginal', 'countOriginal'],
+    props: ['countOriginal', 'likedOriginal', 'postId', 'userId'],
 
     data: function data() {
         return {
@@ -44418,6 +44418,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.liked = true;
         },
         unlike: function unlike() {
+            var self = this;
+
+            axios.post('/p/' + this.postId + '/unlike', {
+                user_id: this.userId,
+                post_id: this.postId
+            }).then(function (response) {}).catch(function (error) {
+                console.log(error.response);
+            });
+
+            if (isNaN(this.count)) this.count = 0;
+
             this.count = this.count - 1;
             this.liked = false;
         }
