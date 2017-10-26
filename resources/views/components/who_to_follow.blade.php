@@ -11,6 +11,9 @@
                         <a class="text-primary-hover" href="{{ url('/' . $follow_suggestion->username) }}" style="color: #555;">
                             {{ $follow_suggestion->name }}
                         </a>
+                        @if ($follow_suggestion->verified > 0)
+                            <i class="fa fa-check-circle text-primary"></i>
+                        @endif
                         <span class="text-muted" style="font-size: 13px; font-weight: 400;">{{ '@' . $follow_suggestion->username }}</span>
                     </h6>
                     <user-follow :original-following="false" :user-id="{{ $follow_suggestion->id }}" :current-user-id="{{ Auth::id() }}"></user-follow>
