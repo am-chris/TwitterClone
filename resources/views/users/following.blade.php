@@ -11,9 +11,9 @@
                         <a href="{{ url('/' . $user->username) }}">
                             <img class="d-flex align-self-start rounded-circle mr-3" src="{{ $user->photo($user->id) }}" style="max-width: 48px; max-height: 48px;" alt="Profile photo">
                         </a>
-                        <div class="media-body">
+                        <div class="media-body truncate">
                             <h6 class="mt-0 mb-1">
-                                <a href="{{ url('/' . $user->username) }}" class="text-dark">
+                                <a href="{{ url('/' . $user->username) }}" class="text-dark" title="{{ $user->name }}">
                                     {{ $user->name }}
                                 </a>
                             </h6>
@@ -66,14 +66,16 @@
                                         @endif
                                     </div>
                                 </div>
-                                <h6 class="mt-0 mb-1">
-                                    <a class="text-dark" href="{{ url('/' . $follow->username) }}">
-                                        {{ $follow->name }}
-                                    </a>
-                                    @if ($follow->verified > 0)
-                                        <i class="fa fa-check-circle text-primary"></i>
-                                    @endif
-                                </h6>
+                                <div class="truncate">
+                                    <h6 class="mt-0 mb-1">
+                                        <a class="text-dark" href="{{ url('/' . $follow->username) }}" title="{{ $follow->name }}">
+                                            {{ $follow->name }}
+                                        </a>
+                                        @if ($follow->verified > 0)
+                                            <i class="fa fa-check-circle text-primary"></i>
+                                        @endif
+                                    </h6>
+                                </div>
                                 <span class="text-muted" style="font-size: 13px; font-weight: 400;">
                                     {{ '@' . $follow->username }}
                                 </span>
