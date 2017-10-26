@@ -7,7 +7,7 @@
                         <a :href="'/' + post.user.username">
                             <img class="d-flex align-self-start mr-3 rounded-circle" :src="post.user.photo_url" style="max-width: 48px; max-height: 48px;" alt="User photo">
                         </a>
-                        <div class="media-body" style="text-overflow: clip;">
+                        <div class="media-body truncate">
                             <div v-if="post.post_id > 0">
                                 <div class="text-muted">Replying to </div>
                             </div>

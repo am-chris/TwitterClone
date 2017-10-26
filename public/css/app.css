@@ -6,6 +6,12 @@
   color: red;
 }
 
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .pv-1 {
   padding: 10px 0;
 }

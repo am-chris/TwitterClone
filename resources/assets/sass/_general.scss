@@ -5,3 +5,9 @@
 .required {
     color: red;
 }
+
+.truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

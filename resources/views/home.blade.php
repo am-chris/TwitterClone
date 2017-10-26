@@ -11,7 +11,7 @@
                         <a href="{{ url('/' . Auth::user()->username) }}">
                             <img class="d-flex align-self-start rounded-circle mr-3" src="{{ Auth::user()->photo(Auth::id()) }}" style="max-width: 48px; max-height: 48px;" alt="Profile photo">
                         </a>
-                        <div class="media-body">
+                        <div class="media-body truncate">
                             <h6 class="mt-0 mb-1">
                                 <a href="{{ url('/' . Auth::user()->username) }}" class="text-dark">
                                     {{ Auth::user()->name }}

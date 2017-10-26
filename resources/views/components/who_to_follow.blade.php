@@ -6,8 +6,8 @@
                 <a href="{{ url('/' . $follow_suggestion->username) }}">
                     <img class="d-flex align-self-start rounded-circle mr-3" src="{{ $follow_suggestion->photo($follow_suggestion->id) }}" style="max-width: 48px; max-height: 48px;" alt="User photo">
                 </a>
-                <div class="media-body" style="text-overflow: ellipsis;">
-                    <h6 class="mt-0" style="margin-bottom: 3px;">
+                <div class="media-body truncate">
+                    <h6 class="mt-0 mb-1">
                         <a class="text-primary-hover" href="{{ url('/' . $follow_suggestion->username) }}" style="color: #555;">
                             {{ $follow_suggestion->name }}
                         </a>
