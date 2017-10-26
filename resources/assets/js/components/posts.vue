@@ -29,7 +29,7 @@
                                             <a class="text-muted" href="#" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <i class="fa fa-angle-down"></i>
                                             </a>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                                                 <span v-if="currentUserId !== post.user_id">
                                                     <a class="dropdown-item" href="#" @click.prevent="blockUser(post.user_id)">Block @{{ post.user.username }}</a>
                                                 </span>

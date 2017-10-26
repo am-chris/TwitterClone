@@ -44200,8 +44200,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('a', {
       staticClass: "text-primary-hover",
       staticStyle: {
-        "color": "#555",
-        "max-width": "200px"
+        "color": "#555"
       },
       attrs: {
         "href": '/' + post.user.username
@@ -44227,7 +44226,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('div', {
       staticClass: "dropdown"
     }, [_vm._m(0, true), _vm._v(" "), _c('div', {
-      staticClass: "dropdown-menu",
+      staticClass: "dropdown-menu dropdown-menu-right",
       attrs: {
         "aria-labelledby": "dropdownMenuButton"
       }
