@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="following == true">
-            <button type="submit" class="btn btn-sm btn-primary" @click.prevent="unfollow()" style="min-width: 75px;">Unfollow</button>
+            <button type="submit" class="btn btn-sm btn-primary bg-danger-on-hover" @click.prevent="unfollow()" style="min-width: 75px;">Unfollow</button>
         </div>
         <div v-else>
             <button type="submit" class="btn btn-sm btn-outline-primary" @click.prevent="follow()" style="min-width: 75px;">Follow</button>

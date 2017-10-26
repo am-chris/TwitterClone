@@ -12,6 +12,11 @@
   text-overflow: ellipsis;
 }
 
+.btn.bg-danger-on-hover:hover {
+  background-color: #dc3545;
+  border-color: #ca2333;
+}
+
 .pv-1 {
   padding: 10px 0;
 }

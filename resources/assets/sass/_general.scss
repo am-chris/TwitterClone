@@ -11,3 +11,10 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.btn {
+    &.bg-danger-on-hover:hover {
+        background-color: theme-color('danger');
+        border-color: darken(theme-color('danger'), 7%);
+    }
+}
