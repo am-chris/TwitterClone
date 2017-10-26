@@ -61,7 +61,9 @@
                                         <img class="d-flex align-self-start mr-3 rounded-circle" src="{{ $follower->photo_url }}" style="max-width: 48px; max-height: 48px;" alt="Generic placeholder image">
                                     </a>
                                     <div class="media-body" style="text-overflow: clip;">
-                                        <user-follow :user-id="{{ $follower->id }}" :current-user-id="{{ Auth::id() }}" :original-following="{{ json_encode(Auth::user()->followingUser($follower->id)) }}"></user-follow>
+                                        @if (Auth::id() !== $follower->id)
+                                            <user-follow :user-id="{{ $follower->id }}" :current-user-id="{{ Auth::id() }}" :original-following="{{ json_encode(Auth::user()->followingUser($follower->id)) }}"></user-follow>
+                                        @endif
                                     </div>
                                 </div>
                                 <h6 class="mt-0 mb-1">
