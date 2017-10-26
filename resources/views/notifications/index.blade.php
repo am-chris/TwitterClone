@@ -6,6 +6,8 @@
         <div class="row">
             <div class="col-md-3">
 
+                @include('components.trends')
+
             </div>
             <div class="col-md-6">
                 <div class="bg-white">
@@ -59,6 +61,10 @@
                 </div>
             </div>
             <div class="col-md-3">
+
+                @include('components.who_to_follow')
+
+                @include('components.site_info')
 
             </div>
         </div>

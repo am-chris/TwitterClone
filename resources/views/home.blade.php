@@ -35,36 +35,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="bg-white p-3 mb-3">
-                    <h5>United States trends</h5>
-                    <ul class="list-unstyled mb-0">
-                        <li class="mb-2">
-                            <a href="#">#Laravel</a>
-                            <br>
-                            <span class="text-muted" style="font-size: 13px;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est.</span>
-                        </li>
-                        <li class="mb-2">
-                            <a href="#">#Laravel</a>
-                            <br>
-                            <span class="text-muted" style="font-size: 13px;">{{ number_format(rand(1340, 2885)) }} posts</span>
-                        </li>
-                        <li class="mb-2">
-                            <a href="#">#Laravel</a>
-                            <br>
-                            <span class="text-muted" style="font-size: 13px;">{{ number_format(rand(1340, 2885)) }} posts</span>
-                        </li>
-                        <li class="mb-2">
-                            <a href="#">#Laravel</a>
-                            <br>
-                            <span class="text-muted" style="font-size: 13px;">{{ number_format(rand(1340, 2885)) }} posts</span>
-                        </li>
-                        <li>
-                            <a href="#">#Laravel</a>
-                            <br>
-                            <span class="text-muted" style="font-size: 13px;">{{ number_format(rand(1340, 2885)) }} posts</span>
-                        </li>
-                    </ul>
-                </div>
+
+                @include('components.trends')
+
             </div>
             <div class="col-md-6">
                 @if (count(Auth::user()->follows) <= 3)
@@ -80,59 +53,11 @@
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="bg-white p-3 mb-3">
-                    <h5>Who to follow</h5>
-                    @if (count($follow_suggestions))
-                        @foreach ($follow_suggestions as $follow_suggestion)
-                            <div class="media">
-                                <a href="{{ url('/' . $follow_suggestion->username) }}">
-                                    <img class="d-flex align-self-start rounded-circle mr-3" src="{{ $follow_suggestion->photo($follow_suggestion->id) }}" style="max-width: 48px; max-height: 48px;" alt="User photo">
-                                </a>
-                                <div class="media-body" style="text-overflow: ellipsis;">
-                                    <h6 class="mt-0" style="margin-bottom: 3px;">
-                                        <a class="text-primary-hover" href="{{ url('/' . $follow_suggestion->username) }}" style="color: #555;">
-                                            {{ $follow_suggestion->name }}
-                                        </a>
-                                        <span class="text-muted" style="font-size: 13px; font-weight: 400;">{{ '@' . $follow_suggestion->username }}</span>
-                                    </h6>
-                                    <user-follow :original-following="false" :user-id="{{ $follow_suggestion->id }}" :current-user-id="{{ Auth::id() }}"></user-follow>
-                                </div>
-                            </div>
-                            <hr class="mt-2 mb-2">
-                        @endforeach
-                        <a href="#">Search by interests</a>
-                    @else
-                        No suggestions.
-                    @endif
-                </div>
-                <div class="bg-white p-3">
-                    <ul class="list-inline mb-0" style="font-size: 13px;">
-                        <li class="list-inline-item">
-                            &copy; {{ date('Y') }} {{ config('app.biz_name') }}
-                        </li>
-                        <li class="list-inline-item">
-                            <a href="#">About</a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a href="#">Help Center</a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a href="#">Terms</a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a href="#">Privacy Policy</a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a href="#">Cookies</a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a href="#">Blog</a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a href="#">Advertise with {{ config('app.biz_name') }}</a>
-                        </li>
-                    </ul>
-                </div>
+
+                @include('components.who_to_follow')
+
+                @include('components.site_info')
+
             </div>
         </div>
     </div>
