@@ -7,6 +7,8 @@ use Session;
 use Carbon\Carbon;
 use App\Models\Post;
 use App\Models\Post\Comment;
+use App\User;
+use App\Notifications\YouWereMentioned;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -65,6 +67,19 @@ class PostController extends Controller
         $post->user_id = Auth::id();
         $post->content = $request->content;
         $post->save();
+
+        // Check the body of the post for mentioned users
+        preg_match_all('/\@([^\s\.]+)/', $post->content, $matches);
+
+        $usernames = $matches[1];
+
+        foreach ($usernames as $username) {
+            $user = User::whereUsername($username)->first();
+
+            if ($user) {
+                $user->notify(new YouWereMentioned($post));
+            }
+        }
 
         if ($request->ajax()) {
             return response(['status' => 'The post was created.']);
