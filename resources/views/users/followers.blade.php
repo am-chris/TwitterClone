@@ -43,6 +43,10 @@
                     <a class="nav-link active" href="#">Followers</a>
                     @if (Auth::id() == $user->id)
                         <a class="nav-link ml-auto btn btn-outline-primary" href="{{ url('/' . $user->username . '/edit') }}">Edit Profile</a>
+                    @else
+                        <span class="ml-auto">
+                            <user-follow :user-id="{{ $user->id }}" :current-user-id="{{ Auth::id() }}" :original-following="{{ json_encode(Auth::user()->followingUser($user->id)) }}"></user-follow>
+                        </span>
                     @endif
                 </nav>
                 <div class="row">
