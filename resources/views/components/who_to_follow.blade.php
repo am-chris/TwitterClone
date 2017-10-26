@@ -4,7 +4,7 @@
         @foreach ($follow_suggestions as $follow_suggestion)
             <div class="media">
                 <a href="{{ url('/' . $follow_suggestion->username) }}">
-                    <img class="d-flex align-self-start rounded-circle mr-3" src="{{ $follow_suggestion->photo($follow_suggestion->id) }}" style="max-width: 48px; max-height: 48px;" alt="User photo">
+                    <img class="d-flex align-self-start rounded-circle mr-3" src="{{ $follow_suggestion->photo($follow_suggestion->id) }}" style="max-width: 32px; max-height: 32px;" alt="User photo">
                 </a>
                 <div class="media-body truncate">
                     <h6 class="mt-0 mb-1">
@@ -14,7 +14,7 @@
                         @if ($follow_suggestion->verified > 0)
                             <i class="fa fa-check-circle text-primary"></i>
                         @endif
-                        <span class="text-muted" style="font-size: 13px; font-weight: 400;">{{ '@' . $follow_suggestion->username }}</span>
+                        <span class="text-muted" style="font-size: 13px; font-weight: 400;" title="{{ $follow_suggestion->username }}">{{ '@' . $follow_suggestion->username }}</span>
                     </h6>
                     <user-follow :original-following="false" :user-id="{{ $follow_suggestion->id }}" :current-user-id="{{ Auth::id() }}"></user-follow>
                 </div>
