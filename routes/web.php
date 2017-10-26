@@ -44,6 +44,8 @@ Route::group(['middleware' => ['auth']], function () {
 Route::resource('p', 'PostController');
 
 Route::get('{username}', 'UserController@show');
+Route::put('{username}', 'UserController@update');
+Route::get('{username}/edit', 'UserController@edit');
 Route::get('{username}/followers', 'UserController@followers');
 Route::get('{username}/following', 'UserController@following');
 

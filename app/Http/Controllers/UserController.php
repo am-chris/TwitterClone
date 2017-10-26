@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use Session;
 use App\User;
 use Illuminate\Http\Request;
@@ -63,9 +64,20 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($username)
     {
-        //
+        $user = User::where('username', $username)
+            ->first();
+
+        if (count($user) == 0) {
+            abort(404);
+        }
+
+        if (Auth::id() !== $user->id) {
+            return redirect('/');
+        }
+
+        return view('users.edit', compact('user'));
     }
 
     /**
@@ -75,9 +87,37 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $username)
     {
-        //
+        $user = User::where('username', $username)
+            ->first();
+
+        if (count($user) == 0) {
+            abort(404);
+        }
+
+        if (Auth::id() !== $user->id) {
+            return redirect('/');
+        }
+
+        // Strip symbols from new username
+        $desired_username = str_replace(['~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '|', '{', '}', ',', '.', '?', ' '], '', $request->username);
+
+        // If the username is already taken, throw an error
+        $user2 = User::where('username', $desired_username)
+            ->first();
+
+        if (count($user2) && $user->id !== $user2->id) {
+            Session::flash('error', 'That username is already taken. Choose a unique username.');
+            return redirect()->back();
+        }
+
+        $user->name = $request->name;
+        $user->username = $desired_username;
+        $user->save();
+
+        Session::flash('success', 'Your profile was updated.');
+        return redirect('/' . $user->username);
     }
 
     /**

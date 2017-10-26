@@ -41,6 +41,9 @@
                     <a class="nav-link" href="{{ url('/' . $user->username) }}">Profile</a>
                     <a class="nav-link" href="{{ url('/' . $user->username . '/following') }}">Following</a>
                     <a class="nav-link active" href="#">Followers</a>
+                    @if (Auth::id() == $user->id)
+                        <a class="nav-link ml-auto btn btn-outline-primary" href="{{ url('/' . $user->username . '/edit') }}">Edit Profile</a>
+                    @endif
                 </nav>
                 <div class="row">
                     @foreach ($user->followers as $follower)
