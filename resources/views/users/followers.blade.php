@@ -5,7 +5,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-3">
-                <img class="img-fluid" src="http://placehold.it/600x250" style="border-top-left-radius: 4px; border-top-right-radius: 4px;">
+                <img class="img-fluid" src="{{ url('storage/' . $user->cover_photo_url) }}" style="border-top-left-radius: 4px; border-top-right-radius: 4px;">
                 <div class="bg-white p-3 mb-3">
                     <div class="media">
                         <a href="{{ url('/' . $user->username) }}">
@@ -53,7 +53,7 @@
                     @foreach ($user->followers as $follower)
                         <div class="col-md-4">
                             <a href="{{ url('/' . $follower->username) }}">
-                                <img class="img-fluid" src="http://placehold.it/600x250" style="border-top-left-radius: 4px; border-top-right-radius: 4px;">
+                                <img class="img-fluid" src="{{ url('storage/' . $follower->cover_photo_url) }}" style="border-top-left-radius: 4px; border-top-right-radius: 4px;">
                             </a>
                             <div class="bg-white p-3 mb-4">
                                 <div class="media mb-1">

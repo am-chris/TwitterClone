@@ -44192,7 +44192,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "alt": "User photo"
       }
     })]), _vm._v(" "), _c('div', {
-      staticClass: "media-body truncate"
+      staticClass: "media-body"
     }, [(post.post_id > 0) ? _c('div', [_c('div', {
       staticClass: "text-muted"
     }, [_vm._v("Replying to ")])]) : _vm._e(), _vm._v(" "), _c('h6', {
@@ -44226,7 +44226,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('div', {
       staticClass: "dropdown"
     }, [_vm._m(0, true), _vm._v(" "), _c('div', {
-      staticClass: "dropdown-menu dropdown-menu-right",
+      staticClass: "dropdown-menu",
       attrs: {
         "aria-labelledby": "dropdownMenuButton"
       }

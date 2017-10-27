@@ -7,7 +7,7 @@
                         <a :href="'/' + post.user.username">
                             <img class="d-flex align-self-start mr-3 rounded-circle" :src="post.user.photo_url" style="max-width: 48px; max-height: 48px;" alt="User photo">
                         </a>
-                        <div class="media-body truncate">
+                        <div class="media-body">
                             <div v-if="post.post_id > 0">
                                 <div class="text-muted">Replying to </div>
                             </div>
@@ -29,7 +29,7 @@
                                             <a class="text-muted" href="#" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <i class="fa fa-angle-down"></i>
                                             </a>
-                                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                 <span v-if="currentUserId !== post.user_id">
                                                     <a class="dropdown-item" href="#" @click.prevent="blockUser(post.user_id)">Block @{{ post.user.username }}</a>
                                                 </span>

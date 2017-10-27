@@ -37,6 +37,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('u/{user}/block', 'User\BlockController@block');
     Route::post('u/{user}/unblock', 'User\BlockController@unblock');
 
+    Route::post('u/{user}/cover_photo', 'User\CoverPhotoController@upload');
+    Route::delete('u/{user}/cover_photo', 'User\CoverPhotoController@destroy');
+
     Route::post('u/{user}/follow', 'User\FollowController@follow');
     Route::post('u/{user}/unfollow', 'User\FollowController@unfollow');
 });

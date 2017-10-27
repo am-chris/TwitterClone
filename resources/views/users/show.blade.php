@@ -5,7 +5,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-3">
-                <img class="img-fluid" src="http://placehold.it/600x250" style="border-top-left-radius: 4px; border-top-right-radius: 4px;">
+                <img class="img-fluid" src="{{ url('storage/' . $user->cover_photo_url) }}" style="border-top-left-radius: 4px; border-top-right-radius: 4px;">
                 <div class="bg-white p-3 mb-3">
                     <div class="media">
                         <a href="{{ url('/' . $user->username) }}">
