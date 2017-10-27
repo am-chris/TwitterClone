@@ -117,7 +117,7 @@ class UserController extends Controller
         $user->save();
 
         Session::flash('success', 'Your profile was updated.');
-        return redirect('/' . $user->username);
+        return redirect('/' . $user->username . '/edit');
     }
 
     /**
