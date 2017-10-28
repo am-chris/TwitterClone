@@ -45,7 +45,9 @@
                         <a class="nav-link ml-auto btn btn-outline-primary" href="{{ url('/' . $user->username . '/edit') }}">Edit Profile</a>
                     @else
                         <span class="ml-auto">
-                            <user-follow :user-id="{{ $user->id }}" :current-user-id="{{ Auth::id() }}" :original-following="{{ json_encode(Auth::user()->followingUser($user->id)) }}"></user-follow>
+                            @if (Auth::check())
+                                <user-follow :user-id="{{ $user->id }}" :current-user-id="{{ Auth::id() }}" :original-following="{{ json_encode(Auth::user()->followingUser($user->id)) }}"></user-follow>
+                            @endif
                         </span>
                     @endif
                 </nav>
@@ -61,7 +63,7 @@
                                         <img class="d-flex align-self-start mr-3 rounded-circle" src="{{ $follow->photo_url }}" style="max-width: 48px; max-height: 48px;" alt="Generic placeholder image">
                                     </a>
                                     <div class="media-body" style="text-overflow: clip;">
-                                        @if (Auth::id() !== $follow->id)
+                                        @if (Auth::id() !== $follow->id && Auth::check())
                                             <user-follow :user-id="{{ $follow->id }}" :current-user-id="{{ Auth::id() }}" :original-following="{{ json_encode(Auth::user()->followingUser($follow->id)) }}"></user-follow>
                                         @endif
                                     </div>
