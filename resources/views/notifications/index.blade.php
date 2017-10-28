@@ -18,7 +18,7 @@
                                     <a href="{{ url('/p/' . $post->id) }}" style="text-decoration: none;">
                                         <div class="media">
                                             <a href="{{ url('/' . $post->user->username) }}">
-                                                <img class="d-flex align-self-start mr-3 rounded-circle" src="{{ $post->user->photo_url }}" style="max-width: 48px; max-height: 48px;" alt="User photo">
+                                                <img class="d-flex align-self-start mr-3 rounded-circle" src="{{ url('storage/' . $post->user->photo_url) }}" style="max-width: 48px; max-height: 48px;" alt="User photo">
                                             </a>
                                             <div class="media-body" style="text-overflow: clip;">
                                                 @if (!is_null($post->post_id))

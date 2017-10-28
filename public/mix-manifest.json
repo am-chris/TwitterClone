@@ -1,7 +1,6 @@
 {
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
-    "/storage/users/cover_photos/default_cover_photo.png": "/storage/users/cover_photos/default_cover_photo.png",
     "/js/autosize.min.js": "/js/autosize.min.js",
     "/js/clipboard.min.js": "/js/clipboard.min.js",
     "/js/bootstrap-maxlength.min.js": "/js/bootstrap-maxlength.min.js"

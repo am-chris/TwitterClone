@@ -12,7 +12,7 @@
                     <div class="bg-white p-3 mb-0" style="border: 1px solid #DDD; border-bottom: none;">
                         <div class="media">
                             <a href="{{ url('/' . $post->user->username) }}">
-                                <img class="d-flex align-self-start mr-3 rounded-circle" src="{{ $post->user->photo($post->user->id) }}" style="max-width: 48px; max-height: 48px;" alt="Generic placeholder image">
+                                <img class="d-flex align-self-start mr-3 rounded-circle" src="{{ url('storage/' . $post->user->photo_url) }}" style="max-width: 48px; max-height: 48px;" alt="Generic placeholder image">
                             </a>
                             <div class="media-body">
                                 <h6 class="mt-0 mb-3">
@@ -74,7 +74,7 @@
                             <li class="p-3 post">
                                 <div class="media">
                                     <a href="{{ url('/p/' . $comment->id) }}" style="text-decoration: none;">
-                                        <img class="d-flex align-self-start mr-3 rounded-circle" src="{{ $comment->user->photo($comment->user->id) }}" style="max-width: 48px; max-height: 48px;" alt="Generic placeholder image">
+                                        <img class="d-flex align-self-start mr-3 rounded-circle" src="{{ url('storage/' . $comment->user->photo_url) }}" style="max-width: 48px; max-height: 48px;" alt="Generic placeholder image">
                                         <div class="media-body">
                                             <h6 class="mt-0 text-dark">
                                                 {{ $comment->user->name }}

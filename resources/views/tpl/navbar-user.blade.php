@@ -25,7 +25,7 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="{{ Auth::user()->photo(Auth::id()) }}" class="rounded-circle" style="max-width: 28px; max-height: 28px;">
+                        <img src="{{ url('storage/' . Auth::user()->photo_url) }}" class="rounded-circle" style="max-width: 28px; max-height: 28px;">
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="{{ url('/' . Auth::user()->username) }}">

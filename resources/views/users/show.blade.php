@@ -9,7 +9,7 @@
                 <div class="bg-white p-3 mb-3">
                     <div class="media">
                         <a href="{{ url('/' . $user->username) }}">
-                            <img class="d-flex align-self-start rounded-circle mr-3" src="{{ $user->photo($user->id) }}" style="max-width: 48px; max-height: 48px;" alt="Profile photo">
+                            <img class="d-flex align-self-start rounded-circle mr-3" src="{{ url('storage/' . $user->photo_url) }}" style="max-width: 48px; max-height: 48px;" alt="Profile photo">
                         </a>
                         <div class="media-body truncate">
                             <h6 class="mt-0 mb-1">

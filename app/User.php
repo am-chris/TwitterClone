@@ -81,15 +81,4 @@ class User extends Authenticatable
     {
        return $this->belongsToMany(self::class, 'follows', 'followed_id', 'follower_id');
     }
-
-    public function photo($user_id)
-    {
-        $user = User::findOrFail($user_id);
-
-        if (!is_null($user->photo_url)) {
-            return $user->photo_url;
-        } else {
-            return url('/img/profile/mysteryman.png');
-        }
-    }
 }

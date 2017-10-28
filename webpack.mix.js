@@ -15,6 +15,7 @@ mix.disableSuccessNotifications();
 
 mix.js('resources/assets/js/app.js', 'public/js')
     .copy('public/img/default_cover_photo.png', 'public/storage/users/cover_photos')
+    .copy('public/img/mysteryman.png', 'public/storage/users/photos')
     .copy('node_modules/autosize/dist/autosize.min.js', 'public/js')
     .copy('node_modules/clipboard/dist/clipboard.min.js', 'public/js')
     .copy('node_modules/bootstrap-maxlength/bootstrap-maxlength.min.js', 'public/js')

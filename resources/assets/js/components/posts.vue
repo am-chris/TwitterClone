@@ -5,7 +5,7 @@
                 <a :href="'/p/' + post.id" style="text-decoration: none;">
                     <div class="media">
                         <a :href="'/' + post.user.username">
-                            <img class="d-flex align-self-start mr-3 rounded-circle" :src="post.user.photo_url" style="max-width: 48px; max-height: 48px;" alt="User photo">
+                            <img class="d-flex align-self-start mr-3 rounded-circle" :src="'storage/' + post.user.photo_url" style="max-width: 48px; max-height: 48px;" alt="User photo">
                         </a>
                         <div class="media-body">
                             <div v-if="post.post_id > 0">

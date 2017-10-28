@@ -17,12 +17,26 @@
                         {{ Form::submit('Remove', ['class' => 'btn btn-sm btn-danger']) }}
                     </div>
                 {{ Form::close() }}
+
+                {{ Form::open(['url' => 'u/' . $user->id . '/photo', 'method' => 'POST', 'files' => true]) }}
+                    <div class="form-group">
+                        {{ Form::label('file', 'Profile Photo (128x128)') }}
+                        {{ Form::file('file') }}
+                    </div>
+                    {{ Form::submit('Upload', ['class' => 'btn btn-sm btn-success mb-2']) }}
+                {{ Form::close() }}
+                {{ Form::open(['url' => 'u/' . $user->id . '/photo', 'method' => 'DELETE']) }}
+                    <div class="form-group">
+                        {{ Form::submit('Remove', ['class' => 'btn btn-sm btn-danger']) }}
+                    </div>
+                {{ Form::close() }}
+
                 <img src="{{ url('storage/' . $user->cover_photo_url) }}" class="img-fluid" style="border-top-left-radius: 4px; border-top-right-radius: 4px;">
                 <div class="bg-white p-3 mb-3">
                     {{ Form::open(['url' => $user->username, 'method' => 'PUT']) }}
                         <div class="media">
                             <a href="{{ url('/' . $user->username) }}">
-                                <img class="d-flex align-self-start rounded-circle mr-3" src="{{ $user->photo($user->id) }}" style="max-width: 48px; max-height: 48px;" alt="Profile photo">
+                                <img class="d-flex align-self-start rounded-circle mr-3" src="{{ url('storage/' . $user->photo_url) }}" style="max-width: 48px; max-height: 48px;" alt="Profile photo">
                             </a>
                             <div class="media-body">
                                 {{ Form::text('name', $user->name, ['class' => 'form-control mb-1', 'required' => 'required']) }}

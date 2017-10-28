@@ -4,7 +4,7 @@
         @foreach ($follow_suggestions as $follow_suggestion)
             <div class="media">
                 <a href="{{ url('/' . $follow_suggestion->username) }}">
-                    <img class="d-flex align-self-start rounded-circle mr-3" src="{{ $follow_suggestion->photo($follow_suggestion->id) }}" style="max-width: 32px; max-height: 32px;" alt="User photo">
+                    <img class="d-flex align-self-start rounded-circle mr-3" src="{{ url('storage/' . $follow_suggestion->photo_url) }}" style="max-width: 32px; max-height: 32px;" alt="User photo">
                 </a>
                 <div class="media-body truncate">
                     <h6 class="mt-0 mb-1">
