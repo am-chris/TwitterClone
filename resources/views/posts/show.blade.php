@@ -30,7 +30,9 @@
                                     <ul class="list-inline text-muted d-inline-block float-right" style="font-size: 13px; font-weight: 400;">
                                         @if (Auth::id() !== $post->user->id)
                                             <li class="list-inline-item">
-                                                <user-follow :user-id="{{ $post->user->id }}" :current-user-id="{{ Auth::id() }}" :original-following="{{ json_encode(Auth::user()->followingUser($post->user->id)) }}"></user-follow>
+                                                @if (Auth::check())
+                                                    <user-follow :user-id="{{ $post->user->id }}" :current-user-id="{{ Auth::id() }}" :original-following="{{ json_encode(Auth::user()->followingUser($post->user->id)) }}"></user-follow>
+                                                @endif
                                             </li>
                                         @endif
                                     </ul>
