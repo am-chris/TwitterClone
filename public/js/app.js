@@ -11031,6 +11031,7 @@ Vue.component('post-like', __webpack_require__(47));
 Vue.component('post-share', __webpack_require__(50));
 
 Vue.component('user-follow', __webpack_require__(53));
+Vue.component('user-posts', __webpack_require__(64));
 
 Vue.use(VueAutosize);
 
@@ -44746,6 +44747,381 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 57 */,
+/* 58 */,
+/* 59 */,
+/* 60 */,
+/* 61 */,
+/* 62 */,
+/* 63 */,
+/* 64 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(65),
+  /* template */
+  __webpack_require__(66),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "C:\\laragon\\www\\TwitterClone\\resources\\assets\\js\\components\\users\\posts.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] posts.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0cfd6504", Component.options)
+  } else {
+    hotAPI.reload("data-v-0cfd6504", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 65 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_infinite_loading__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_infinite_loading___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue_infinite_loading__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    components: {
+        InfiniteLoading: __WEBPACK_IMPORTED_MODULE_0_vue_infinite_loading___default.a
+    },
+
+    props: ['current-user-id', 'user-id'],
+
+    data: function data() {
+        return {
+            posts: [],
+            distance: 1,
+            currentPage: 1
+        };
+    },
+    created: function created() {
+        var self = this;
+    },
+
+
+    methods: {
+        blockUser: function blockUser(userId) {
+            axios.post('/u/' + userId + '/block', {
+                current_user_id: this.currentUserId,
+                user_id: userId
+            }).then(function (response) {}).catch(function (error) {
+                console.log(error.response);
+            });
+        },
+        deletePost: function deletePost(postId) {
+            var self = this;
+
+            axios.delete('/p/' + postId, {
+                user_id: this.userId,
+                post_id: this.postId
+            }).then(function (response) {}).catch(function (error) {
+                console.log(error.response);
+            });
+
+            this.content = '';
+            this.changesDetected = false;
+        },
+        onInfinite: function onInfinite() {
+            var self = this;
+            var api = '/api/' + this.userId + '/individual_timeline?page=' + self.currentPage;
+
+            axios.get(api).then(function (response) {
+                if (response.data.data) {
+                    self.posts = self.posts.concat(response.data.data);
+                    self.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded');
+                    if (self.posts.length / 20 === 10) {
+                        self.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
+                    }
+                } else {
+                    self.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
+
+            self.currentPage = self.currentPage + 1;
+        },
+        abbreviateNumber: function abbreviateNumber(value) {
+            var newValue = value;
+            if (value >= 1000) {
+                var suffixes = ["", "k", "m", "b", "t"];
+                var suffixNum = Math.floor(("" + value).length / 3);
+                var shortValue = '';
+                for (var precision = 2; precision >= 1; precision--) {
+                    shortValue = parseFloat((suffixNum != 0 ? value / Math.pow(1000, suffixNum) : value).toPrecision(precision));
+                    var dotLessShortValue = (shortValue + '').replace(/[^a-zA-Z 0-9]+/g, '');
+                    if (dotLessShortValue.length <= 2) {
+                        break;
+                    }
+                }
+                if (shortValue % 1 != 0) shortNum = shortValue.toFixed(1);
+                newValue = shortValue + suffixes[suffixNum];
+            }
+            return newValue;
+        }
+    }
+});
+
+/***/ }),
+/* 66 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticStyle: {
+      "margin-bottom": "50px"
+    }
+  }, [_c('ul', {
+    staticClass: "list-unstyled posts"
+  }, _vm._l((_vm.posts), function(post, index) {
+    return _c('li', {
+      staticClass: "post",
+      attrs: {
+        "index": index
+      }
+    }, [_c('a', {
+      staticStyle: {
+        "text-decoration": "none"
+      },
+      attrs: {
+        "href": '/p/' + post.id
+      }
+    }, [_c('div', {
+      staticClass: "media"
+    }, [_c('a', {
+      attrs: {
+        "href": '/' + post.user.username
+      }
+    }, [_c('img', {
+      staticClass: "d-flex align-self-start mr-3 rounded-circle",
+      staticStyle: {
+        "max-width": "48px",
+        "max-height": "48px"
+      },
+      attrs: {
+        "src": 'storage/' + post.user.photo_url,
+        "alt": "User photo"
+      }
+    })]), _vm._v(" "), _c('div', {
+      staticClass: "media-body"
+    }, [(post.post_id > 0) ? _c('div', [_c('div', {
+      staticClass: "text-muted"
+    }, [_vm._v("Replying to ")])]) : _vm._e(), _vm._v(" "), _c('h6', {
+      staticClass: "mt-0"
+    }, [_c('a', {
+      staticClass: "text-primary-hover",
+      staticStyle: {
+        "color": "#555"
+      },
+      attrs: {
+        "href": '/' + post.user.username
+      }
+    }, [_vm._v("\n                                " + _vm._s(post.user.name) + "\n                            ")]), _vm._v(" "), (post.user.verified > 0) ? _c('span', [_c('i', {
+      staticClass: "fa fa-check-circle text-primary"
+    })]) : _vm._e(), _vm._v(" "), _c('ul', {
+      staticClass: "list-inline text-muted d-inline-block",
+      staticStyle: {
+        "font-size": "13px",
+        "font-weight": "400"
+      }
+    }, [_c('li', {
+      staticClass: "list-inline-item"
+    }, [_vm._v("\n                                    @" + _vm._s(post.user.username) + "\n                                ")])]), _vm._v(" "), _c('ul', {
+      staticClass: "list-inline d-inline-block float-right",
+      staticStyle: {
+        "font-size": "19px",
+        "font-weight": "400"
+      }
+    }, [_c('li', {
+      staticClass: "list-inline-item"
+    }, [_c('div', {
+      staticClass: "dropdown"
+    }, [_vm._m(0, true), _vm._v(" "), _c('div', {
+      staticClass: "dropdown-menu",
+      attrs: {
+        "aria-labelledby": "dropdownMenuButton"
+      }
+    }, [(_vm.currentUserId !== post.user_id) ? _c('span', [_c('a', {
+      staticClass: "dropdown-item",
+      attrs: {
+        "href": "#"
+      },
+      on: {
+        "click": function($event) {
+          $event.preventDefault();
+          _vm.blockUser(post.user_id)
+        }
+      }
+    }, [_vm._v("Block @" + _vm._s(post.user.username))])]) : _vm._e(), _vm._v(" "), (_vm.currentUserId == post.user_id) ? _c('span', [_c('a', {
+      staticClass: "dropdown-item",
+      attrs: {
+        "href": "#"
+      },
+      on: {
+        "click": function($event) {
+          $event.preventDefault();
+          _vm.deletePost(post.id)
+        }
+      }
+    }, [_vm._v("Delete Post")])]) : _vm._e()])])])])]), _vm._v(" "), _c('pre', {
+      staticClass: "mb-1",
+      staticStyle: {
+        "font-family": "'Roboto', arial",
+        "font-size": "14px",
+        "white-space": "pre-wrap"
+      },
+      domProps: {
+        "textContent": _vm._s(post.content)
+      }
+    }), _vm._v(" "), _c('ul', {
+      staticClass: "list-inline text-dark"
+    }, [_c('li', {
+      staticClass: "list-inline-item mr-3"
+    }, [_c('a', {
+      staticClass: "text-muted text-primary-hover text-no-underline",
+      attrs: {
+        "href": '/p/' + post.id
+      }
+    }, [_c('i', {
+      staticClass: "fa fa-comment"
+    }), _vm._v(" " + _vm._s(post.comment_count) + "\n                                ")])]), _vm._v(" "), _c('li', {
+      staticClass: "list-inline-item mr-3"
+    }, [_c('post-share', {
+      attrs: {
+        "post-id": post.id,
+        "user-id": _vm.currentUserId,
+        "count-original": post.share_count
+      }
+    })], 1), _vm._v(" "), _c('li', {
+      staticClass: "list-inline-item"
+    }, [_c('post-like', {
+      attrs: {
+        "post-id": post.id,
+        "user-id": _vm.currentUserId,
+        "count-original": post.like_count
+      }
+    })], 1)])])])])])
+  })), _vm._v(" "), _c('infinite-loading', {
+    ref: "infiniteLoading",
+    attrs: {
+      "on-infinite": _vm.onInfinite,
+      "distance": _vm.distance,
+      "spinner": "spiral"
+    }
+  })], 1)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('a', {
+    staticClass: "text-muted",
+    attrs: {
+      "href": "#",
+      "id": "dropdownMenuButton",
+      "data-toggle": "dropdown",
+      "aria-haspopup": "true",
+      "aria-expanded": "false"
+    }
+  }, [_c('i', {
+    staticClass: "fa fa-angle-down"
+  })])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-0cfd6504", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

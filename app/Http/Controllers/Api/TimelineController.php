@@ -51,64 +51,21 @@ class TimelineController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function individual($user_id)
     {
-        //
-    }
+        $blocked_user_ids = Block::where('blocker_id', $user_id)
+            ->pluck('blocked_id')
+            ->toArray();
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $shared_post_ids = Share::where('user_id', $user_id)
+            ->pluck('post_id');
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+        $posts = Post::with('user')
+            ->where('user_id', $user_id)
+            ->orWhereIn('id', $shared_post_ids)
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return Response::json($posts);
     }
 }

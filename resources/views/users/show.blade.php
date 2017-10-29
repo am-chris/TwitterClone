@@ -52,7 +52,7 @@
                     @endif
                 </nav>
                 <div class="bg-white">
-
+                    <user-posts :current-user-id="{{ json_encode(Auth::id()) }}" :user-id="{{ json_encode($user->id) }}"></user-posts>
                 </div>
             </div>
         </div>
