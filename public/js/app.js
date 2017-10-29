@@ -44061,6 +44061,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
@@ -44075,11 +44077,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             posts: [],
             distance: 1,
-            currentPage: 1
+            currentPage: 1,
+            loggedIn: $("meta[name=loggedIn]").attr('content')
         };
-    },
-    created: function created() {
-        var self = this;
     },
 
 
@@ -44224,7 +44224,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_c('li', {
       staticClass: "list-inline-item"
-    }, [_c('div', {
+    }, [(_vm.loggedIn) ? _c('div', [_c('div', {
       staticClass: "dropdown"
     }, [_vm._m(0, true), _vm._v(" "), _c('div', {
       staticClass: "dropdown-menu",
@@ -44253,7 +44253,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.deletePost(post.id)
         }
       }
-    }, [_vm._v("Delete Post")])]) : _vm._e()])])])])]), _vm._v(" "), _c('pre', {
+    }, [_vm._v("Delete Post")])]) : _vm._e()])])]) : _vm._e()])])]), _vm._v(" "), _c('pre', {
       staticClass: "mb-1",
       staticStyle: {
         "font-family": "'Roboto', arial",
@@ -44383,6 +44383,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['countOriginal', 'likedOriginal', 'postId', 'userId'],
@@ -44390,7 +44397,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             liked: this.likedOriginal,
-            count: this.countOriginal
+            count: this.countOriginal,
+            loggedIn: $("meta[name=loggedIn]").attr('content')
         };
     },
 
@@ -44438,7 +44446,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [(_vm.liked == true) ? _c('span', [_c('span', {
+  return _c('div', [(_vm.loggedIn) ? _c('span', [(_vm.liked == true) ? _c('span', [_c('span', {
     staticClass: "text-danger text-no-underline",
     on: {
       "click": function($event) {
@@ -44458,8 +44466,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('i', {
     staticClass: "fa fa-heart"
-  })])]), _vm._v("\n    " + _vm._s(this.count) + "\n")])
-},staticRenderFns: []}
+  })])])]) : _c('span', [_vm._m(0)]), _vm._v("\n    " + _vm._s(this.count) + "\n")])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "text-no-underline",
+    staticStyle: {
+      "color": "#BBB"
+    }
+  }, [_c('i', {
+    staticClass: "fa fa-heart"
+  })])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -44530,6 +44547,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['countOriginal', 'postId', 'sharedOriginal', 'userId'],
@@ -44537,7 +44561,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             shared: this.sharedOriginal,
-            count: this.countOriginal
+            count: this.countOriginal,
+            loggedIn: $("meta[name=loggedIn]").attr('content')
         };
     },
 
@@ -44574,7 +44599,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [(_vm.shared == true) ? _c('span', [_c('span', {
+  return _c('div', [(_vm.loggedIn) ? _c('span', [(_vm.shared == true) ? _c('span', [_c('span', {
     staticClass: "text-success text-no-underline",
     on: {
       "click": function($event) {
@@ -44594,8 +44619,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('i', {
     staticClass: "fa fa-retweet"
-  })])]), _vm._v("\n    " + _vm._s(this.count) + "\n")])
-},staticRenderFns: []}
+  })])])]) : _c('span', [_vm._m(0)]), _vm._v("\n    " + _vm._s(this.count) + "\n")])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "text-no-underline",
+    staticStyle: {
+      "color": "#BBB"
+    }
+  }, [_c('i', {
+    staticClass: "fa fa-retweet"
+  })])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -44869,6 +44903,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
@@ -44883,11 +44919,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             posts: [],
             distance: 1,
-            currentPage: 1
+            currentPage: 1,
+            loggedIn: $("meta[name=loggedIn]").attr('content')
         };
-    },
-    created: function created() {
-        var self = this;
     },
 
 
@@ -45026,7 +45060,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_c('li', {
       staticClass: "list-inline-item"
-    }, [_c('div', {
+    }, [(_vm.loggedIn) ? _c('div', [_c('div', {
       staticClass: "dropdown"
     }, [_vm._m(0, true), _vm._v(" "), _c('div', {
       staticClass: "dropdown-menu",
@@ -45055,7 +45089,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.deletePost(post.id)
         }
       }
-    }, [_vm._v("Delete Post")])]) : _vm._e()])])])])]), _vm._v(" "), _c('pre', {
+    }, [_vm._v("Delete Post")])]) : _vm._e()])])]) : _vm._e()])])]), _vm._v(" "), _c('pre', {
       staticClass: "mb-1",
       staticStyle: {
         "font-family": "'Roboto', arial",

@@ -1,12 +1,19 @@
 <template>
     <div>
-        <span v-if="liked == true">
-            <span class="text-danger text-no-underline" @click.prevent="unlike">
-                <i class="fa fa-heart text-danger"></i>
+        <span v-if="loggedIn">
+            <span v-if="liked == true">
+                <span class="text-danger text-no-underline" @click.prevent="unlike">
+                    <i class="fa fa-heart text-danger"></i>
+                </span>
+            </span>
+            <span v-else>
+                <span class="text-muted text-danger-hover text-no-underline" @click.prevent="like">
+                    <i class="fa fa-heart"></i>
+                </span>
             </span>
         </span>
         <span v-else>
-            <span class="text-muted text-danger-hover text-no-underline" @click.prevent="like">
+            <span class="text-no-underline" style="color: #BBB;">
                 <i class="fa fa-heart"></i>
             </span>
         </span>
@@ -22,6 +29,7 @@ export default {
         return {
             liked: this.likedOriginal,
             count: this.countOriginal,
+            loggedIn: $("meta[name=loggedIn]").attr('content')
         }
     },
 

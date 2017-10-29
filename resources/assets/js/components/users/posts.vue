@@ -25,17 +25,19 @@
                                 </ul>
                                 <ul class="list-inline d-inline-block float-right" style="font-size: 19px; font-weight: 400;">
                                     <li class="list-inline-item">
-                                        <div class="dropdown">
-                                            <a class="text-muted" href="#" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="fa fa-angle-down"></i>
-                                            </a>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <span v-if="currentUserId !== post.user_id">
-                                                    <a class="dropdown-item" href="#" @click.prevent="blockUser(post.user_id)">Block @{{ post.user.username }}</a>
-                                                </span>
-                                                <span v-if="currentUserId == post.user_id">
-                                                    <a class="dropdown-item" href="#" @click.prevent="deletePost(post.id)">Delete Post</a>
-                                                </span>
+                                        <div v-if="loggedIn">
+                                            <div class="dropdown">
+                                                <a class="text-muted" href="#" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fa fa-angle-down"></i>
+                                                </a>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                    <span v-if="currentUserId !== post.user_id">
+                                                        <a class="dropdown-item" href="#" @click.prevent="blockUser(post.user_id)">Block @{{ post.user.username }}</a>
+                                                    </span>
+                                                    <span v-if="currentUserId == post.user_id">
+                                                        <a class="dropdown-item" href="#" @click.prevent="deletePost(post.id)">Delete Post</a>
+                                                    </span>
+                                                </div>
                                             </div>
                                         </div>
                                     </li>
@@ -79,11 +81,8 @@ export default {
             posts: [],
             distance: 1,
             currentPage: 1,
+            loggedIn: $("meta[name=loggedIn]").attr('content')
         }
-    },
-
-    created() {
-        var self = this;
     },
 
     methods: {

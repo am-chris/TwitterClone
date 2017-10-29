@@ -1,12 +1,19 @@
 <template>
     <div>
-        <span v-if="shared == true">
-            <span class="text-success text-no-underline" @click.prevent="unshare">
-                <i class="fa fa-retweet"></i>
+        <span v-if="loggedIn">
+            <span v-if="shared == true">
+                <span class="text-success text-no-underline" @click.prevent="unshare">
+                    <i class="fa fa-retweet"></i>
+                </span>
+            </span>
+            <span v-else>
+                <span class="text-muted text-success-hover text-no-underline" @click.prevent="share">
+                    <i class="fa fa-retweet"></i>
+                </span>
             </span>
         </span>
         <span v-else>
-            <span class="text-muted text-success-hover text-no-underline" @click.prevent="share">
+            <span class="text-no-underline" style="color: #BBB;">
                 <i class="fa fa-retweet"></i>
             </span>
         </span>
@@ -22,6 +29,7 @@ export default {
         return {
             shared: this.sharedOriginal,
             count: this.countOriginal,
+            loggedIn: $("meta[name=loggedIn]").attr('content')
         }
     },
 

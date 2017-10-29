@@ -55,21 +55,25 @@
                         </div>
                     </div>
                     <div class="p-3 mb-0" style="background-color: #FAFAFA; border: 1px solid #DDD; border-bottom: 0;">
-                        {{ Form::open(['url' => 'p', 'method' => 'POST']) }}
-                            {{ Form::hidden('post_id', $post->id) }}
-                            <div class="form-group">
-                                {{ Form::textarea('content', null, ['class' => 'form-control autosize', 'placeholder' => 'Reply to this post', 'required' => 'required', 'rows' => 1]) }}
-                            </div>
-                            {{ Form::submit('Post', ['class' => 'btn btn-sm btn-primary']) }}
-                            <ul class="list-inline float-right">
-                                <li class="list-inline-item">
-                                    <i class="fa fa-image text-muted"></i>
-                                </li>
-                                <li class="list-inline-item">
-                                    <i class="fa fa-play text-muted"></i>
-                                </li>
-                            </ul>
-                        {{ Form::close() }}
+                        @if (Auth::check())
+                            {{ Form::open(['url' => 'p', 'method' => 'POST']) }}
+                                {{ Form::hidden('post_id', $post->id) }}
+                                <div class="form-group">
+                                    {{ Form::textarea('content', null, ['class' => 'form-control autosize', 'placeholder' => 'Reply to this post', 'required' => 'required', 'rows' => 1]) }}
+                                </div>
+                                {{ Form::submit('Post', ['class' => 'btn btn-sm btn-primary']) }}
+                                <ul class="list-inline float-right">
+                                    <li class="list-inline-item">
+                                        <i class="fa fa-image text-muted"></i>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <i class="fa fa-play text-muted"></i>
+                                    </li>
+                                </ul>
+                            {{ Form::close() }}
+                        @else
+                            <a href="{{ route('login') }}">Login</a> or <a href="{{ route('register') }}">Create an Account</a> to reply to this post.
+                        @endif
                     </div>
                     <ul class="list-unstyled posts bg-white" style="border: 1px solid #DDD;">
                         @foreach ($comments as $comment)
