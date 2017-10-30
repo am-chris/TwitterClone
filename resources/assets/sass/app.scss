@@ -4,7 +4,6 @@
 
 @import "~bootstrap/scss/functions";
 @import "variables";
-@import "general";
 
 @import "helpers/margins";
 @import "helpers/padding";
@@ -17,3 +16,5 @@
 @import "elements/text";
 @import "elements/timeline_posts";
 @import "elements/navbar";
+
+@import "general";

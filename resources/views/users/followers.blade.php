@@ -1,40 +1,31 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="pv-1">
+<img src="{{ url('storage/' . $user->cover_photo_url) }}" style="width: 100%; max-height: 500px;">
+<div class="py-2">
     <div class="container">
         <div class="row">
             <div class="col-md-3">
-                <img class="img-fluid" src="{{ url('storage/' . $user->cover_photo_url) }}" style="border-top-left-radius: 4px; border-top-right-radius: 4px;">
-                <div class="bg-white p-3 mb-3">
-                    <div class="media">
-                        <a href="{{ url('/' . $user->username) }}">
-                            <img class="d-flex align-self-start rounded-circle mr-3" src="{{ url('storage/' . $user->photo_url) }}" style="max-width: 48px; max-height: 48px;" alt="Profile photo">
-                        </a>
-                        <div class="media-body truncate">
-                            <h6 class="mt-0 mb-1">
-                                <a href="{{ url('/' . $user->username) }}" class="text-dark" title="{{ $user->name }}">
-                                    {{ $user->name }}
-                                </a>
-                            </h6>
-                            <span class="text-muted" style="font-size: 14px;">{{ '@' .$user->username }}</span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <a class="text-bold text-muted text-primary-hover" href="{{ url('/' . $user->username) }}" style="font-size: 13px;">Posts</a><br>
-                            <b>{{ number_shorten($user->posts->count(), 0) }}</b>
-                        </div>
-                        <div class="col-lg-4">
-                            <a class="text-bold text-muted text-primary-hover" href="{{ url('/' . $user->username . '/following') }}" style="font-size: 13px;">Following</a><br>
-                            <b>{{ number_shorten(count($user->follows)) }}</b>
-                        </div>
-                        <div class="col-lg-4">
-                            <a class="text-bold text-muted text-primary-hover" href="{{ url('/' . $user->username . '/followers') }}" style="font-size: 13px;">Followers</a><br>
-                            <b>{{ number_shorten(count($user->followers)) }}</b>
-                        </div>
-                    </div>
+                <div class="mb-3" style="position: relative; margin-top: -100px;">
+                    <a href="{{ url('/' . $user->username) }}">
+                        <img class="d-flex align-self-start rounded-circle mr-3 mx-auto" src="{{ url('storage/' . $user->photo_url) }}" style="max-width: 200px; max-height: 200px; border: 4px solid #FFF;" rel="tooltip" data-original-title="{{ $user->username }}" alt="Profile photo">
+                    </a>
                 </div>
+                <h5>
+                    <a href="{{ url('/' . $user->username) }}" style="color: #555;">{{ $user->name }}</a>
+                    @if ($user->verified)
+                        <i class="fa fa-check-circle text-primary" rel="tooltip" data-original-title="Verified account"></i>
+                    @endif
+                </h5>
+                <a href="{{ url('/' . $user->username) }}" class="text-muted">{{ '@' . $user->username }}</a>
+                <p>{{ $user->bio }}</p>
+                <ul class="list-unstyled">
+                    @if (!is_null($user->created_at))
+                        <li>
+                            <i class="fa fa-calendar-o"></i> Joined {{ Carbon::createFromFormat('Y-m-d H:i:s', $user->created_at)->format('M j Y') }}
+                        </li>
+                    @endif
+                </ul>
             </div>
             <div class="col-md-9">
                 <nav class="nav nav-pills nav-justified bg-white p-2 mb-3 rounded">

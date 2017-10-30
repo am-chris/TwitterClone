@@ -34,6 +34,10 @@
     <script src="{{ asset('js/clipboard.min.js') }}"></script>
 
     <script>
+        $(function () {
+            $('[rel="tooltip"]').tooltip();
+        });
+
         // Initialize javascript/jquery plugins
         new Clipboard('.clipboard');
 

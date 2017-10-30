@@ -1,23 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto:400,700);.btn:hover {
-  cursor: pointer;
-}
-
-.required {
-  color: red;
-}
-
-.truncate {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.btn.bg-danger-on-hover:hover {
-  background-color: #dc3545;
-  border-color: #ca2333;
-}
-
-.pv-1 {
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,700);.pv-1 {
   padding: 10px 0;
 }
 
@@ -9284,5 +9265,28 @@ body {
 
 .navbar.navbar-light .navbar-nav > li.nav-item.active > a.nav-link {
   color: #238CFC;
+}
+
+body {
+  padding-top: 58px;
+}
+
+.btn:hover {
+  cursor: pointer;
+}
+
+.required {
+  color: red;
+}
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.btn.bg-danger-on-hover:hover {
+  background-color: #dc3545;
+  border-color: #ca2333;
 }
 

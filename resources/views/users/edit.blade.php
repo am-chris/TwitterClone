@@ -1,10 +1,46 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="pv-1">
+<img src="{{ url('storage/' . $user->cover_photo_url) }}" style="width: 100%; max-height: 500px;">
+<div class="py-2">
     <div class="container">
         <div class="row">
             <div class="col-md-3">
+                <div class="mb-3" style="position: relative; margin-top: -100px;">
+                    <a href="{{ url('/' . $user->username) }}">
+                        <img class="d-flex align-self-start rounded-circle mr-3 mx-auto" src="{{ url('storage/' . $user->photo_url) }}" style="max-width: 200px; max-height: 200px; border: 4px solid #FFF;" rel="tooltip" data-original-title="{{ $user->username }}" alt="Profile photo">
+                    </a>
+                </div>
+                <h5>
+                    <a href="{{ url('/' . $user->username) }}" style="color: #555;">{{ $user->name }}</a>
+                    @if ($user->verified)
+                        <i class="fa fa-check-circle text-primary" rel="tooltip" data-original-title="Verified account"></i>
+                    @endif
+                </h5>
+                <a href="{{ url('/' . $user->username) }}" class="text-muted">{{ '@' . $user->username }}</a>
+                <p>{{ $user->bio }}</p>
+                <ul class="list-unstyled">
+                    @if (!is_null($user->created_at))
+                        <li>
+                            <i class="fa fa-calendar-o"></i> Joined {{ Carbon::createFromFormat('Y-m-d H:i:s', $user->created_at)->format('M j Y') }}
+                        </li>
+                    @endif
+                </ul>
+
+                {{ Form::open(['url' => $user->username, 'method' => 'PUT']) }}
+                    <div class="form-group">
+                        {{ Form::label('name', 'Name') }}
+                        {{ Form::text('name', $user->name, ['class' => 'form-control mb-1', 'required' => 'required']) }}
+                    </div>
+                    <div class="form-group">
+                        {{ Form::label('username', 'Username') }}
+                        {{ Form::text('username', '@' . $user->username, ['class' => 'form-control', 'required' => 'required']) }}
+                    </div>
+                    <div class="form-group">
+                        {{ Form::submit('Save', ['class' => 'btn btn-sm btn-success']) }}
+                    </div>
+                {{ Form::close() }}
+
                 {{ Form::open(['url' => 'u/' . $user->id . '/cover_photo', 'method' => 'POST', 'files' => true]) }}
                     <div class="form-group">
                         {{ Form::label('file', 'Cover Photo (1500x500)') }}
@@ -30,36 +66,6 @@
                         {{ Form::submit('Remove', ['class' => 'btn btn-sm btn-danger']) }}
                     </div>
                 {{ Form::close() }}
-
-                <img src="{{ url('storage/' . $user->cover_photo_url) }}" class="img-fluid" style="border-top-left-radius: 4px; border-top-right-radius: 4px;">
-                <div class="bg-white p-3 mb-3">
-                    {{ Form::open(['url' => $user->username, 'method' => 'PUT']) }}
-                        <div class="media">
-                            <a href="{{ url('/' . $user->username) }}">
-                                <img class="d-flex align-self-start rounded-circle mr-3" src="{{ url('storage/' . $user->photo_url) }}" style="max-width: 48px; max-height: 48px;" alt="Profile photo">
-                            </a>
-                            <div class="media-body">
-                                {{ Form::text('name', $user->name, ['class' => 'form-control mb-1', 'required' => 'required']) }}
-                                {{ Form::text('username', '@' . $user->username, ['class' => 'form-control form-control-sm mb-1', 'required' => 'required']) }}
-                                {{ Form::submit('Save', ['class' => 'btn btn-sm btn-success']) }}
-                            </div>
-                        </div>
-                    {{ Form::close() }}
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <a class="text-bold text-muted text-primary-hover" href="{{ url('/' . $user->username) }}" style="font-size: 13px;">Posts</a><br>
-                            <b>{{ number_shorten($user->posts->count(), 0) }}</b>
-                        </div>
-                        <div class="col-lg-4">
-                            <a class="text-bold text-muted text-primary-hover" href="{{ url('/' . $user->username . '/following') }}" style="font-size: 13px;">Following</a><br>
-                            <b>{{ number_shorten(count($user->follows)) }}</b>
-                        </div>
-                        <div class="col-lg-4">
-                            <a class="text-bold text-muted text-primary-hover" href="{{ url('/' . $user->username . '/followers') }}" style="font-size: 13px;">Followers</a><br>
-                            <b>{{ number_shorten(count($user->followers)) }}</b>
-                        </div>
-                    </div>
-                </div>
             </div>
             <div class="col-md-9">
                 <nav class="nav nav-pills nav-justified bg-white p-2 mb-3 rounded">
@@ -69,7 +75,7 @@
                     <a class="nav-link ml-auto btn btn-outline-danger" href="{{ url('/' . $user->username) }}">Cancel</a>
                 </nav>
                 <div class="bg-white">
-
+                    <user-posts :current-user-id="{{ json_encode(Auth::id()) }}" :user-id="{{ json_encode($user->id) }}"></user-posts>
                 </div>
             </div>
         </div>
