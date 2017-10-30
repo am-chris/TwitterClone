@@ -44189,7 +44189,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "max-height": "48px"
       },
       attrs: {
-        "src": 'storage/' + post.user.photo_url,
+        "src": '/storage/' + post.user.photo_url,
         "alt": "User photo"
       }
     })]), _vm._v(" "), _c('div', {
@@ -45012,7 +45012,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "max-height": "48px"
       },
       attrs: {
-        "src": 'storage/' + post.user.photo_url,
+        "src": '/storage/' + post.user.photo_url,
         "alt": "User photo"
       }
     })]), _vm._v(" "), _c('div', {
