@@ -64,8 +64,8 @@
                                         <a class="text-dark" href="{{ url('/' . $follow->username) }}" title="{{ $follow->name }}">
                                             {{ $follow->name }}
                                         </a>
-                                        @if ($follow->verified > 0)
-                                            <i class="fa fa-check-circle text-primary"></i>
+                                        @if ($follow->verified)
+                                            <i class="fa fa-check-circle text-primary" rel="tooltip" data-original-title="Verified account"></i>
                                         @endif
                                     </h6>
                                 </div>

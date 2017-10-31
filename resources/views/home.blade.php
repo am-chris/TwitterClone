@@ -16,6 +16,9 @@
                                 <a href="{{ url('/' . Auth::user()->username) }}" class="text-dark">
                                     {{ Auth::user()->name }}
                                 </a>
+                                @if (Auth::user()->verified)
+                                    <i class="fa fa-check-circle text-primary" rel="tooltip" data-original-title="Verified account"></i>
+                                @endif
                             </h6>
                             <span class="text-muted" style="font-size: 14px;">{{ '@' . Auth::user()->username }}</span>
                         </div>

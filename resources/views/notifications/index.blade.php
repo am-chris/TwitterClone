@@ -28,8 +28,8 @@
                                                     <a class="text-primary-hover" href="{{ url('/' . $post->user->username) }}" style="color: #555;">
                                                         {{ $post->user->name }}
                                                     </a>
-                                                    @if ($post->user->verified == 1)
-                                                        <i class="fa fa-check-circle text-primary"></i>
+                                                    @if ($post->user->verified)
+                                                        <i class="fa fa-check-circle text-primary" rel="tooltip" data-original-title="Verified account"></i>
                                                     @endif
                                                     <ul class="list-inline text-muted d-inline-block" style="font-size: 13px; font-weight: 400;">
                                                         <li class="list-inline-item">

@@ -12,7 +12,7 @@
                             {{ $follow_suggestion->name }}
                         </a>
                         @if ($follow_suggestion->verified > 0)
-                            <i class="fa fa-check-circle text-primary"></i>
+                            <i class="fa fa-check-circle text-primary" rel="tooltip" data-original-title="Verified account"></i>
                         @endif
                         <span class="text-muted" style="font-size: 13px; font-weight: 400;" title="{{ $follow_suggestion->username }}">{{ '@' . $follow_suggestion->username }}</span>
                     </h6>

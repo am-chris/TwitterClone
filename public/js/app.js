@@ -44122,6 +44122,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     if (self.posts.length / 20 === 10) {
                         self.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
                     }
+                    Vue.nextTick(function () {
+                        $('[rel="tooltip"]').tooltip();
+                    });
                 } else {
                     self.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
                 }
@@ -44207,7 +44210,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "href": '/' + post.user.username
       }
     }, [_vm._v("\n                                " + _vm._s(post.user.name) + "\n                            ")]), _vm._v(" "), (post.user.verified > 0) ? _c('span', [_c('i', {
-      staticClass: "fa fa-check-circle text-primary"
+      staticClass: "fa fa-check-circle text-primary",
+      attrs: {
+        "rel": "tooltip",
+        "data-original-title": "Verified account"
+      }
     })]) : _vm._e(), _vm._v(" "), _c('ul', {
       staticClass: "list-inline text-muted d-inline-block",
       staticStyle: {
@@ -44945,6 +44952,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     if (self.posts.length / 20 === 10) {
                         self.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
                     }
+                    Vue.nextTick(function () {
+                        $('[rel="tooltip"]').tooltip();
+                    });
                 } else {
                     self.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
                 }
@@ -45030,7 +45040,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "href": '/' + post.user.username
       }
     }, [_vm._v("\n                                " + _vm._s(post.user.name) + "\n                            ")]), _vm._v(" "), (post.user.verified > 0) ? _c('span', [_c('i', {
-      staticClass: "fa fa-check-circle text-primary"
+      staticClass: "fa fa-check-circle text-primary",
+      attrs: {
+        "rel": "tooltip",
+        "data-original-title": "Verified account"
+      }
     })]) : _vm._e(), _vm._v(" "), _c('ul', {
       staticClass: "list-inline text-muted d-inline-block",
       staticStyle: {

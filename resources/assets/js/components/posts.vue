@@ -16,7 +16,7 @@
                                     {{ post.user.name }}
                                 </a>
                                 <span v-if="post.user.verified > 0">
-                                    <i class="fa fa-check-circle text-primary"></i>
+                                    <i class="fa fa-check-circle text-primary" rel="tooltip" data-original-title="Verified account"></i>
                                 </span>
                                 <ul class="list-inline text-muted d-inline-block" style="font-size: 13px; font-weight: 400;">
                                     <li class="list-inline-item">
@@ -129,6 +129,9 @@ export default {
                     if (self.posts.length / 20 === 10) {
                         self.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
                     }
+                    Vue.nextTick(function () {
+                        $('[rel="tooltip"]').tooltip();
+                    });
                 } else {
                     self.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
                 }
