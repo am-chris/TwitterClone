@@ -44462,7 +44462,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_c('i', {
-    staticClass: "fa fa-heart text-danger"
+    staticClass: "fa fa-heart text-danger",
+    attrs: {
+      "rel": "tooltip",
+      "data-original-title": "Unlike"
+    }
   })])]) : _c('span', [_c('span', {
     staticClass: "text-muted text-danger-hover text-no-underline",
     on: {
@@ -44472,7 +44476,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_c('i', {
-    staticClass: "fa fa-heart"
+    staticClass: "fa fa-heart",
+    attrs: {
+      "rel": "tooltip",
+      "data-original-title": "Like"
+    }
   })])])]) : _c('span', [_vm._m(0)]), _vm._v("\n    " + _vm._s(this.count) + "\n")])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('span', {
@@ -44481,7 +44489,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "color": "#BBB"
     }
   }, [_c('i', {
-    staticClass: "fa fa-heart"
+    staticClass: "fa fa-heart",
+    attrs: {
+      "rel": "tooltip",
+      "data-original-title": "Login to Like"
+    }
   })])
 }]}
 module.exports.render._withStripped = true
@@ -44615,7 +44627,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_c('i', {
-    staticClass: "fa fa-retweet"
+    staticClass: "fa fa-retweet",
+    attrs: {
+      "rel": "tooltip",
+      "data-original-title": "Unshare"
+    }
   })])]) : _c('span', [_c('span', {
     staticClass: "text-muted text-success-hover text-no-underline",
     on: {
@@ -44625,7 +44641,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_c('i', {
-    staticClass: "fa fa-retweet"
+    staticClass: "fa fa-retweet",
+    attrs: {
+      "rel": "tooltip",
+      "data-original-title": "Share"
+    }
   })])])]) : _c('span', [_vm._m(0)]), _vm._v("\n    " + _vm._s(this.count) + "\n")])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('span', {
@@ -44634,7 +44654,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "color": "#BBB"
     }
   }, [_c('i', {
-    staticClass: "fa fa-retweet"
+    staticClass: "fa fa-retweet",
+    attrs: {
+      "rel": "tooltip",
+      "data-original-title": "Login to Share"
+    }
   })])
 }]}
 module.exports.render._withStripped = true
