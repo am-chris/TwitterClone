@@ -100,6 +100,10 @@ class UserController extends Controller
             return redirect('/');
         }
 
+        $request->validate([
+            'bio' => 'nullable|max:100',
+        ]);
+
         // Strip symbols from new username
         $desired_username = str_replace(['~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '|', '{', '}', ',', '.', '?', ' '], '', $request->username);
 
@@ -114,6 +118,7 @@ class UserController extends Controller
 
         $user->name = $request->name;
         $user->username = $desired_username;
+        $user->bio = preg_replace('/\r|\n/', '', $request->bio);
         $user->save();
 
         Session::flash('success', 'Your profile was updated.');

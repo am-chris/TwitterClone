@@ -18,7 +18,7 @@
                     @endif
                 </h5>
                 <a href="{{ url('/' . $user->username) }}" class="text-muted">{{ '@' . $user->username }}</a>
-                <p>{{ $user->bio }}</p>
+                <p style="overflow-wrap: break-word; word-wrap: break-word;">{{ $user->bio }}</p>
                 <ul class="list-unstyled">
                     @if (!is_null($user->created_at))
                         <li>

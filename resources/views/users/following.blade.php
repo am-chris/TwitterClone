@@ -72,7 +72,7 @@
                                 <span class="text-muted" style="font-size: 13px; font-weight: 400;">
                                     {{ '@' . $follow->username }}
                                 </span>
-                                <p class="mb-0" style="height: 4.2em;">
+                                <p class="mb-0" style="height: 4.4em; overflow-wrap: break-word; word-wrap: break-word; overflow: hidden;">
                                     {{ $follow->bio }}
                                 </p>
                             </div>

@@ -32,6 +32,7 @@ class ProfileTest extends TestCase
 
         $this->actingAs($user1)
             ->json('PUT', $user1->username, [
+                'name' => $user1->name,
                 'username' => 'JaneDoe',
             ]);
 
