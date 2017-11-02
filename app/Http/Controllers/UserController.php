@@ -116,6 +116,12 @@ class UserController extends Controller
             return redirect()->back();
         }
 
+        // If the user changes their username, remove "Verified" status from their account
+        // to prevent verified users from pretending to be other people
+        if ($desired_username !== $user->username && $user->verified == 1) {
+            $user->verified = 0;
+        }
+
         $user->name = $request->name;
         $user->username = $desired_username;
         $user->bio = preg_replace('/\r|\n/', '', $request->bio);

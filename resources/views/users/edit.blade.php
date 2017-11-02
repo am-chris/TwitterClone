@@ -19,7 +19,12 @@
                     </div>
                     <div class="form-group">
                         {{ Form::label('username', 'Username') }}
-                        {{ Form::text('username', '@' . $user->username, ['class' => 'form-control', 'maxlength' => 18, 'required' => 'required']) }}
+                        {{ Form::text('username', '@' . $user->username, ['class' => 'form-control mb-2', 'maxlength' => 18, 'required' => 'required']) }}
+                        @if ($user->verified)
+                            <div class="alert alert-danger">
+                                <i class="fa fa-exclamation-circle text-danger"></i> If you change your username, your account will lose it's Verification status.
+                            </div>
+                        @endif
                     </div>
                     <div class="form-group mb-4">
                         {{ Form::label('bio', 'Bio') }}
