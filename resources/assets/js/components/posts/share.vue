@@ -59,6 +59,21 @@ export default {
         },
 
         unshare() {
+            var self = this;
+
+            axios.post('/p/' + this.postId + '/unshare', {
+                post_id: this.postId,
+                user_id: this.userId,
+            })
+            .then(function (response) {
+
+            })
+            .catch(function (error) {
+                console.log(error.response);
+            });
+
+            if (isNaN(this.count)) this.count = 0;
+
             this.count = this.count - 1;
             this.shared = false;
         }
