@@ -1,9 +1,8 @@
 <?php
 
-use Illuminate\Database\Seeder;
-
 use Carbon\Carbon;
 use App\Models\Post;
+use Illuminate\Database\Seeder;
 
 class PostsTableSeeder extends Seeder
 {
@@ -15,14 +14,16 @@ class PostsTableSeeder extends Seeder
     public function run()
     {
         $faker = Faker\Factory::create();
-        $limit = 400;
 
-        for ($i = 0; $i < $limit; $i++) {
-            DB::table('posts')->insert([
-                'user_id' => rand(1, 20),
-                'content' => $faker->paragraph,
-                'created_at' => Carbon::now()->subDays(rand(1, 400)),
-            ]);
+        foreach (range(1, 5000) as $index) {
+            $timestamp = Carbon::now();
+            $posts[] = [
+                'user_id'      => rand(1, 50),
+                'content'      => $faker->paragraph,
+                'created_at'   => $timestamp,
+            ];
         }
+
+        Post::insert($posts);
     }
 }
