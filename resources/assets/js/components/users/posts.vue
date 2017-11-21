@@ -47,8 +47,9 @@
                             <ul class="list-inline text-dark">
                                 <li class="list-inline-item mr-3">
                                     <a class="text-muted text-primary-hover text-no-underline" :href="'/p/' + post.id">
-                                        <i class="fa fa-comment"></i> {{ post.comment_count }}
+                                        <i class="fa fa-comment"></i>
                                     </a>
+                                    {{ post.comment_count }}
                                 </li>
                                 <li class="list-inline-item mr-3">
                                     <post-share :post-id="post.id" :user-id="currentUserId" :count-original="post.share_count"></post-share>

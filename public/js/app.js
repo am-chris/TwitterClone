@@ -44069,6 +44069,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -44281,7 +44282,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_c('i', {
       staticClass: "fa fa-comment"
-    }), _vm._v(" " + _vm._s(post.comment_count) + "\n                                ")])]), _vm._v(" "), _c('li', {
+    })]), _vm._v("\n                                " + _vm._s(post.comment_count) + "\n                            ")]), _vm._v(" "), _c('li', {
       staticClass: "list-inline-item mr-3"
     }, [_c('post-share', {
       attrs: {
@@ -44934,6 +44935,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -45146,7 +45148,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_c('i', {
       staticClass: "fa fa-comment"
-    }), _vm._v(" " + _vm._s(post.comment_count) + "\n                                ")])]), _vm._v(" "), _c('li', {
+    })]), _vm._v("\n                                " + _vm._s(post.comment_count) + "\n                            ")]), _vm._v(" "), _c('li', {
       staticClass: "list-inline-item mr-3"
     }, [_c('post-share', {
       attrs: {
