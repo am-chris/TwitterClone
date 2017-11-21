@@ -73,10 +73,19 @@
             </div>
             <div class="col-md-9">
                 <nav class="nav nav-pills nav-justified bg-white p-2 mb-3 rounded">
-                    <a class="nav-link active" href="#">Profile</a>
-                    <a class="nav-link" href="{{ url('/' . $user->username . '/following') }}">Following</a>
-                    <a class="nav-link" href="{{ url('/' . $user->username . '/followers') }}">Followers</a>
-                    <a class="nav-link ml-auto btn btn-outline-danger" href="{{ url('/' . $user->username) }}">Return to Profile</a>
+                    <a class="nav-link text-center text-dark" href="{{ url('/' . $user->username) }}">
+                        <div class="profile-nav-link">Posts</div>
+                        <span class="text-bold">{{ number_shorten(count($user->posts), 0) }}</span>
+                    </a>
+                    <a class="nav-link text-center text-dark" href="{{ url('/' . $user->username . '/following') }}">
+                        <div class="profile-nav-link">Following</div>
+                        <span class="text-bold">{{ number_shorten(count($user->follows), 0) }}</span>
+                    </a>
+                    <a class="nav-link text-center text-dark" href="{{ url('/' . $user->username . '/followers') }}">
+                        <div class="profile-nav-link">Followers</div>
+                        <span class="text-bold">{{ number_shorten(count($user->followers), 0) }}</span>
+                    </a>
+                    <a class="nav-link ml-auto btn btn-outline-danger" href="{{ url('/' . $user->username) }}" style="max-height: 40px;">Return to Profile</a>
                 </nav>
                 <div class="bg-white">
                     <user-posts :current-user-id="{{ json_encode(Auth::id()) }}" :user-id="{{ json_encode($user->id) }}"></user-posts>

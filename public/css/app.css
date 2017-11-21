@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto:400,700);.pv-1 {
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,500,700);.pv-1 {
   padding: 10px 0;
 }
 
@@ -9265,6 +9265,12 @@ body {
 
 .navbar.navbar-light .navbar-nav > li.nav-item.active > a.nav-link {
   color: #238CFC;
+}
+
+.profile-nav-link {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
 }
 
 body {
