@@ -19,4 +19,9 @@ mix.js('resources/assets/js/app.js', 'public/js')
     .copy('node_modules/autosize/dist/autosize.min.js', 'public/js')
     .copy('node_modules/clipboard/dist/clipboard.min.js', 'public/js')
     .copy('node_modules/bootstrap-maxlength/bootstrap-maxlength.min.js', 'public/js')
-    .sass('resources/assets/sass/app.scss', 'public/css');
+    .sass('resources/assets/sass/app.scss', 'public/css')
+    .version()
+    .browserSync({
+        proxy: 'http://twitterclone.test',
+        notify: false,
+    });

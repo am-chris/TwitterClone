@@ -15,12 +15,14 @@
         "cross-env": "^5.0.1",
         "jquery": "^3.1.1",
         "laravel-mix": "^1.4.0",
-        "lodash": "^4.17.4",
+        "lodash": "^4.17.10",
         "vue": "^2.4.2"
     },
     "dependencies": {
         "autosize": "^4.0.0",
         "bootstrap-maxlength": "^1.6.0",
+        "browser-sync": "^2.24.5",
+        "browser-sync-webpack-plugin": "^2.2.2",
         "clipboard": "^1.7.1",
         "vue-autosize": "^1.0.2",
         "vue-infinite-loading": "^2.1.3",

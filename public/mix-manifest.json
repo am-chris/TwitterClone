@@ -1,7 +1,9 @@
 {
-    "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css",
-    "/js/autosize.min.js": "/js/autosize.min.js",
-    "/js/clipboard.min.js": "/js/clipboard.min.js",
-    "/js/bootstrap-maxlength.min.js": "/js/bootstrap-maxlength.min.js"
+    "/js/app.js": "/js/app.js?id=a6c1ac6e3ebdc53410af",
+    "/css/app.css": "/css/app.css?id=9f12f9ea4ff5bea30f3f",
+    "/storage/users/cover_photos/default_cover_photo.png": "/storage/users/cover_photos/default_cover_photo.png?id=e3fb0ae682c6470126db",
+    "/storage/users/photos/mysteryman.png": "/storage/users/photos/mysteryman.png?id=bba74e2059245cf04b37",
+    "/js/autosize.min.js": "/js/autosize.min.js?id=ad0656589d34c18cd552",
+    "/js/clipboard.min.js": "/js/clipboard.min.js?id=3e5e0fa949e0e7c5ed5f",
+    "/js/bootstrap-maxlength.min.js": "/js/bootstrap-maxlength.min.js?id=967fa2c6981a9feabcc5"
 }
