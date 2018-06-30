@@ -29,11 +29,11 @@ class Post extends Model
             ->where('user_id', $user_id)
             ->first();
 
-        if (count($user_liked_post)) {
-            return 1;
-        } else {
+        if (is_null($user_liked_post)) {
             return 0;
         }
+        
+        return 1;
     }
 
     public function sharedByUser($user_id)
@@ -42,11 +42,11 @@ class Post extends Model
             ->where('user_id', $user_id)
             ->first();
 
-        if (count($user_shared_post)) {
-            return 1;
-        } else {
+        if (is_null($user_shared_post)) {
             return 0;
-        }
+        }    
+
+        return 1;
     }
 
     public function post()

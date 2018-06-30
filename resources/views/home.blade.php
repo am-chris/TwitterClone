@@ -30,11 +30,11 @@
                         </div>
                         <div class="col-lg-4">
                             <a class="text-bold text-muted text-primary-hover" href="{{ url('/' . Auth::user()->username . '/following') }}" style="font-size: 13px;">Following</a><br>
-                            <b>{{ number_shorten(count(Auth::user()->follows)) }}</b>
+                            <b>{{ number_shorten(Auth::user()->follows->count()) }}</b>
                         </div>
                         <div class="col-lg-4">
                             <a class="text-bold text-muted text-primary-hover" href="{{ url('/' . Auth::user()->username . '/followers') }}" style="font-size: 13px;">Followers</a><br>
-                            <b>{{ number_shorten(count(Auth::user()->followers)) }}</b>
+                            <b>{{ number_shorten(Auth::user()->followers->count()) }}</b>
                         </div>
                     </div>
                 </div>
@@ -43,7 +43,7 @@
 
             </div>
             <div class="col-md-6">
-                @if (count(Auth::user()->follows) <= 3)
+                @if (Auth::user()->follows->count() <= 3)
                     <div class="p-3 mb-0 bg-warning">
                         To get the full {{ config('app.name') }} experience, follow some people.
                     </div>

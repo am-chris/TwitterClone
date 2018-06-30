@@ -46,7 +46,7 @@ class PostController extends Controller
             ->first();
 
         // If last post and this post are within
-        if (count($last_post)) {
+        if (!is_null($last_post)) {
             $now = Carbon::now();
             $length = $last_post->created_at->diffInSeconds($now);
 

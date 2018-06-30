@@ -35,7 +35,7 @@ class BlockController extends Controller
             ->where('blocked_id', $request->user_id)
             ->first();
 
-        if (count($blocked_user) > 0) {
+        if (!is_null($blocked_user)) {
             if ($request->ajax()) {
                 return response(['status' => 'The user is already blocked.']);
             } else {
@@ -49,7 +49,7 @@ class BlockController extends Controller
             ->where('follower_id', $request->current_user_id)
             ->first();
 
-        if (count($follow)) {
+        if (!is_null($follow)) {
             $follow->delete();
         }
 
@@ -77,7 +77,7 @@ class BlockController extends Controller
             ->where('blocked_id', $request->user_id)
             ->first();
 
-        if (count($blocked_user) == 0) {
+        if (is_null($blocked_user)) {
             if ($request->ajax()) {
                 return response(['status' => 'The user isn\'t blocked.']);
             } else {
