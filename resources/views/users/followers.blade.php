@@ -46,7 +46,13 @@
                     @else
                         <span class="ml-auto">
                             @if (Auth::check())
-                                <user-follow :user-id="{{ $user->id }}" :current-user-id="{{ Auth::id() }}" :original-following="{{ json_encode(Auth::user()->followingUser($user->id)) }}"></user-follow>
+                                <user-follow 
+                                    :o-following="{{ json_encode(Auth::user()->followingUser($user->id)) }}" 
+                                    :o-requested="{{ json_encode(Auth::user()->followRequested($user->id)) }}" 
+                                    :private="{{ $user->private }}" 
+                                    :user-id="{{ $user->id }}" 
+                                    :current-user-id="{{ Auth::id() }}"
+                                ></user-follow>
                             @endif
                         </span>
                     @endif
@@ -63,8 +69,14 @@
                                         <img class="d-flex align-self-start mr-3 rounded-circle" src="{{ url('storage/' . $follower->photo_url) }}" style="max-width: 48px; max-height: 48px;" alt="Generic placeholder image">
                                     </a>
                                     <div class="media-body" style="text-overflow: clip;">
-                                        @if (Auth::id() !== $follower->id && Auth::check())
-                                            <user-follow :user-id="{{ $follower->id }}" :current-user-id="{{ Auth::id() }}" :original-following="{{ json_encode(Auth::user()->followingUser($follower->id)) }}"></user-follow>
+                                        @if (Auth::id() !== $follower->id && Auth::check())                                        
+                                            <user-follow 
+                                                :o-following="{{ json_encode(Auth::user()->followingUser($follower->id)) }}" 
+                                                :o-requested="{{ json_encode(Auth::user()->followRequested($follower->id)) }}" 
+                                                :private="{{ $follower->private }}" 
+                                                :user-id="{{ $follower->id }}" 
+                                                :current-user-id="{{ Auth::id() }}"
+                                            ></user-follow>
                                         @endif
                                     </div>
                                 </div>
@@ -73,6 +85,9 @@
                                         <a class="text-dark" href="{{ url('/' . $follower->username) }}" title="{{ $follower->name }}">
                                             {{ $follower->name }}
                                         </a>
+                                        @if ($follower->private == 1)
+                                            <i class="fa fa-lock text-dark" rel="tooltip" data-original-title="Private"></i>
+                                        @endif
                                         @if ($follower->verified)
                                             <i class="fa fa-check-circle text-primary" rel="tooltip" data-original-title="Verified account"></i>
                                         @endif

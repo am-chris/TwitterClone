@@ -46,7 +46,13 @@
                     @else
                         <span class="ml-auto">
                             @if (Auth::check())
-                                <user-follow :user-id="{{ $user->id }}" :current-user-id="{{ Auth::id() }}" :original-following="{{ json_encode(Auth::user()->followingUser($user->id)) }}"></user-follow>
+                                <user-follow 
+                                    :o-following="{{ json_encode(Auth::user()->followingUser($user->id)) }}" 
+                                    :o-requested="{{ json_encode(Auth::user()->followRequested($user->id)) }}" 
+                                    :private="{{ $user->private }}" 
+                                    :user-id="{{ $user->id }}" 
+                                    :current-user-id="{{ Auth::id() }}"
+                                ></user-follow>
                             @endif
                         </span>
                     @endif
@@ -64,7 +70,13 @@
                                     </a>
                                     <div class="media-body" style="text-overflow: clip;">
                                         @if (Auth::id() !== $follow->id && Auth::check())
-                                            <user-follow :user-id="{{ $follow->id }}" :current-user-id="{{ Auth::id() }}" :original-following="{{ json_encode(Auth::user()->followingUser($follow->id)) }}"></user-follow>
+                                            <user-follow 
+                                                :o-following="{{ json_encode(Auth::user()->followingUser($follow->id)) }}" 
+                                                :o-requested="{{ json_encode(Auth::user()->followRequested($follow->id)) }}" 
+                                                :private="{{ $follow->private }}" 
+                                                :user-id="{{ $follow->id }}" 
+                                                :current-user-id="{{ Auth::id() }}"
+                                            ></user-follow>
                                         @endif
                                     </div>
                                 </div>
@@ -73,6 +85,9 @@
                                         <a class="text-dark" href="{{ url('/' . $follow->username) }}" title="{{ $follow->name }}">
                                             {{ $follow->name }}
                                         </a>
+                                        @if ($follow->private == 1)
+                                            <i class="fa fa-lock text-dark" rel="tooltip" data-original-title="Private"></i>
+                                        @endif
                                         @if ($follow->verified)
                                             <i class="fa fa-check-circle text-primary" rel="tooltip" data-original-title="Verified account"></i>
                                         @endif

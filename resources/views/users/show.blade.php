@@ -49,13 +49,19 @@
                     @else
                         <span class="ml-auto">
                             @if (Auth::check())
-                                <user-follow :o-following="{{ json_encode(Auth::user()->followingUser($user->id)) }}" :user-id="{{ $user->id }}" :o-requested="{{ json_encode(Auth::user()->followRequested($user->id)) }}" :private="{{ $user->private }}" :current-user-id="{{ Auth::id() }}"></user-follow>
+                                <user-follow 
+                                    :o-following="{{ json_encode(Auth::user()->followingUser($user->id)) }}" 
+                                    :o-requested="{{ json_encode(Auth::user()->followRequested($user->id)) }}" 
+                                    :private="{{ $user->private }}" 
+                                    :user-id="{{ $user->id }}" 
+                                    :current-user-id="{{ Auth::id() }}"
+                                ></user-follow>
                             @endif
                         </span>
                     @endif
                 </nav>
                 @if (Auth::check())
-                    @if ($user->private == 0 || $user->private == 1 && Auth::user()->followingUser($user->id) != 0 || Auth::id() == $user->id)
+                @if ($user->private == 0 || $user->private == 1 && Auth::user()->followingUser($user->id) != 0 || Auth::id() == $user->id)
                         <div class="bg-white">
                             <user-posts :current-user-id="{{ json_encode(Auth::id()) }}" :user-id="{{ json_encode($user->id) }}"></user-posts>
                         </div>
