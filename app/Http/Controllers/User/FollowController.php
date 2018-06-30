@@ -5,6 +5,8 @@ namespace App\Http\Controllers\User;
 use Auth;
 use Session;
 use App\Models\Follow;
+use App\Models\FollowRequest;
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -31,16 +33,32 @@ class FollowController extends Controller
             }
         }
 
-        $follow = new Follow;
-        $follow->followed_id = $request->user_id;
-        $follow->follower_id = $request->current_user_id;
-        $follow->save();
+        $user = User::findOrFail($user_id);
 
-        if ($request->ajax()) {
-            return response(['status' => 'Followed the user.']);
+        if ($user->private == 1) {
+            $follow_request = new FollowRequest;
+            $follow_request->followed_id = $request->user_id;
+            $follow_request->follower_id = $request->current_user_id;
+            $follow_request->save();
+
+            if ($request->ajax()) {
+                return response(['status' => 'Sent follow request.']);
+            } else {
+                Session::flash('success', 'Sent follow request.');
+                return redirect()->back();
+            }
         } else {
-            Session::flash('success', 'Followed the user.');
-            return redirect()->back();
+            $follow = new Follow;
+            $follow->followed_id = $request->user_id;
+            $follow->follower_id = $request->current_user_id;
+            $follow->save();
+
+            if ($request->ajax()) {
+                return response(['status' => 'Followed the user.']);
+            } else {
+                Session::flash('success', 'Followed the user.');
+                return redirect()->back();
+            }
         }
     }
 
@@ -62,6 +80,43 @@ class FollowController extends Controller
             return response(['status' => 'Unfollowed the user.']);
         } else {
             Session::flash('success', 'Unfollowed the user.');
+            return redirect()->back();
+        }
+    }
+
+    public function approve_follow_request(Request $request, $user_id)
+    {
+        $follow_request = FollowRequest::where('follower_id', $user_id)
+            ->where('followed_id', $request->current_user_id)
+            ->first();
+
+        $follow = new Follow;
+        $follow->followed_id = $request->current_user_id;
+        $follow->follower_id = $request->user_id;
+        $follow->save();
+
+        $follow_request->delete();
+
+        if ($request->ajax()) {
+            return response(['status' => 'Approved the follow request.']);
+        } else {
+            Session::flash('success', 'Approved the follow request.');
+            return redirect()->back();
+        }
+    }
+
+    public function cancel_follow_request(Request $request, $user_id)
+    {
+        $follow_request = FollowRequest::where('follower_id', $user_id)
+            ->where('followed_id', $request->current_user_id)
+            ->first();
+
+        $follow_request->delete();
+
+        if ($request->ajax()) {
+            return response(['status' => 'Canceled the follow request.']);
+        } else {
+            Session::flash('success', 'Canceled the follow request.');
             return redirect()->back();
         }
     }

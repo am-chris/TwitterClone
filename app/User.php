@@ -4,6 +4,7 @@ namespace App;
 
 use Auth;
 use App\Models\Follow;
+use App\Models\FollowRequest;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -70,11 +71,24 @@ class User extends Authenticatable
             ->where('follower_id', Auth::id())
             ->first();
 
-        if (count($query)) {
+        if (!is_null($query)) {
             return true;
-        } else {
-            return false;
         }
+
+        return false;
+    }
+
+    public function followRequested($userId)
+    {
+        $query = FollowRequest::where('followed_id', $userId)
+            ->where('follower_id', Auth::id())
+            ->first();
+
+        if (!is_null($query)) {
+            return true;
+        } 
+
+        return false;
     }
 
     public function followers()

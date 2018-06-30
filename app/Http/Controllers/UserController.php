@@ -51,10 +51,6 @@ class UserController extends Controller
         $user = User::where('username', $username)
             ->first();
 
-        if (count($user) == 0) {
-            abort(404);
-        }
-
         return view('users.show', compact('user'));
     }
 
@@ -69,7 +65,7 @@ class UserController extends Controller
         $user = User::where('username', $username)
             ->first();
 
-        if (count($user) == 0) {
+        if (is_null($user)) {
             abort(404);
         }
 
@@ -92,7 +88,7 @@ class UserController extends Controller
         $user = User::where('username', $username)
             ->first();
 
-        if (count($user) == 0) {
+        if (is_null($user)) {
             abort(404);
         }
 
@@ -111,7 +107,7 @@ class UserController extends Controller
         $user2 = User::where('username', $desired_username)
             ->first();
 
-        if (count($user2) && $user->id !== $user2->id) {
+        if (!is_null($user2) && $user->id !== $user2->id) {
             Session::flash('error', 'That username is already taken. Choose a unique username.');
             return redirect()->back();
         }

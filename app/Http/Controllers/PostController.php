@@ -98,6 +98,16 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($id);
 
+        if (Auth::check()) {
+            if ($post->user->private == 1 && Auth::user()->followingUser($post->user->id) == 0) {
+                abort(404);
+            }
+        } else {
+            if ($post->user->private == 1) {
+                abort(404);
+            }
+        }
+
         $comments = Post::where('post_id', $post->id)
             ->orderBy('created_at', 'asc')
             ->get();

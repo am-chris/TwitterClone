@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\Models\Follow;
+use App\Models\FollowRequest;
 use App\Models\Post;
 use App\Models\User\Block;
 use App\User;
@@ -45,7 +46,11 @@ class NotificationController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('notifications.index', compact('follow_suggestions', 'posts'));
+        $follow_requests = FollowRequest::with('follower')
+            ->where('followed_id', Auth::id())
+            ->get();
+
+        return view('notifications.index', compact('follow_requests', 'follow_suggestions', 'posts'));
     }
 
     /**

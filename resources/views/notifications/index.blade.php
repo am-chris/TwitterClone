@@ -10,8 +10,26 @@
 
             </div>
             <div class="col-md-6">
-                <div class="bg-white">
-                    @if (count($posts))
+                @if (Auth::user()->private && count($follow_requests) > 0)
+                    <div class="bg-white p-3 mb-3 border-gray">
+                        <h6>Follow Requests</h6>
+                        @if (count($follow_requests))
+                            <ul class="list-inline mb-0">
+                                @foreach ($follow_requests as $follow_request)
+                                    <li class="list-inline-item">
+                                        <a href="{{ url('/' . $follow_request->follower->username) }}">
+                                            <img class="d-flex align-self-start mr-3 rounded-circle" src="{{ url('storage/' . $follow_request->follower->photo_url) }}" style="max-width: 48px; max-height: 48px;" alt="User photo" rel="tooltip" data-original-title="{{ '@' . $follow_request->follower->username }}">
+                                        </a>
+                                        <follow-request-actions :user-id="{{ $follow_request->follower->id }}" :current-user-id="{{ Auth::id() }}"></follow-request-actions>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @endif
+                    </div>
+                @endif
+
+                @if (count($posts))
+                    <div class="bg-white">
                         <ul class="list-unstyled posts">
                             @foreach ($posts as $post)
                                 <li class="post">
@@ -45,7 +63,7 @@
                                                         </a>
                                                     </li>
                                                     <li class="list-inline-item mr-3">
-                                                        <post-share :post-id="{{ $post->id }}" :user-id="{{ Auth::id() }}" :count-original="{{ $post->share_count }}"></post-share>
+                                                        <post-share :post-id="{{ $post->id }}" :user-id="{{ Auth::id() }}" :count-original="{{ $post->share_count }}" :private="{{ $post->user->private }}"></post-share>
                                                     </li>
                                                     <li class="list-inline-item">
                                                         <post-like :post-id="{{ $post->id }}" :user-id="{{ Auth::id() }}" :count-original="{{ $post->like_count }}"></post-like>
@@ -57,8 +75,8 @@
                                 </li>
                             @endforeach
                         </ul>
-                    @endif
-                </div>
+                    </div>
+                @endif
             </div>
             <div class="col-md-3">
 

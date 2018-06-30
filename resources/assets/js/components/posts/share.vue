@@ -1,14 +1,21 @@
 <template>
     <div>
         <span v-if="loggedIn">
-            <span v-if="shared == true">
-                <span class="text-success text-no-underline" @click.prevent="unshare">
-                    <i class="fa fa-retweet" rel="tooltip" data-original-title="Unshare"></i>
+            <span v-if="this.private == 0">
+                <span v-if="shared == true">
+                    <span class="text-success text-no-underline" @click.prevent="unshare">
+                        <i class="fa fa-retweet" rel="tooltip" data-original-title="Unshare"></i>
+                    </span>
+                </span>
+                <span v-else>
+                    <span class="text-muted text-success-hover text-no-underline" @click.prevent="share">
+                        <i class="fa fa-retweet" rel="tooltip" data-original-title="Share"></i>
+                    </span>
                 </span>
             </span>
             <span v-else>
-                <span class="text-muted text-success-hover text-no-underline" @click.prevent="share">
-                    <i class="fa fa-retweet" rel="tooltip" data-original-title="Share"></i>
+                <span class="text-no-underline" style="color: #BBB;">
+                    <i class="fa fa-retweet"></i>
                 </span>
             </span>
         </span>
@@ -23,7 +30,7 @@
 
 <script>
 export default {
-    props: ['countOriginal', 'postId', 'sharedOriginal', 'userId'],
+    props: ['countOriginal', 'postId', 'private', 'sharedOriginal', 'userId'],
 
     data() {
         return {

@@ -20,12 +20,12 @@ class UsersTableSeeder extends Seeder
             'username'     => 'ace',
             'name'         => 'Chris',
             'email'        => 'chris@app.com',
-            'password'     => 'password',
+            'password'     => $password,
             'verified'     => 1,
             'created_at'   => Carbon::now(),
         ]);
 
-        foreach (range(1, 100) as $index) {
+        foreach (range(1, 5000) as $index) {
             $first_name = $faker->firstName;
             $full_name = $first_name . ' ' . $faker->lastName;
             $username = str_replace([' ', '-', '.'], '_', $faker->username) . rand(1, 99);
@@ -42,6 +42,11 @@ class UsersTableSeeder extends Seeder
                 $bio = $faker->sentence();
             }
 
+            $private = 0;
+            if ($random_num >= 90) {
+                $private = 1;
+            }
+
             $timestamp = Carbon::now();
             $users[] = [
                 'email'        => $username . '@app.com',
@@ -49,6 +54,7 @@ class UsersTableSeeder extends Seeder
                 'username'     => $username,
                 'name'         => $full_name,
                 'bio'          => $bio,
+                'private'      => $private,
                 'verified'     => $verified,
                 'created_at'   => $timestamp,
                 'updated_at'   => $timestamp,

@@ -25,6 +25,8 @@ Vue.component('post-share', require('./components/posts/share.vue'));
 Vue.component('user-follow', require('./components/users/follow.vue'));
 Vue.component('user-posts', require('./components/users/posts.vue'));
 
+Vue.component('follow-request-actions', require('./components/users/follow-request-actions.vue'));
+
 Vue.use(VueAutosize);
 
 const app = new Vue({

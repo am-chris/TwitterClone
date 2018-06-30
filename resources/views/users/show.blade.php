@@ -13,6 +13,9 @@
                 </div>
                 <h5>
                     <a href="{{ url('/' . $user->username) }}" style="color: #555;">{{ $user->name }}</a>
+                    @if ($user->private)
+                        <i class="fa fa-lock text-dark" rel="tooltip" data-original-title="Private"></i>
+                    @endif
                     @if ($user->verified)
                         <i class="fa fa-check-circle text-primary" rel="tooltip" data-original-title="Verified account"></i>
                     @endif
@@ -31,29 +34,41 @@
                 <nav class="nav nav-pills nav-justified bg-white p-2 mb-3 rounded">
                     <a class="nav-link text-center active" href="#">
                         <div class="profile-nav-link">Posts</div>
-                        <span class="text-bold">{{ number_shorten(count($user->posts), 0) }}</span>
+                        <span class="text-bold">{{ number_shorten($user->posts->count(), 0) }}</span>
                     </a>
                     <a class="nav-link text-center text-dark" href="{{ url('/' . $user->username . '/following') }}">
                         <div class="profile-nav-link">Following</div>
-                        <span class="text-bold">{{ number_shorten(count($user->follows), 0) }}</span>
+                        <span class="text-bold">{{ number_shorten($user->follows->count(), 0) }}</span>
                     </a>
                     <a class="nav-link text-center text-dark" href="{{ url('/' . $user->username . '/followers') }}">
                         <div class="profile-nav-link">Followers</div>
-                        <span class="text-bold">{{ number_shorten(count($user->followers), 0) }}</span>
+                        <span class="text-bold">{{ number_shorten($user->followers->count(), 0) }}</span>
                     </a>
                     @if (Auth::id() == $user->id)
                         <a class="nav-link ml-auto btn btn-outline-primary" href="{{ url('/' . $user->username . '/edit') }}" style="max-height: 40px;">Edit Profile</a>
                     @else
                         <span class="ml-auto">
                             @if (Auth::check())
-                                <user-follow :user-id="{{ $user->id }}" :current-user-id="{{ Auth::id() }}" :original-following="{{ json_encode(Auth::user()->followingUser($user->id)) }}"></user-follow>
+                                <user-follow :o-following="{{ json_encode(Auth::user()->followingUser($user->id)) }}" :user-id="{{ $user->id }}" :o-requested="{{ json_encode(Auth::user()->followRequested($user->id)) }}" :private="{{ $user->private }}" :current-user-id="{{ Auth::id() }}"></user-follow>
                             @endif
                         </span>
                     @endif
                 </nav>
-                <div class="bg-white">
-                    <user-posts :current-user-id="{{ json_encode(Auth::id()) }}" :user-id="{{ json_encode($user->id) }}"></user-posts>
-                </div>
+                @if (Auth::check())
+                    @if ($user->private == 0 || $user->private == 1 && Auth::user()->followingUser($user->id) != 0 || Auth::id() == $user->id)
+                        <div class="bg-white">
+                            <user-posts :current-user-id="{{ json_encode(Auth::id()) }}" :user-id="{{ json_encode($user->id) }}"></user-posts>
+                        </div>
+                    @else
+                        <h5>This account's Posts are private.</h5>
+                        <p>Only confirmed followers can view {{ '@' . $user->username }}'s Posts and profile. Click the Follow button to send a follow request.</p>
+                    @endif
+                @else
+                    @if ($user->private)
+                        <h5>This account's Posts are private.</h5>
+                        <p>Only confirmed followers can view {{ '@' . $user->username }}'s Posts and profile. Click the Follow button to send a follow request.</p>
+                    @endif
+                @endif
             </div>
         </div>
     </div>

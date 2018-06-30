@@ -42,6 +42,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::post('u/{user}/follow', 'User\FollowController@follow');
     Route::post('u/{user}/unfollow', 'User\FollowController@unfollow');
+    Route::post('u/{user}/approve_follow_request', 'User\FollowController@approve_follow_request');
+    Route::post('u/{user}/cancel_follow_request', 'User\FollowController@cancel_follow_request');
 
     Route::post('u/{user}/photo', 'User\PhotoController@store');
     Route::delete('u/{user}/photo', 'User\PhotoController@destroy');

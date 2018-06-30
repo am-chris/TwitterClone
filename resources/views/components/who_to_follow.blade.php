@@ -11,12 +11,15 @@
                         <a class="text-primary-hover" href="{{ url('/' . $follow_suggestion->username) }}" style="color: #555;">
                             {{ $follow_suggestion->name }}
                         </a>
-                        @if ($follow_suggestion->verified > 0)
+                        @if ($follow_suggestion->private)
+                            <i class="fa fa-lock text-dark" rel="tooltip" data-original-title="Private"></i>
+                        @endif
+                        @if ($follow_suggestion->verified)
                             <i class="fa fa-check-circle text-primary" rel="tooltip" data-original-title="Verified account"></i>
                         @endif
                         <span class="text-muted" style="font-size: 13px; font-weight: 400;" title="{{ $follow_suggestion->username }}">{{ '@' . $follow_suggestion->username }}</span>
                     </h6>
-                    <user-follow :original-following="false" :user-id="{{ $follow_suggestion->id }}" :current-user-id="{{ Auth::id() }}"></user-follow>
+                    <user-follow :o-following="false" :user-id="{{ $follow_suggestion->id }}" :o-requested="{{ json_encode(Auth::user()->followRequested($follow_suggestion->id)) }}" :private="{{ $follow_suggestion->private }}" :current-user-id="{{ Auth::id() }}"></user-follow>
                 </div>
             </div>
             <hr class="mt-2 mb-2">

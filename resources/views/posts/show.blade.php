@@ -19,6 +19,9 @@
                                     <a class="text-primary-hover" href="{{ url('/' . $post->user->username) }}" style="color: #555;">
                                         {{ $post->user->name }}
                                     </a>
+                                    @if ($post->user->private)
+                                        <i class="fa fa-lock text-dark" rel="tooltip" data-original-title="Private"></i>
+                                    @endif
                                     @if ($post->user->verified)
                                         <i class="fa fa-check-circle text-primary" rel="tooltip" data-original-title="Verified account"></i>
                                     @endif

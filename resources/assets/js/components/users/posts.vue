@@ -15,6 +15,9 @@
                                 <a class="text-primary-hover" :href="'/' + post.user.username" style="color: #555;">
                                     {{ post.user.name }}
                                 </a>
+                                <span v-if="post.user.private > 0">
+                                    <i class="fa fa-lock text-dark" rel="tooltip" data-original-title="Private"></i>
+                                </span>
                                 <span v-if="post.user.verified > 0">
                                     <i class="fa fa-check-circle text-primary" rel="tooltip" data-original-title="Verified account"></i>
                                 </span>
@@ -52,7 +55,7 @@
                                     {{ post.comment_count }}
                                 </li>
                                 <li class="list-inline-item mr-3">
-                                    <post-share :post-id="post.id" :user-id="currentUserId" :count-original="post.share_count"></post-share>
+                                    <post-share :post-id="post.id" :user-id="currentUserId" :count-original="post.share_count" :private="post.user.private"></post-share>
                                 </li>
                                 <li class="list-inline-item">
                                     <post-like :post-id="post.id" :user-id="currentUserId" :count-original="post.like_count"></post-like>
