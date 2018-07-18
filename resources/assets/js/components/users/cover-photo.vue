@@ -11,7 +11,7 @@
         <form method="POST" enctype="multipart/form-data" v-if="editing == true">
             <b-modal id="changeCoverPhoto" title="Change Your Cover Photo">
                 <div class="form-group">
-                    <label for="file">Cover Photo (1500x500)</label>
+                    <label for="file">Cover Photo (1920x500)</label>
                     <div>
                         <image-upload name="file" @loaded="onLoad"></image-upload>
                     </div>
@@ -78,7 +78,7 @@ export default {
 
             axios.delete('api/u/' + this.user.id + '/cover_photo')
                 .then(response => {
-                    alert('success');
+                    this.coverPhotoSrc = image.src;
                 })
                 .finally(response => {
                     this.working = false;

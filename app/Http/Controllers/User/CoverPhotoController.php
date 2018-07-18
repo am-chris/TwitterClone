@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\User;
 
 use Auth;
-use Response;
-use Session;
 use App\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
@@ -20,15 +18,16 @@ class CoverPhotoController extends Controller
      */
     public function store(Request $request, $userId)
     {
-        $this->validate($request, [
-            'file' => ['required', 'image', 'max:2000', 'dimensions:max_width=1925,max_height=505'],
+        $request->validate([
+            'file' => ['required', 'image', 'mimes:jpeg,jpg,png', 'max:2000', 'dimensions:max_width=1925,max_height=505'],
         ]);
-
-        // Get original cover photo's path, we will use it to delete the original photo after the new photo is uploaded
-        $user = User::findOrFail($userId);
-        $originalCoverPhotoUrl = $user->cover_photo_url;
         
-        $user->update([
+        $user = User::findOrFail($userId);
+        
+        // Get original cover photo's path, we will use it to delete the original photo after the new photo is uploaded
+        $originalCoverPhotoUrl = $user->cover_photo_url;
+
+        Auth::user()->update([
             'cover_photo_url' => $request->file('file')->store('users/cover_photos')
         ]);
 
@@ -49,12 +48,5 @@ class CoverPhotoController extends Controller
 
         $user->cover_photo_url = 'users/cover_photos/default_cover_photo.png';
         $user->save();
-
-        if ($request->ajax()) {
-            return response(['status' => 'The cover photo was deleted.']);
-        } else {
-            Session::flash('success', 'The cover photo was deleted.');
-            return redirect()->back();
-        }
     }
 }

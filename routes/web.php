@@ -20,8 +20,8 @@ Route::group(['middleware' => ['guest']], function () {
 });
 
 Route::group(['middleware' => 'auth', 'prefix' => 'api'], function () {
-    Route::post('u/{user}/cover_photo', 'User\CoverPhotoController@store')->name('api.users.cover_photos.store');
-    Route::delete('u/{user}/cover_photo', 'User\CoverPhotoController@destroy')->name('api.users.cover_photos.destroy');
+    Route::post('u/{id}/cover_photo', 'User\CoverPhotoController@store')->name('api.users.cover_photos.store');
+    Route::delete('u/{id}/cover_photo', 'User\CoverPhotoController@destroy')->name('api.users.cover_photos.destroy');
 });
 
 Route::group(['middleware' => ['auth']], function () {

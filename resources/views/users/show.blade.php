@@ -1,7 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-<user-cover-photo :src="{{ json_encode(url('storage/' . $user->cover_photo_url)) }}" :change-cover-photo-url="{{ json_encode(route('api.users.cover_photos.store', $user->id)) }}" :user="{{ json_encode($user) }}"></user-cover-photo>
+<user-cover-photo 
+    :src="{{ json_encode(Storage::url($user->cover_photo_url)) }}" 
+    :change-cover-photo-url="{{ json_encode(route('api.users.cover_photos.store', $user->id)) }}" 
+    :user="{{ json_encode($user) }}"
+></user-cover-photo>
 <div class="py-2">
     <div class="container">
         <div class="row">
