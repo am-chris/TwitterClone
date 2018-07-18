@@ -83,20 +83,17 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $username)
+    public function update(Request $request, $userId)
     {
-        $user = User::where('username', $username)
-            ->first();
+        $user = User::findOrFail($userId);
 
-        if (is_null($user)) {
-            abort(404);
-        }
-
-        if (Auth::id() !== $user->id) {
-            return redirect('/');
+        if (Auth::user()->id !== $user->id && !Auth::user()->hasRole('admin')) {
+            abort(403);
         }
 
         $request->validate([
+            'name' => 'required',
+            'username' => 'required',
             'bio' => 'nullable|max:100',
         ]);
 
@@ -113,8 +110,9 @@ class UserController extends Controller
         }
 
         // If the user changes their username, remove "Verified" status from their account
-        // to prevent verified users from pretending to be other people
-        if ($desired_username !== $user->username && $user->verified == 1) {
+        // to prevent verified users from pretending to be other people.
+        // If an admin causes this change, don't change the verified status.
+        if ($desired_username !== $user->username && $user->verified == 1 && !Auth::user()->hasRole('admin')) {
             $user->verified = 0;
         }
 
@@ -122,9 +120,6 @@ class UserController extends Controller
         $user->username = $desired_username;
         $user->bio = preg_replace('/\r|\n/', '', $request->bio);
         $user->save();
-
-        Session::flash('success', 'Your profile was updated.');
-        return redirect('/' . $user->username . '/edit');
     }
 
     /**

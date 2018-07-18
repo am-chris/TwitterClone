@@ -25,8 +25,10 @@
         "browser-sync": "^2.24.5",
         "browser-sync-webpack-plugin": "^2.2.2",
         "clipboard": "^1.7.1",
+        "moment": "^2.22.2",
         "vue-autosize": "^1.0.2",
         "vue-infinite-loading": "^2.3.1",
+        "vue-moment": "^4.0.0",
         "vue-resource": "^1.5.1"
     }
 }

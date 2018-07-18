@@ -20,7 +20,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'username', 'name', 'email', 'password', 'photo_url', 'cover_photo_url',
+        'username', 'name', 'email', 'password', 'photo_url', 'cover_photo_url'
     ];
 
     /**
@@ -29,7 +29,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'email', 'password', 'remember_token', 'created_at',
+        'email', 'password', 'remember_token',
     ];
 
     public function posts()

@@ -10,8 +10,12 @@
     <div class="container">
         <div class="row">
             <div class="col-md-3">
-
-                @include('components.users.about')
+            
+                <user-about 
+                    :user="{{ json_encode($user) }}" 
+                    :user-photo-url="{{ json_encode(Storage::url($user->photo_url)) }}" 
+                    :update-user-route="{{ json_encode(route('users.update', $user->id)) }}"
+                ></user-about>
                 
             </div>
             <div class="col-md-9">

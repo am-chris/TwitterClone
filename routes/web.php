@@ -20,8 +20,8 @@ Route::group(['middleware' => ['guest']], function () {
 });
 
 Route::group(['middleware' => 'auth', 'prefix' => 'api'], function () {
-    Route::post('u/{id}/cover_photo', 'User\CoverPhotoController@store')->name('api.users.cover_photos.store');
-    Route::delete('u/{id}/cover_photo', 'User\CoverPhotoController@destroy')->name('api.users.cover_photos.destroy');
+    Route::post('u/{user}/cover_photo', 'User\CoverPhotoController@store')->name('api.users.cover_photos.store');
+    Route::delete('u/{user}/cover_photo', 'User\CoverPhotoController@destroy')->name('api.users.cover_photos.destroy');
 });
 
 Route::group(['middleware' => ['auth']], function () {
@@ -47,12 +47,13 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::post('u/{user}/photo', 'User\PhotoController@store');
     Route::delete('u/{user}/photo', 'User\PhotoController@destroy');
+    
+    Route::put('users/{user}', 'UserController@update')->name('users.update');
 });
 
 Route::resource('p', 'PostController');
 
 Route::get('{username}', 'UserController@show');
-Route::put('{username}', 'UserController@update');
 Route::get('{username}/edit', 'UserController@edit');
 Route::get('{username}/followers', 'UserController@followers');
 Route::get('{username}/following', 'UserController@following');

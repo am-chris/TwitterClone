@@ -54,7 +54,6 @@ export default {
         onLoad(image) {
             console.log(image);
 
-
             this.store(image);
         },
 
