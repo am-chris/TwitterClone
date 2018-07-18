@@ -1,5 +1,5 @@
 body {
-    padding-top: 58px;
+    padding-top: 64px;
 }
 
 .btn:hover {
@@ -25,4 +25,24 @@ body {
 
 .border-gray {
     border: 1px solid #DDD;
+}
+
+.cover-photo {
+    background-position: center;
+    min-height: 500px;
+    width: 100%;
+    position: relative;
+    &:hover .hover-border {
+        border: 5px solid theme-color("primary");
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        transition: $transition-base;
+    }
+}
+
+.hover-pointer:hover {
+    cursor: pointer;
 }

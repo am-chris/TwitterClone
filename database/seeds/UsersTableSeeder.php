@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use App\Role;
 use App\User;
 use Illuminate\Database\Seeder;
 
@@ -16,14 +17,14 @@ class UsersTableSeeder extends Seeder
         $faker = Faker\Factory::create();
         $password = bcrypt('password');
 
-        DB::table('users')->insert([
+        User::create([
             'username'     => 'ace',
             'name'         => 'Chris',
             'email'        => 'chris@app.com',
             'password'     => $password,
             'verified'     => 1,
             'created_at'   => Carbon::now(),
-        ]);
+        ])->attachRole('admin');
 
         foreach (range(1, 5000) as $index) {
             $first_name = $faker->firstName;

@@ -35,14 +35,6 @@
                     </div>
                 {{ Form::close() }}
 
-                {{ Form::open(['url' => 'u/' . $user->id . '/cover_photo', 'method' => 'POST', 'files' => true]) }}
-                    <div class="form-group">
-                        {{ Form::label('file', 'Cover Photo (1500x500)') }}
-                        {{ Form::file('file') }}
-                    </div>
-                    {{ Form::submit('Upload', ['class' => 'btn btn-sm btn-success mb-2']) }}
-                {{ Form::close() }}
-
                 {{ Form::open(['url' => 'u/' . $user->id . '/cover_photo', 'method' => 'DELETE']) }}
                     <div class="form-group">
                         {{ Form::submit('Remove', ['class' => 'btn btn-sm btn-danger']) }}

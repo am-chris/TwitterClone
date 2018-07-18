@@ -19,6 +19,11 @@ Route::group(['middleware' => ['guest']], function () {
     });
 });
 
+Route::group(['middleware' => 'auth', 'prefix' => 'api'], function () {
+    Route::post('u/{id}/cover_photo', 'User\CoverPhotoController@store')->name('api.users.cover_photos.store');
+    Route::delete('u/{id}/cover_photo', 'User\CoverPhotoController@destroy')->name('api.users.cover_photos.destroy');
+});
+
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/home', 'HomeController@index')->name('home');
 
@@ -28,17 +33,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('p/{post}/like', 'Post\LikeController@like');
     Route::post('p/{post}/unlike', 'Post\LikeController@unlike');
 
-    Route::post('p/{post}/report', 'Post\ReportController@store');
-
     Route::post('p/{post}/share', 'Post\ShareController@share');
     Route::post('p/{post}/unshare', 'Post\ShareController@unshare');
 
     // User Routes
     Route::post('u/{user}/block', 'User\BlockController@block');
     Route::post('u/{user}/unblock', 'User\BlockController@unblock');
-
-    Route::post('u/{user}/cover_photo', 'User\CoverPhotoController@upload');
-    Route::delete('u/{user}/cover_photo', 'User\CoverPhotoController@destroy');
 
     Route::post('u/{user}/follow', 'User\FollowController@follow');
     Route::post('u/{user}/unfollow', 'User\FollowController@unfollow');

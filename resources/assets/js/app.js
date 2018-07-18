@@ -10,6 +10,8 @@ require('./bootstrap');
 window.Vue = require('vue');
 var Vue = require('vue');
 var VueAutosize = require('vue-autosize');
+var EventBus = require('./event-bus.js');
+var BootstrapVue = require('bootstrap-vue');
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -24,10 +26,17 @@ Vue.component('post-share', require('./components/posts/share.vue'));
 
 Vue.component('user-follow', require('./components/users/follow.vue'));
 Vue.component('user-posts', require('./components/users/posts.vue'));
+Vue.component('user-edit', require('./components/users/edit.vue'));
+Vue.component('user-cover-photo', require('./components/users/cover-photo.vue'));
 
 Vue.component('follow-request-actions', require('./components/users/follow-request-actions.vue'));
 
+// Utilities
+Vue.component('image-upload', require('./components/utilities/ImageUpload.vue'));
+
+Vue.use(BootstrapVue);
 Vue.use(VueAutosize);
+Vue.use(EventBus);
 
 const app = new Vue({
     el: '#app'

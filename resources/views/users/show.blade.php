@@ -1,7 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-<img src="{{ url('storage/' . $user->cover_photo_url) }}" style="width: 100%; max-height: 500px;">
+<user-cover-photo 
+    :src="{{ json_encode(Storage::url($user->cover_photo_url)) }}" 
+    :change-cover-photo-url="{{ json_encode(route('api.users.cover_photos.store', $user->id)) }}" 
+    :user="{{ json_encode($user) }}"
+></user-cover-photo>
 <div class="py-2">
     <div class="container">
         <div class="row">
@@ -24,8 +28,8 @@
                         <div class="profile-nav-link">Followers</div>
                         <span class="text-bold">{{ number_shorten($user->followers->count(), 0) }}</span>
                     </a>
-                    @if (Auth::id() == $user->id)
-                        <a class="nav-link ml-auto btn btn-outline-primary" href="{{ url('/' . $user->username . '/edit') }}" style="max-height: 40px;">Edit Profile</a>
+                    @if (Auth::id() == $user->id || Auth::check() && Auth::user()->hasRole('admin'))
+                        <user-edit></user-edit>
                     @else
                         <span class="ml-auto">
                             @if (Auth::check())
