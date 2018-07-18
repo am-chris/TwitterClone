@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\User;
 
+use App\Role;
 use App\User;
 use Storage;
 use Illuminate\Http\UploadedFile;
@@ -13,13 +14,39 @@ class CoverPhotoTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->seed('LaratrustSeeder');
+
+    }
+
     /** @test */
     public function only_a_logged_in_user_can_upload_a_cover_photo()
     {
         $user = factory(User::class)->create();
 
-        $this->json('POST', 'api/u/' . $user->id . '/cover_photo')
+        $this->json('POST', route('api.users.cover_photos.store', $user->id))
              ->assertStatus(401);
+    }
+
+    /** @test */
+    public function an_admin_can_change_another_users_cover_photo()
+    {
+        $user = factory(User::class)->create();
+        $admin = factory(User::class)->create()->attachRole('admin');
+
+        Storage::fake();
+
+        $this->actingAs($admin)
+            ->json('POST', route('api.users.cover_photos.store', $user->id), [
+                'file' => $file = UploadedFile::fake()->image('cover_photo.jpg'),
+            ]);
+
+        $this->assertEquals('users/cover_photos/' . $file->hashName(), $user->cover_photo_url);
+
+        Storage::assertExists('users/cover_photos/' . $file->hashName());
     }
 
     /** @test */
@@ -28,7 +55,7 @@ class CoverPhotoTest extends TestCase
         $user = factory(User::class)->create();
 
         $this->actingAs($user)
-            ->json('POST', 'api/u/' . $user->id . '/cover_photo', [
+            ->json('POST', route('api.users.cover_photos.store', $user->id), [
                 'file' => 'not an image',
             ])->assertStatus(422);
     }
@@ -41,13 +68,36 @@ class CoverPhotoTest extends TestCase
         Storage::fake();
 
         $this->actingAs($user)
-             ->json('POST', 'api/u/' . $user->id . '/cover_photo', [
+            ->json('POST', route('api.users.cover_photos.store', $user->id), [
+                'file' => $file = UploadedFile::fake()->image('cover_photo.jpg'),
+            ]);
+
+        $this->assertEquals('users/cover_photos/' . $file->hashName(), $user->cover_photo_url);
+        
+        Storage::assertExists('users/cover_photos/' . $file->hashName());
+    }
+
+    /** @test */
+    public function previous_cover_photo_gets_destroyed_when_a_cover_photo_is_uploaded()
+    {
+        $user = factory(User::class)->create();
+
+        Storage::fake();
+
+        $this->actingAs($user)
+             ->json('POST', route('api.users.cover_photos.store', $user->id), [
                 'file' => $file = UploadedFile::fake()->image('cover_photo.jpg'),
              ]);
 
-        $this->assertEquals('users/cover_photos/' . $file->hashName(), $user->cover_photo_url);
+        $originalCoverPhotoHashName = $file->hashName();
 
-        Storage::assertExists('users/cover_photos/' . $file->hashName());
+        $this->actingAs($user)
+             ->json('POST', route('api.users.cover_photos.store', $user->id), [
+                'file' => $newCoverPhoto = UploadedFile::fake()->image('cover_photo2.jpg'),
+             ]);
+
+        Storage::assertMissing('users/cover_photos/' . $originalCoverPhotoHashName);
+        Storage::assertExists('users/cover_photos/' . $newCoverPhoto->hashName());
     }
 
     /** @test */
@@ -58,7 +108,7 @@ class CoverPhotoTest extends TestCase
         Storage::fake();
 
         $this->actingAs($user)
-             ->json('POST', 'api/u/' . $user->id . '/cover_photo', [
+             ->json('POST', route('api.users.cover_photos.store', $user->id), [
                 'file' => $file = UploadedFile::fake()->image('cover_photo.jpg')->size(5000),
              ]);
 
@@ -74,7 +124,7 @@ class CoverPhotoTest extends TestCase
 
         // Assert image greater than max width is not uploaded
         $this->actingAs($user)
-             ->json('POST', 'api/u/' . $user->id . '/cover_photo', [
+             ->json('POST', route('api.users.cover_photos.store', $user->id), [
                 'file' => $file = UploadedFile::fake()->image('cover_photo.jpg', 2000),
              ]);
 
@@ -82,11 +132,30 @@ class CoverPhotoTest extends TestCase
 
         // Assert image greater than max height is not uploaded
         $this->actingAs($user)
-             ->json('POST', 'api/u/' . $user->id . '/cover_photo', [
+             ->json('POST', route('api.users.cover_photos.store', $user->id), [
                 'file' => $file = UploadedFile::fake()->image('cover_photo.jpg', 1400, 600),
              ]);
 
         Storage::assertMissing('users/cover_photos/' . $file->hashName());
+    }
 
+    /** @test */
+    public function user_can_destroy_their_cover_photo()
+    {
+        $user = factory(User::class)->create();
+
+        Storage::fake();
+
+        $this->actingAs($user)
+             ->json('POST', route('api.users.cover_photos.store', $user->id), [
+                'file' => $file = UploadedFile::fake()->image('cover_photo.jpg'),
+             ]);
+
+        Storage::assertExists('users/cover_photos/' . $file->hashName());
+
+        $this->actingAs($user)
+            ->json('DELETE', route('api.users.cover_photos.destroy', $user->id));
+
+        Storage::assertMissing('users/cover_photos/' . $file->hashName());
     }
 }

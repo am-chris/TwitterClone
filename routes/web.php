@@ -20,8 +20,8 @@ Route::group(['middleware' => ['guest']], function () {
 });
 
 Route::group(['middleware' => 'auth', 'prefix' => 'api'], function () {
-    Route::post('u/{user}/cover_photo', 'User\CoverPhotoController@store')->name('users.cover_photos.store');
-    Route::delete('u/{user}/cover_photo', 'User\CoverPhotoController@destroy');
+    Route::post('u/{user}/cover_photo', 'User\CoverPhotoController@store')->name('api.users.cover_photos.store');
+    Route::delete('u/{user}/cover_photo', 'User\CoverPhotoController@destroy')->name('api.users.cover_photos.destroy');
 });
 
 Route::group(['middleware' => ['auth']], function () {
@@ -32,8 +32,6 @@ Route::group(['middleware' => ['auth']], function () {
     // Post Routes
     Route::post('p/{post}/like', 'Post\LikeController@like');
     Route::post('p/{post}/unlike', 'Post\LikeController@unlike');
-
-    Route::post('p/{post}/report', 'Post\ReportController@store');
 
     Route::post('p/{post}/share', 'Post\ShareController@share');
     Route::post('p/{post}/unshare', 'Post\ShareController@unshare');

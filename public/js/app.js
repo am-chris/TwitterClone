@@ -2441,6 +2441,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -2467,9 +2468,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         onLoad: function onLoad(image) {
             console.log(image);
 
-            this.submit(image);
+            this.store(image);
         },
-        submit: function submit(image) {
+        store: function store(image) {
             var _this = this;
 
             var data = new FormData();
@@ -2480,6 +2481,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 // Set the current cover photo url's <img src> equal to the uploaded cover photo url
                 _this.coverPhotoSrc = image.src;
             }).catch(function (error) {});
+        },
+        destroy: function destroy() {
+            var _this2 = this;
+
+            this.working = true;
+
+            axios.delete('api/u/' + this.user.id + '/cover_photo').then(function (response) {
+                alert('success');
+            }).finally(function (response) {
+                _this2.working = false;
+            });
         }
     }
 });
@@ -2504,8 +2516,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['canEdit'],
-
     data: function data() {
         return {
             editing: false
@@ -54869,11 +54879,29 @@ var render = function() {
                   })
                 ]),
                 _vm._v(" "),
-                _c("div", {
-                  staticClass: "w-100",
-                  attrs: { slot: "modal-footer" },
-                  slot: "modal-footer"
-                })
+                _c(
+                  "div",
+                  {
+                    staticClass: "w-100",
+                    attrs: { slot: "modal-footer" },
+                    slot: "modal-footer"
+                  },
+                  [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-danger",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function($event) {
+                            _vm.destroy()
+                          }
+                        }
+                      },
+                      [_vm._v("Remove Cover Photo")]
+                    )
+                  ]
+                )
               ]
             )
           ],

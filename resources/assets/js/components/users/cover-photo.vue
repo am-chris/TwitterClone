@@ -21,6 +21,7 @@
                     <img :src="coverPhotoSrc" class="img-fluid">
                 </div>
                 <div slot="modal-footer" class="w-100">
+                    <button type="button" class="btn btn-danger" @click="destroy()">Remove Cover Photo</button>
                 </div>
             </b-modal>
         </form>
@@ -54,10 +55,10 @@ export default {
             console.log(image);
 
 
-            this.submit(image);
+            this.store(image);
         },
 
-        submit(image) {
+        store(image) {
             let data = new FormData();
 
             data.append('file', image.file);
@@ -69,6 +70,18 @@ export default {
                 })
                 .catch(error => {
 
+                });
+        },
+
+        destroy() {
+            this.working = true;
+
+            axios.delete('api/u/' + this.user.id + '/cover_photo')
+                .then(response => {
+                    alert('success');
+                })
+                .finally(response => {
+                    this.working = false;
                 });
         }
     }

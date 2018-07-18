@@ -10,8 +10,6 @@
 import { EventBus } from '../../event-bus.js';
 
 export default {
-    props: ['canEdit'],
-
     data() {
         return {
             editing: false,

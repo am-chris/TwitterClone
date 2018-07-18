@@ -23,10 +23,16 @@ class CoverPhotoController extends Controller
         $this->validate($request, [
             'file' => ['required', 'image', 'max:2000', 'dimensions:max_width=1925,max_height=505'],
         ]);
+
+        // Get original cover photo's path, we will use it to delete the original photo after the new photo is uploaded
+        $user = User::findOrFail($userId);
+        $originalCoverPhotoUrl = $user->cover_photo_url;
         
-        Auth::user()->update([
+        $user->update([
             'cover_photo_url' => $request->file('file')->store('users/cover_photos')
         ]);
+
+        Storage::delete($originalCoverPhotoUrl);
     }
 
     /**
