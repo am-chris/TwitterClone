@@ -1,0 +1,21 @@
+.profile-about {
+    .profile-photo {
+        min-width: 200px; 
+        max-width: 200px; 
+        min-height: 200px; 
+        max-height: 200px; 
+        border: 4px solid #FFF; 
+        overflow: hidden;
+        background-position: center center; 
+        background-repeat: no-repeat; 
+        background-size: cover;
+        &:hover {
+            border-color: theme-color("primary");
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            transition: $transition-base;
+        }
+    }
+}

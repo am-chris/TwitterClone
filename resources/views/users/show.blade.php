@@ -12,6 +12,8 @@
             <div class="col-md-3">
             
                 <user-about 
+                    :change-photo-url="{{ json_encode(route('users.photos.store', $user->id)) }}"
+                    :current-user="{{ json_encode(Auth::user()) }}"
                     :user="{{ json_encode($user) }}" 
                     :user-photo-url="{{ json_encode(Storage::url($user->photo_url)) }}" 
                     :update-user-route="{{ json_encode(route('users.update', $user->id)) }}"

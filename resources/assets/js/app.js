@@ -37,6 +37,7 @@ Vue.component('user-follow', require('./components/users/follow.vue'));
 Vue.component('user-posts', require('./components/users/posts.vue'));
 Vue.component('user-edit', require('./components/users/edit.vue'));
 Vue.component('user-cover-photo', require('./components/users/cover-photo.vue'));
+Vue.component('user-photo', require('./components/users/Photo.vue'));
 
 Vue.component('follow-request-actions', require('./components/users/follow-request-actions.vue'));
 
