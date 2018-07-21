@@ -18,7 +18,7 @@ class BlockController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function block(Request $request, $user_id)
+    public function store(Request $request, $userId)
     {
         // If the user is trying to block themself, throw an error
         if (Auth::id() == $request->user_id) {
@@ -31,11 +31,11 @@ class BlockController extends Controller
         }
 
         // If the user is already blocked, throw an error
-        $blocked_user = Block::where('blocker_id', $request->current_user_id)
+        $blockedUser = Block::where('blocker_id', $request->current_user_id)
             ->where('blocked_id', $request->user_id)
             ->first();
 
-        if (!is_null($blocked_user)) {
+        if (!is_null($blockedUser)) {
             if ($request->ajax()) {
                 return response(['status' => 'The user is already blocked.']);
             } else {
@@ -70,14 +70,14 @@ class BlockController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function unblock(Request $request, $user_id)
+    public function destroy(Request $request, $userId)
     {
         // If the user isn't blocked, throw an error
-        $blocked_user = Block::where('blocker_id', $request->current_user_id)
+        $blockedUser = Block::where('blocker_id', $request->current_user_id)
             ->where('blocked_id', $request->user_id)
             ->first();
 
-        if (is_null($blocked_user)) {
+        if (is_null($blockedUser)) {
             if ($request->ajax()) {
                 return response(['status' => 'The user isn\'t blocked.']);
             } else {
@@ -87,7 +87,7 @@ class BlockController extends Controller
         }
 
         // Unblock the user
-        $blocked_user->delete();
+        $blockedUser->delete();
 
         if ($request->ajax()) {
             return response(['status' => 'Unblocked the user.']);

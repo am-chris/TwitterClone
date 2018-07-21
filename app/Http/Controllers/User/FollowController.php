@@ -16,15 +16,12 @@ class FollowController extends Controller
      * Follow a user.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  int  $userId
      * @return \Illuminate\Http\Response
      */
-    public function follow(Request $request, $user_id)
+    public function store(Request $request, $userId)
     {
-        if ($user_id !== $request->user_id) {
-
-        }
-
-        if (Auth::id() == $user_id) {
+        if (Auth::id() == $userId) {
             if ($request->ajax()) {
                 return response(['status' => 'You can\'t follow yourself.']);
             } else {
@@ -33,7 +30,16 @@ class FollowController extends Controller
             }
         }
 
-        $user = User::findOrFail($user_id);
+        // Check if current user is already following this user
+        $currentUserFollowingUser = Follow::where('followed_id', $userId)
+            ->where('follower_id', Auth::id())
+            ->first();
+
+        if (!empty($currentUserFollowingUser)) {
+            abort(403);
+        }
+
+        $user = User::findOrFail($userId);
 
         if ($user->private == 1) {
             $follow_request = new FollowRequest;
@@ -65,12 +71,13 @@ class FollowController extends Controller
     /**
      * Unfollow a user.
      *
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $userId
      * @return \Illuminate\Http\Response
      */
-    public function unfollow(Request $request, $user_id)
+    public function destroy(Request $request, $userId)
     {
-        $follow = Follow::where('followed_id', $user_id)
+        $follow = Follow::where('followed_id', $userId)
             ->where('follower_id', $request->current_user_id)
             ->first();
 
@@ -84,9 +91,16 @@ class FollowController extends Controller
         }
     }
 
-    public function approve_follow_request(Request $request, $user_id)
+    /**
+     * Approve a follow requested by another user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $userId
+     * @return \Illuminate\Http\Response
+     */
+    public function approve_follow_request(Request $request, $userId)
     {
-        $follow_request = FollowRequest::where('follower_id', $user_id)
+        $follow_request = FollowRequest::where('follower_id', $userId)
             ->where('followed_id', $request->current_user_id)
             ->first();
 
@@ -105,13 +119,20 @@ class FollowController extends Controller
         }
     }
 
-    public function cancel_follow_request(Request $request, $user_id)
+    /**
+     * Deny a follow requested by another user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $userId
+     * @return \Illuminate\Http\Response
+     */
+    public function deny_follow_request(Request $request, $userId)
     {
-        $follow_request = FollowRequest::where('follower_id', $user_id)
+        $followRequest = FollowRequest::where('follower_id', $userId)
             ->where('followed_id', $request->current_user_id)
             ->first();
 
-        $follow_request->delete();
+        $followRequest->delete();
 
         if ($request->ajax()) {
             return response(['status' => 'Canceled the follow request.']);

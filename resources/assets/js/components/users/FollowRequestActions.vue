@@ -24,10 +24,9 @@ export default {
 
     methods: {
         approve() {
-            var self = this;
             this.visible = false;
 
-            axios.post('/u/' + this.userId + '/approve_follow_request', {
+            axios.post(route('users.follow_requests.approve', this.userId), {
                 user_id: this.userId,
                 current_user_id: this.currentUserId,
             })
@@ -41,10 +40,9 @@ export default {
         },
 
         deny() {
-            var self = this;
             this.visible = false;
 
-            axios.post('/u/' + this.userId + '/cancel_follow_request', {
+            axios.post(route('users.follow_requests.deny', this.userId), {
                 user_id: this.userId,
                 current_user_id: this.currentUserId,
             })

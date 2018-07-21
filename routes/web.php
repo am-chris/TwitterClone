@@ -29,21 +29,19 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('notifications', 'NotificationController@index');
 
-    // Post Routes
-    Route::post('p/{post}/like', 'Post\LikeController@like');
-    Route::post('p/{post}/unlike', 'Post\LikeController@unlike');
+    Route::post('p/{post}/like', 'Post\LikeController@store')->name('posts.likes.store');
+    Route::post('p/{post}/unlike', 'Post\LikeController@destroy')->name('posts.likes.destroy');
 
-    Route::post('p/{post}/share', 'Post\ShareController@share');
-    Route::post('p/{post}/unshare', 'Post\ShareController@unshare');
+    Route::post('p/{post}/share', 'Post\ShareController@store')->name('posts.shares.store');
+    Route::post('p/{post}/unshare', 'Post\ShareController@destroy')->name('posts.shares.destroy');
 
-    // User Routes
-    Route::post('u/{user}/block', 'User\BlockController@block');
-    Route::post('u/{user}/unblock', 'User\BlockController@unblock');
+    Route::post('u/{user}/block', 'User\BlockController@store')->name('users.blocks.store');
+    Route::post('u/{user}/unblock', 'User\BlockController@destroy')->name('users.blocks.destroy');
 
-    Route::post('u/{user}/follow', 'User\FollowController@follow');
-    Route::post('u/{user}/unfollow', 'User\FollowController@unfollow');
-    Route::post('u/{user}/approve_follow_request', 'User\FollowController@approve_follow_request');
-    Route::post('u/{user}/cancel_follow_request', 'User\FollowController@cancel_follow_request');
+    Route::post('u/{user}/follow', 'User\FollowController@store')->name('users.follows.store');
+    Route::post('u/{user}/unfollow', 'User\FollowController@destroy')->name('users.follows.destroy');
+    Route::post('u/{user}/approve_follow_request', 'User\FollowController@approve_follow_request')->name('users.follow_requests.approve');
+    Route::post('u/{user}/deny_follow_request', 'User\FollowController@deny_follow_request')->name('users.follow_requests.deny');
 
     Route::post('u/{user}/photo', 'User\PhotoController@store')->name('users.photos.store');
     Route::delete('u/{user}/photo', 'User\PhotoController@destroy')->name('users.photos.destroy');
@@ -51,9 +49,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('users/{user}', 'UserController@update')->name('users.update');
 });
 
-Route::resource('p', 'PostController');
+Route::resource('posts', 'PostController');
 
-Route::get('{username}', 'UserController@show');
+Route::get('{username}', 'UserController@show')->name('users.show');
 Route::get('{username}/edit', 'UserController@edit');
 Route::get('{username}/followers', 'UserController@followers');
 Route::get('{username}/following', 'UserController@following');

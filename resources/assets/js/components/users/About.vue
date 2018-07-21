@@ -2,7 +2,7 @@
     <div>
         <div class="profile-about">
             <div class="mb-3" style="position: relative; margin-top: -100px;">
-                <user-photo :change-photo-url="changePhotoUrl" :current-user="currentUser" :user="user"></user-photo>
+                <user-photo :current-user="currentUser" :user="user"></user-photo>
             </div>
             
             <div v-if="editing === true">
@@ -24,12 +24,12 @@
             </div>
             <div v-else>
                 <h5>
-                    <a :href="'/' + user.username" style="color: #555;">{{ user.name }}</a>
+                    <a :href="route('users.show', user.username)" style="color: #555;">{{ user.name }}</a>
                     <i class="fa fa-lock text-dark" rel="tooltip" data-original-title="Private" v-if="user.private"></i>
                     <i class="fa fa-check-circle text-primary" rel="tooltip" data-original-title="Verified account" v-if="user.verified"></i>
                 </h5>
                 <div class="form-group">
-                    <a :href="'/' + user.username" class="text-muted">@{{ user.username }}</a>
+                    <a :href="route('users.show', user.username)" class="text-muted">@{{ user.username }}</a>
                 </div>
                 <p style="overflow-wrap: break-word; word-wrap: break-word;">{{ user.bio }}</p>
             </div>
@@ -45,7 +45,7 @@
 import { EventBus } from '../../event-bus.js';
 
 export default {
-    props: ['changePhotoUrl', 'currentUser', 'user', 'userPhotoUrl', 'updateUserRoute'],
+    props: ['currentUser', 'user'],
 
     data() {
         return {
@@ -71,7 +71,7 @@ export default {
         update() {
             this.working = true;
 
-            axios.put(this.updateUserRoute, {
+            axios.put(route('users.update', this.user.id), {
                 name: this.newUser.name,
                 username: this.newUser.username,
                 bio: this.newUser.bio,

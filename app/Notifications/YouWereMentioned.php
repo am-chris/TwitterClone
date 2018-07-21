@@ -18,6 +18,7 @@ class YouWereMentioned extends Notification
     /**
      * Create a new notification instance.
      *
+     * @param array $post
      * @return void
      */
     public function __construct($post)

@@ -18,28 +18,28 @@ class TimelineController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($user_id)
+    public function index($userId)
     {
-        $blocked_user_ids = Block::where('blocker_id', $user_id)
+        $blockedUserIds = Block::where('blocker_id', $userId)
             ->pluck('blocked_id')
             ->toArray();
 
-        $users_im_following = [];
+        $usersImFollowing = [];
 
-        $users_im_following = Follow::where('follower_id', $user_id)
-            ->whereNotIn('followed_id', $blocked_user_ids)
+        $usersImFollowing = Follow::where('follower_id', $userId)
+            ->whereNotIn('followed_id', $blockedUserIds)
             ->pluck('followed_id')
             ->toArray();
 
-        array_push($users_im_following, $user_id); // Add current user to array
+        array_push($usersImFollowing, $userId); // Add current user to array
 
-        $shared_post_ids = Share::whereIn('user_id', $users_im_following)
+        $sharedPostIds = Share::whereIn('user_id', $usersImFollowing)
             ->pluck('post_id');
 
         $posts = Post::with('user')
-            ->whereIn('user_id', $users_im_following)
-            ->orWhereIn('id', $shared_post_ids)
-            ->whereNotIn('user_id', $blocked_user_ids)
+            ->whereIn('user_id', $usersImFollowing)
+            ->orWhereIn('id', $sharedPostIds)
+            ->whereNotIn('user_id', $blockedUserIds)
             ->orderBy('created_at', 'desc')
             ->paginate(20);
 
@@ -51,18 +51,18 @@ class TimelineController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function individual($user_id)
+    public function individual($userId)
     {
-        $blocked_user_ids = Block::where('blocker_id', $user_id)
+        $blockedUserIds = Block::where('blocker_id', $userId)
             ->pluck('blocked_id')
             ->toArray();
 
-        $shared_post_ids = Share::where('user_id', $user_id)
+        $sharedPostIds = Share::where('user_id', $userId)
             ->pluck('post_id');
 
         $posts = Post::with('user')
-            ->where('user_id', $user_id)
-            ->orWhereIn('id', $shared_post_ids)
+            ->where('user_id', $userId)
+            ->orWhereIn('id', $sharedPostIds)
             ->orderBy('created_at', 'desc')
             ->paginate(20);
 

@@ -46,9 +46,7 @@ export default {
 
     methods: {
         share() {
-            var self = this;
-
-            axios.post('/p/' + this.postId + '/share', {
+            axios.post(route('posts.shares.store', this.postId), {
                 post_id: this.postId,
                 user_id: this.userId,
             })
@@ -66,9 +64,7 @@ export default {
         },
 
         unshare() {
-            var self = this;
-
-            axios.post('/p/' + this.postId + '/unshare', {
+            axios.post(route('posts.shares.destroy', this.postId), {
                 post_id: this.postId,
                 user_id: this.userId,
             })

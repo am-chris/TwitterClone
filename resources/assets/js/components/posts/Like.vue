@@ -39,9 +39,7 @@ export default {
 
     methods: {
         like() {
-            var self = this;
-
-            axios.post('/p/' + this.postId + '/like', {
+            axios.post(route('posts.likes.store', this.postId), {
                 user_id: this.userId,
                 post_id: this.postId,
             })
@@ -59,9 +57,7 @@ export default {
         },
 
         unlike() {
-            var self = this;
-
-            axios.post('/p/' + this.postId + '/unlike', {
+            axios.post(route('posts.likes.destroy', this.postId), {
                 user_id: this.userId,
                 post_id: this.postId,
             })

@@ -27,22 +27,28 @@ Vue.use(VueMoment);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('new-post', require('./components/posts/new.vue'));
-Vue.component('posts', require('./components/posts.vue'));
-Vue.component('post-like', require('./components/posts/like.vue'));
-Vue.component('post-share', require('./components/posts/share.vue'));
+Vue.component('new-post', require('./components/posts/New.vue'));
+Vue.component('posts', require('./components/Posts.vue'));
+Vue.component('post-like', require('./components/posts/Like.vue'));
+Vue.component('post-share', require('./components/posts/Share.vue'));
 
 Vue.component('user-about', require('./components/users/About.vue'));
-Vue.component('user-follow', require('./components/users/follow.vue'));
-Vue.component('user-posts', require('./components/users/posts.vue'));
-Vue.component('user-edit', require('./components/users/edit.vue'));
-Vue.component('user-cover-photo', require('./components/users/cover-photo.vue'));
+Vue.component('user-follow', require('./components/users/Follow.vue'));
+Vue.component('user-posts', require('./components/users/Posts.vue'));
+Vue.component('user-edit', require('./components/users/Edit.vue'));
+Vue.component('user-cover-photo', require('./components/users/CoverPhoto.vue'));
 Vue.component('user-photo', require('./components/users/Photo.vue'));
 
-Vue.component('follow-request-actions', require('./components/users/follow-request-actions.vue'));
+Vue.component('follow-request-actions', require('./components/users/FollowRequestActions.vue'));
 
 // Utilities
 Vue.component('image-upload', require('./components/utilities/ImageUpload.vue'));
+
+Vue.mixin({
+    methods: {
+        route: route
+    }
+});
 
 const app = new Vue({
     el: '#app'

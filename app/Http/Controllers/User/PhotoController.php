@@ -15,6 +15,7 @@ class PhotoController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param int $userId
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request, $userId)
@@ -38,7 +39,7 @@ class PhotoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int  $userId
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, int $userId)

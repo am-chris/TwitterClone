@@ -1,24 +1,24 @@
 <template>
     <div style="margin-bottom: 50px;">
         <ul class="list-unstyled posts">
-            <li class="post" v-for="(post, index) in posts" :index="index">
-                <a :href="'/p/' + post.id" style="text-decoration: none;">
+            <li class="post" v-for="(post, index) in posts" :key="index">
+                <a :href="route('posts.show', post.id)" style="text-decoration: none;">
                     <div class="media">
-                        <a :href="'/' + post.user.username">
-                            <img class="d-flex align-self-start mr-3 rounded-circle" :src="'/storage/' + post.user.photo_url" style="max-width: 48px; max-height: 48px;" alt="User photo">
+                        <a :href="route('users.show', post.user.username)">
+                            <img class="d-flex align-self-start mr-3 rounded-circle" :src="'/' + post.user.photo_url" style="max-width: 48px; max-height: 48px;" alt="User photo">
                         </a>
                         <div class="media-body">
                             <div v-if="post.post_id > 0">
                                 <div class="text-muted">Replying to </div>
                             </div>
                             <h6 class="mt-0">
-                                <a class="text-primary-hover" :href="'/' + post.user.username" style="color: #555;">
+                                <a class="text-primary-hover" :href="route('users.show', post.user.username)" style="color: #555;">
                                     {{ post.user.name }}
                                 </a>
-                                <span v-if="post.user.private > 0">
+                                <span v-if="post.user.private">
                                     <i class="fa fa-lock text-dark" rel="tooltip" data-original-title="Private"></i>
                                 </span>
-                                <span v-if="post.user.verified > 0">
+                                <span v-if="post.user.verified">
                                     <i class="fa fa-check-circle text-primary" rel="tooltip" data-original-title="Verified account"></i>
                                 </span>
                                 <ul class="list-inline text-muted d-inline-block" style="font-size: 13px; font-weight: 400;">

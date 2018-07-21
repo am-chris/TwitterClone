@@ -32,7 +32,7 @@
 import { EventBus } from '../../event-bus.js';
 
 export default {
-    props: ['src', 'changeCoverPhotoUrl', 'user'],
+    props: ['src', 'user'],
 
     data() {
         return {
@@ -52,8 +52,6 @@ export default {
 
     methods: {
         onLoad(image) {
-            console.log(image);
-
             this.store(image);
         },
 
@@ -62,7 +60,7 @@ export default {
 
             data.append('file', image.file);
 
-            axios.post(this.changeCoverPhotoUrl, data)
+            axios.post(route('api.users.cover_photos.store', this.user.id), data)
                 .then(response => {
                     // Set the current cover photo url's <img src> equal to the uploaded cover photo url
                     this.coverPhotoSrc = image.src;
@@ -75,7 +73,7 @@ export default {
         destroy() {
             this.working = true;
 
-            axios.delete('api/u/' + this.user.id + '/cover_photo')
+            axios.delete(route('api.users.cover_photos.destroy', this.user.id))
                 .then(response => {
                     this.coverPhotoSrc = image.src;
                 })

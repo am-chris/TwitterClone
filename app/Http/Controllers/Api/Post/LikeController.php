@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\Post;
 
-use Auth;
 use Response;
 use App\Models\Post\Like;
 use Illuminate\Http\Request;
@@ -15,9 +14,9 @@ class LikeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, $user_id)
+    public function index(Request $request, $userId)
     {
-        $likes = Like::where('user_id', $user_id)
+        $likes = Like::where('user_id', $userId)
             ->pluck('post_id');
 
         return Response::json($likes);

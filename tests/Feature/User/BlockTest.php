@@ -10,82 +10,86 @@ class BlockTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_user_can_block_another_user()
+    /** @test */
+    public function user_can_block_another_user()
     {
-        $user1 = factory(User::class)->create();
+        $user = factory(User::class)->create();
         $user2 = factory(User::class)->create();
 
-        $this->actingAs($user1)
-            ->json('POST', '/u/' . $user2->id . '/block', [
-                'current_user_id' => $user1->id,
+        $this->actingAs($user)
+            ->json('POST', route('users.blocks.store', $user2->id), [
+                'current_user_id' => $user->id,
                 'user_id' => $user2->id,
             ]);
 
         $this->assertDatabaseHas('blocked_users', [
-            'blocker_id' => $user1->id,
+            'blocker_id' => $user->id,
             'blocked_id' => $user2->id,
         ]);
     }
 
-    public function test_user_is_unfollowed_when_blocked()
+    /** @test */
+    public function user_is_unfollowed_when_blocked()
     {
-        $user1 = factory(User::class)->create();
+        $user = factory(User::class)->create();
         $user2 = factory(User::class)->create();
 
-        $this->actingAs($user1)
-            ->json('POST', '/u/' . $user2->id . '/follow', [
+        $this->actingAs($user)
+            ->json('POST', route('users.follows.store', $user2->id), [
                 'followed_id' => $user2->id,
-                'follower_id' => $user1->id,
+                'follower_id' => $user->id,
             ]);
 
-        $this->actingAs($user1)
-            ->json('POST', '/u/' . $user2->id . '/block', [
-                'current_user_id' => $user1->id,
+        $this->actingAs($user)
+            ->json('POST', route('users.blocks.store', $user2->id), [
+                'current_user_id' => $user->id,
                 'user_id' => $user2->id,
             ]);
 
         $this->assertDatabaseMissing('follows', [
             'followed_id' => $user2->id,
-            'follower_id' => $user1->id,
+            'follower_id' => $user->id,
         ]);
     }
 
-    public function test_user_can_unblock_a_blocked_user()
+    /** @test */
+    public function user_can_unblock_a_blocked_user()
     {
-        $user1 = factory(User::class)->create();
+        $user = factory(User::class)->create();
         $user2 = factory(User::class)->create();
 
-        $this->actingAs($user1)
-            ->json('POST', '/u/' . $user2->id . '/block', [
-                'current_user_id' => $user1->id,
+        $this->actingAs($user)
+            ->json('POST', route('users.blocks.store', $user2->id), [
+                'current_user_id' => $user->id,
                 'user_id' => $user2->id,
             ]);
 
-        $this->actingAs($user1)
-            ->json('POST', '/u/' . $user2->id . '/unblock', [
-                'current_user_id' => $user1->id,
+        $this->actingAs($user)
+            ->json('POST', route('users.blocks.destroy', $user2->id), [
+                'current_user_id' => $user->id,
                 'user_id' => $user2->id,
             ]);
 
         $this->assertDatabaseMissing('blocked_users', [
-            'blocker_id' => $user1->id,
+            'blocker_id' => $user->id,
             'blocked_id' => $user2->id,
         ]);
     }
 
-    public function test_user_cant_block_themself()
+    /** @test */
+    public function user_cant_block_themselves()
     {
-        $user1 = factory(User::class)->create();
+        $user = factory(User::class)->create();
 
-        $this->actingAs($user1)
-            ->json('POST', '/u/' . $user1->id . '/block', [
-                'current_user_id' => $user1->id,
-                'user_id' => $user1->id,
+        $this->actingAs($user)
+            ->json('POST', route('users.blocks.store', $user->id), [
+                'current_user_id' => $user->id,
+                'user_id' => $user->id,
             ]);
 
         $this->assertDatabaseMissing('blocked_users', [
-            'blocker_id' => $user1->id,
-            'blocked_id' => $user1->id,
+            'blocker_id' => $user->id,
+            'blocked_id' => $user->id,
         ]);
     }
 }

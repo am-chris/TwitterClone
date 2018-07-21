@@ -98,10 +98,10 @@ class UserController extends Controller
         ]);
 
         // Strip symbols from new username
-        $desired_username = str_replace(['~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '|', '{', '}', ',', '.', '?', ' '], '', $request->username);
+        $desiredUsername = str_replace(['~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '|', '{', '}', ',', '.', '?', ' '], '', $request->username);
 
         // If the username is already taken, throw an error
-        $user2 = User::where('username', $desired_username)
+        $user2 = User::where('username', $desiredUsername)
             ->first();
 
         if (!is_null($user2) && $user->id !== $user2->id) {
@@ -112,12 +112,12 @@ class UserController extends Controller
         // If the user changes their username, remove "Verified" status from their account
         // to prevent verified users from pretending to be other people.
         // If an admin causes this change, don't change the verified status.
-        if ($desired_username !== $user->username && $user->verified == 1 && !Auth::user()->hasRole('admin')) {
+        if ($desiredUsername !== $user->username && $user->verified == 1 && !Auth::user()->hasRole('admin')) {
             $user->verified = 0;
         }
 
         $user->name = $request->name;
-        $user->username = $desired_username;
+        $user->username = $desiredUsername;
         $user->bio = preg_replace('/\r|\n/', '', $request->bio);
         $user->save();
     }

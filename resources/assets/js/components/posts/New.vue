@@ -1,7 +1,17 @@
 <template>
     <div>
         <div class="form-group mb-0">
-            <textarea v-autosize="content" v-model="content" class="form-control maxlength" placeholder="What's going on?" required rows="1" maxlength="140" v-on:keydown="changesDetected = true" v-on:focus="changesDetected = true"></textarea>
+            <textarea 
+                v-autosize="content" 
+                v-model="content" 
+                class="form-control maxlength" 
+                placeholder="What's going on?" 
+                required 
+                rows="1" 
+                maxlength="140" 
+                v-on:keydown="changesDetected = true" 
+                v-on:focus="changesDetected = true"
+            ></textarea>
         </div>
         <div v-if="changesDetected == true" class="mt-4">
             <button type="submit" class="btn btn-sm btn-primary" v-on:click="save">Post</button>
@@ -28,15 +38,9 @@ export default {
         }
     },
 
-    created() {
-
-    },
-
     methods: {
         save() {
-            var self = this;
-
-            axios.post('/p', {
+            axios.post(route('posts.store'), {
                 user_id: this.userId,
                 content: this.content,
             })
