@@ -27,7 +27,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'api'], function () {
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/home', 'HomeController@index')->name('home');
 
-    Route::get('notifications', 'NotificationController@index');
+    Route::get('notifications', 'NotificationController@index')->name('notifications.index');
 
     Route::post('p/{post}/like', 'Post\LikeController@store')->name('posts.likes.store');
     Route::post('p/{post}/unlike', 'Post\LikeController@destroy')->name('posts.likes.destroy');
@@ -48,8 +48,12 @@ Route::group(['middleware' => ['auth']], function () {
     
     Route::put('users/{user}', 'UserController@update')->name('users.update');
 
-    Route::get('settings', 'SettingController@index');
+    Route::get('settings', 'SettingController@index')->name('settings.index');
     Route::put('settings/{user}/password', 'Setting\PasswordController@update')->name('settings.passwords.update');
+});
+
+Route::group(['middleware' => ['role:admin', 'auth'], 'prefix' => 'admin'], function () {
+    Route::get('/', 'AdminController@index')->name('admin.index');
 });
 
 Route::resource('posts', 'PostController');
