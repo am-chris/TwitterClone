@@ -47,6 +47,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('u/{user}/photo', 'User\PhotoController@destroy')->name('users.photos.destroy');
     
     Route::put('users/{user}', 'UserController@update')->name('users.update');
+
+    Route::get('settings', 'SettingController@index');
+    Route::put('settings/{user}/password', 'Setting\PasswordController@update')->name('settings.passwords.update');
 });
 
 Route::resource('posts', 'PostController');
