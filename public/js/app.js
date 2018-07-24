@@ -72861,8 +72861,14 @@ var render = function() {
                   attrs: { id: "passwordHelpBlock" }
                 },
                 [
+                  _vm._v("\n                    Non-followers "),
+                  _c("strong", [
+                    _vm.newUser.private
+                      ? _c("span", [_vm._v("won't")])
+                      : _c("span", [_vm._v("will")])
+                  ]),
                   _vm._v(
-                    "\n                    Non-followers wont be able to see your posts.\n                "
+                    " be able to see your posts, likes, and shares.\n                "
                   )
                 ]
               )

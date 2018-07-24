@@ -27,7 +27,7 @@
                     <label for="private">Private Account</label>
                     
                     <small id="passwordHelpBlock" class="form-text text-muted">
-                        Non-followers wont be able to see your posts.
+                        Non-followers <strong><span v-if="newUser.private">won't</span><span v-else>will</span></strong> be able to see your posts, likes, and shares.
                     </small>
                 </div>
             </div>
