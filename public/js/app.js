@@ -2454,6 +2454,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2489,7 +2498,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             axios.put(route('users.update', this.user.id), {
                 name: this.newUser.name,
                 username: this.newUser.username,
-                bio: this.newUser.bio
+                bio: this.newUser.bio,
+                private: this.newUser.private
             }).then(function (response) {}).finally(function (response) {
                 _this.editing = false;
                 _this.working = false;
@@ -72795,6 +72805,67 @@ var render = function() {
                   }
                 }
               })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.newUser.private,
+                    expression: "newUser.private"
+                  }
+                ],
+                staticClass: "mr-1",
+                attrs: { type: "checkbox", id: "private" },
+                domProps: {
+                  checked: Array.isArray(_vm.newUser.private)
+                    ? _vm._i(_vm.newUser.private, null) > -1
+                    : _vm.newUser.private
+                },
+                on: {
+                  change: function($event) {
+                    var $$a = _vm.newUser.private,
+                      $$el = $event.target,
+                      $$c = $$el.checked ? true : false
+                    if (Array.isArray($$a)) {
+                      var $$v = null,
+                        $$i = _vm._i($$a, $$v)
+                      if ($$el.checked) {
+                        $$i < 0 &&
+                          _vm.$set(_vm.newUser, "private", $$a.concat([$$v]))
+                      } else {
+                        $$i > -1 &&
+                          _vm.$set(
+                            _vm.newUser,
+                            "private",
+                            $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                          )
+                      }
+                    } else {
+                      _vm.$set(_vm.newUser, "private", $$c)
+                    }
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("label", { attrs: { for: "private" } }, [
+                _vm._v("Private Account")
+              ]),
+              _vm._v(" "),
+              _c(
+                "small",
+                {
+                  staticClass: "form-text text-muted",
+                  attrs: { id: "passwordHelpBlock" }
+                },
+                [
+                  _vm._v(
+                    "\n                    Non-followers wont be able to see your posts.\n                "
+                  )
+                ]
+              )
             ])
           ])
         : _c("div", [

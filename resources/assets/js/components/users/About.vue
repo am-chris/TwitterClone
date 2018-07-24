@@ -21,6 +21,15 @@
                 <div class="form-group">
                     <textarea v-model="newUser.bio" class="form-control" rows="2" placeholder="Bio"></textarea>
                 </div>
+
+                <div class="form-group">
+                    <input type="checkbox" v-model="newUser.private" id="private" class="mr-1"> 
+                    <label for="private">Private Account</label>
+                    
+                    <small id="passwordHelpBlock" class="form-text text-muted">
+                        Non-followers wont be able to see your posts.
+                    </small>
+                </div>
             </div>
             <div v-else>
                 <h5>
@@ -75,6 +84,7 @@ export default {
                 name: this.newUser.name,
                 username: this.newUser.username,
                 bio: this.newUser.bio,
+                private: this.newUser.private,
             })
                 .then(response => {
 

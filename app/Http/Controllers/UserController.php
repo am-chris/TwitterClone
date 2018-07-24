@@ -95,6 +95,7 @@ class UserController extends Controller
             'name' => 'required',
             'username' => 'required',
             'bio' => 'nullable|max:100',
+            'private' => 'nullable',
         ]);
 
         // Strip symbols from new username
@@ -109,9 +110,11 @@ class UserController extends Controller
             return redirect()->back();
         }
 
-        // If the user changes their username, remove "Verified" status from their account
-        // to prevent verified users from pretending to be other people.
-        // If an admin causes this change, don't change the verified status.
+        /**
+         * If the user changes their username, remove "Verified" status from their account
+         * to prevent verified users from pretending to be other people.
+         * If an admin causes this change, don't change the verified status.
+         */
         if ($desiredUsername !== $user->username && $user->verified == 1 && !Auth::user()->hasRole('admin')) {
             $user->verified = 0;
         }
@@ -119,6 +122,7 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->username = $desiredUsername;
         $user->bio = preg_replace('/\r|\n/', '', $request->bio);
+        $user->private = $request->private ?? 0;
         $user->save();
     }
 
