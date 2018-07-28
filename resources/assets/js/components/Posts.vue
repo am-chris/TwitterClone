@@ -37,6 +37,9 @@
                                                     <span v-if="currentUserId !== post.user_id">
                                                         <a class="dropdown-item" href="#" @click.prevent="blockUser(post.user_id)">Block @{{ post.user.username }}</a>
                                                     </span>
+                                                    <span v-if="currentUserId !== post.user_id">
+                                                        <a class="dropdown-item" href="#" v-b-modal.report-post-modal @click="selectedPost = post">Report Post</a>
+                                                    </span>
                                                     <span v-if="currentUserId == post.user_id">
                                                         <a class="dropdown-item" href="#" @click.prevent="deletePost(post.id)">Delete Post</a>
                                                     </span>
@@ -67,6 +70,20 @@
             </li>
         </ul>
         <infinite-loading :on-infinite="onInfinite" :distance="distance" ref="infiniteLoading" spinner="spiral"></infinite-loading>
+
+        <b-modal id="report-post-modal" ref="reportModal" title="Report Post">
+            <b-form-group label="Reason">
+                <b-form-radio-group id="radios2" v-model="report_reason" name="radioSubComponent" stacked>
+                    <b-form-radio value="nsfw">It should be marked NSFW</b-form-radio>
+                    <b-form-radio value="spam">It's spam</b-form-radio>
+                    <b-form-radio value="graphic">It's a sensitive/graphic image</b-form-radio>
+                    <b-form-radio value="abusive">It's abusive or harmful</b-form-radio>
+                </b-form-radio-group>
+            </b-form-group>
+            <div slot="modal-footer">
+                <button type="button" class="btn btn-primary" @click="reportPost(selectedPost.id)">Submit</button>
+            </div>
+        </b-modal>
     </div>
 </template>
 
@@ -74,9 +91,7 @@
 import InfiniteLoading from 'vue-infinite-loading';
 
 export default {
-    components: {
-        InfiniteLoading
-    },
+    components: { InfiniteLoading },
 
     props: ['current-user-id', 'user-id'],
 
@@ -85,7 +100,9 @@ export default {
             posts: [],
             distance: 1,
             currentPage: 1,
-            loggedIn: $("meta[name=loggedIn]").attr('content')
+            loggedIn: $("meta[name=loggedIn]").attr('content'),
+            selectedPost: {},
+            report_reason: null,
         }
     },
 
@@ -100,6 +117,26 @@ export default {
             })
             .catch(function (error) {
                 console.log(error.response);
+            });
+        },
+
+        reportPost(postId) {
+            axios.post(route('users.reports.store', this.selectedPost.user_id), {
+                current_user_id: this.currentUserId,
+                user_id: this.selectedPost.user_id,
+                post_id: postId,
+                type: 'post',
+                reason: this.report_reason,
+            })
+            .then(function (response) {
+
+            })
+            .catch(function (error) {
+                console.log(error.response);
+            })
+            .finally(response => {
+                this.report_reason = null;
+                this.$refs.reportModal.hide();
             });
         },
 

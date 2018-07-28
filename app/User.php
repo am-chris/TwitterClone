@@ -5,6 +5,7 @@ namespace App;
 use Auth;
 use App\Models\Follow;
 use App\Models\FollowRequest;
+use App\Models\User\Report;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laratrust\Traits\LaratrustUserTrait;

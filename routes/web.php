@@ -45,7 +45,9 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::post('u/{user}/photo', 'User\PhotoController@store')->name('users.photos.store');
     Route::delete('u/{user}/photo', 'User\PhotoController@destroy')->name('users.photos.destroy');
-    
+
+    Route::post('u/{user}/report', 'User\ReportController@store')->name('users.reports.store');
+
     Route::put('users/{user}', 'UserController@update')->name('users.update');
 
     Route::get('settings', 'SettingController@index')->name('settings.index');
@@ -54,6 +56,8 @@ Route::group(['middleware' => ['auth']], function () {
 
 Route::group(['middleware' => ['role:admin', 'auth'], 'prefix' => 'admin'], function () {
     Route::get('/', 'AdminController@index')->name('admin.index');
+
+    Route::resource('reports/reasons', 'Admin\Report\ReasonController');
 });
 
 Route::resource('posts', 'PostController');

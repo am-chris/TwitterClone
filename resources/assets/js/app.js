@@ -8,18 +8,20 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
-var Vue = require('vue');
-var VueAutosize = require('vue-autosize');
-var EventBus = require('./event-bus.js');
-var BootstrapVue = require('bootstrap-vue');
-var Moment = require('moment');
-var VueMoment = require('vue-moment');
+import Vue from 'vue'
+import VueAutosize from 'vue-autosize';
+import { EventBus } from './event-bus.js';
+import BootstrapVue from 'bootstrap-vue';
+import Moment from 'moment';
+import VueMoment from 'vue-moment';
 
 Vue.use(BootstrapVue);
 Vue.use(VueAutosize);
 Vue.use(EventBus);
 Vue.use(Moment);
 Vue.use(VueMoment);
+
+import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
