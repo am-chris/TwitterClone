@@ -48,7 +48,7 @@
                     @endif
                 </nav>
                 @if (Auth::check())
-                    @if ($user->private == 0 || $user->private == 1 && Auth::user()->followingUser($user->id) != 0 || Auth::id() == $user->id)
+                    @if ($user->private == 0 || $user->private == true && Auth::user()->followingUser($user->id) != 0 || Auth::id() == $user->id)
                         <div class="bg-white">
                             <user-posts :current-user-id="{{ json_encode(Auth::id()) }}" :user-id="{{ json_encode($user->id) }}"></user-posts>
                         </div>

@@ -24,9 +24,8 @@ class CreateUsersTable extends Migration
             $table->string('bio')->nullable();
             $table->string('money_separators')->default(',.');
             $table->rememberToken();
-            $table->tinyInteger('private')->default(0);
-            $table->tinyInteger('verified')->default(0);
-            $table->tinyInteger('admin')->default(0);
+            $table->boolean('private')->default(false);
+            $table->boolean('verified')->default(false);
             $table->timestamps();
         });
     }
