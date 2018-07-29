@@ -2566,106 +2566,172 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    components: { InfiniteLoading: __WEBPACK_IMPORTED_MODULE_0_vue_infinite_loading___default.a },
+  components: { InfiniteLoading: __WEBPACK_IMPORTED_MODULE_0_vue_infinite_loading___default.a },
 
-    props: ['current-user-id', 'user-id'],
-
-    data: function data() {
-        return {
-            posts: [],
-            distance: 1,
-            currentPage: 1,
-            loggedIn: $("meta[name=loggedIn]").attr('content'),
-            selectedPost: {},
-            report_reason: null
-        };
+  props: {
+    currentUserId: {
+      type: Number,
+      required: true
     },
-
-
-    methods: {
-        blockUser: function blockUser(userId) {
-            axios.post('/u/' + userId + '/block', {
-                current_user_id: this.currentUserId,
-                user_id: userId
-            }).then(function (response) {}).catch(function (error) {
-                console.log(error.response);
-            });
-        },
-        reportPost: function reportPost(postId) {
-            var _this = this;
-
-            axios.post(route('users.reports.store', this.selectedPost.user_id), {
-                current_user_id: this.currentUserId,
-                user_id: this.selectedPost.user_id,
-                post_id: postId,
-                type: 'post',
-                reason: this.report_reason
-            }).then(function (response) {}).catch(function (error) {
-                console.log(error.response);
-            }).finally(function (response) {
-                _this.report_reason = null;
-                _this.$refs.reportModal.hide();
-            });
-        },
-        deletePost: function deletePost(postId) {
-            var self = this;
-
-            axios.delete('/p/' + postId, {
-                user_id: this.userId,
-                post_id: this.postId
-            }).then(function (response) {}).catch(function (error) {
-                console.log(error.response);
-            });
-
-            this.content = '';
-            this.changesDetected = false;
-        },
-        onInfinite: function onInfinite() {
-            var self = this;
-            var api = '/api/' + this.currentUserId + '/timeline?page=' + self.currentPage;
-
-            axios.get(api).then(function (response) {
-                if (response.data.data) {
-                    self.posts = self.posts.concat(response.data.data);
-                    self.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded');
-                    if (self.posts.length / 20 === 10) {
-                        self.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
-                    }
-                    Vue.nextTick(function () {
-                        $('[rel="tooltip"]').tooltip();
-                    });
-                } else {
-                    self.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
-                }
-            }).catch(function (error) {
-                console.log(error);
-            });
-
-            self.currentPage = self.currentPage + 1;
-        },
-        abbreviateNumber: function abbreviateNumber(value) {
-            var newValue = value;
-            if (value >= 1000) {
-                var suffixes = ["", "k", "m", "b", "t"];
-                var suffixNum = Math.floor(("" + value).length / 3);
-                var shortValue = '';
-                for (var precision = 2; precision >= 1; precision--) {
-                    shortValue = parseFloat((suffixNum != 0 ? value / Math.pow(1000, suffixNum) : value).toPrecision(precision));
-                    var dotLessShortValue = (shortValue + '').replace(/[^a-zA-Z 0-9]+/g, '');
-                    if (dotLessShortValue.length <= 2) {
-                        break;
-                    }
-                }
-                if (shortValue % 1 != 0) shortNum = shortValue.toFixed(1);
-                newValue = shortValue + suffixes[suffixNum];
-            }
-            return newValue;
-        }
+    userId: {
+      type: Number,
+      required: true
     }
+  },
+
+  data: function data() {
+    return {
+      posts: [],
+      distance: 1,
+      currentPage: 1,
+      loggedIn: $('meta[name=loggedIn]').attr('content'),
+      selectedPost: {},
+      report_reason: null
+    };
+  },
+
+
+  methods: {
+    block: function block(userId) {
+      axios.post('/u/' + userId + '/block', {
+        current_user_id: this.currentUserId,
+        user_id: userId
+      });
+    },
+    reportPost: function reportPost(postId) {
+      var _this = this;
+
+      axios.post(route('users.reports.store', this.selectedPost.user_id), {
+        current_user_id: this.currentUserId,
+        user_id: this.selectedPost.user_id,
+        post_id: postId,
+        type: 'post',
+        reason: this.report_reason
+      }).finally(function (response) {
+        _this.report_reason = null;
+        _this.$refs.reportModal.hide();
+      });
+    },
+    deletePost: function deletePost(postId) {
+      axios.delete('/p/' + postId, {
+        user_id: this.userId,
+        post_id: this.postId
+      });
+
+      this.content = '';
+      this.changesDetected = false;
+    },
+    onInfinite: function onInfinite() {
+      var _this2 = this;
+
+      var api = '/api/' + this.currentUserId + '/timeline?page=' + this.currentPage;
+
+      axios.get(api).then(function (response) {
+        if (response.data.data) {
+          _this2.posts = _this2.posts.concat(response.data.data);
+          _this2.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded');
+          if (_this2.posts.length / 20 === 10) {
+            _this2.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
+          }
+          Vue.nextTick(function () {
+            $('[rel="tooltip"]').tooltip();
+          });
+        } else {
+          _this2.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
+        }
+      });
+
+      this.currentPage += 1;
+    },
+    abbreviateNumber: function abbreviateNumber(value) {
+      var newValue = value;
+      if (value >= 1000) {
+        var suffixes = ['', 'k', 'm', 'b', 't'];
+        var suffixNum = Math.floor(('' + value).length / 3);
+        var shortValue = '';
+        for (var precision = 2; precision >= 1; precision--) {
+          shortValue = parseFloat((suffixNum !== 0 ? value / Math.pow(1000, suffixNum) : value).toPrecision(precision));
+          var dotLessShortValue = ('' + shortValue).replace(/[^a-zA-Z 0-9]+/g, '');
+          if (dotLessShortValue.length <= 2) {
+            break;
+          }
+        }
+        if (shortValue % 1 !== 0) shortNum = shortValue.toFixed(1);
+        newValue = shortValue + suffixes[suffixNum];
+      }
+      return newValue;
+    }
+  }
 });
 
 /***/ }),
@@ -3288,7 +3354,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__event_bus_js__ = __webpack_require__("./resources/assets/js/event-bus.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__event_bus__ = __webpack_require__("./resources/assets/js/event-bus.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3329,54 +3412,63 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['currentUser', 'user'],
-
-    data: function data() {
-        return {
-            editing: false,
-            image: {},
-            photoSrc: this.user.photo_url
-        };
+  props: {
+    currentUser: {
+      type: Object,
+      required: true
     },
-    mounted: function mounted() {
-        var self = this;
-
-        __WEBPACK_IMPORTED_MODULE_0__event_bus_js__["a" /* EventBus */].$on('editing-profile', function (editing) {
-            self.editing = editing;
-        });
-
-        __WEBPACK_IMPORTED_MODULE_0__event_bus_js__["a" /* EventBus */].$on('saved-changes-profile', function (editing) {});
-    },
-
-
-    methods: {
-        onLoad: function onLoad(image) {
-            this.store(image);
-        },
-        store: function store(image) {
-            var _this = this;
-
-            var data = new FormData();
-
-            data.append('file', image.file);
-
-            axios.post(route('users.photos.store', this.user.id), data).then(function (response) {
-                // Set the current cover photo url's <img src> equal to the uploaded cover photo url
-                _this.photoSrc = image.src;
-            }).catch(function (error) {});
-        },
-        destroy: function destroy() {
-            var _this2 = this;
-
-            this.working = true;
-
-            axios.delete(route('users.photos.destroy', this.user.id)).then(function (response) {
-                _this2.photoSrc = image.src;
-            }).finally(function (response) {
-                _this2.working = false;
-            });
-        }
+    user: {
+      type: Object,
+      required: true
     }
+  },
+
+  data: function data() {
+    return {
+      editing: false,
+      image: {},
+      photoSrc: this.user.photo_url
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    __WEBPACK_IMPORTED_MODULE_0__event_bus__["a" /* EventBus */].$on('editing-profile', function (editing) {
+      _this.editing = editing;
+    });
+
+    __WEBPACK_IMPORTED_MODULE_0__event_bus__["a" /* EventBus */].$on('saved-changes-profile', function (editing) {});
+  },
+
+
+  methods: {
+    onLoad: function onLoad(image) {
+      this.store(image);
+    },
+    store: function store(image) {
+      var _this2 = this;
+
+      var data = new FormData();
+
+      data.append('file', image.file);
+
+      axios.post(route('users.photos.store', this.user.id), data).then(function (response) {
+        // Set the current cover photo url's <img src> equal to the uploaded cover photo url
+        _this2.photoSrc = image.src;
+      });
+    },
+    destroy: function destroy() {
+      var _this3 = this;
+
+      this.working = true;
+
+      axios.delete(route('users.photos.destroy', this.user.id)).then(function (response) {
+        _this3.photoSrc = image.src;
+      }).finally(function (response) {
+        _this3.working = false;
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -3460,90 +3552,142 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    components: {
-        InfiniteLoading: __WEBPACK_IMPORTED_MODULE_0_vue_infinite_loading___default.a
+  components: { InfiniteLoading: __WEBPACK_IMPORTED_MODULE_0_vue_infinite_loading___default.a },
+
+  props: {
+    currentUserId: {
+      type: Number,
+      required: true
     },
-
-    props: ['current-user-id', 'user-id'],
-
-    data: function data() {
-        return {
-            posts: [],
-            distance: 1,
-            currentPage: 1,
-            loggedIn: $("meta[name=loggedIn]").attr('content')
-        };
-    },
-
-
-    methods: {
-        blockUser: function blockUser(userId) {
-            axios.post('/u/' + userId + '/block', {
-                current_user_id: this.currentUserId,
-                user_id: userId
-            }).then(function (response) {}).catch(function (error) {
-                console.log(error.response);
-            });
-        },
-        deletePost: function deletePost(postId) {
-            var self = this;
-
-            axios.delete('/p/' + postId, {
-                user_id: this.userId,
-                post_id: this.postId
-            }).then(function (response) {}).catch(function (error) {
-                console.log(error.response);
-            });
-
-            this.content = '';
-            this.changesDetected = false;
-        },
-        onInfinite: function onInfinite() {
-            var self = this;
-            var api = '/api/' + this.userId + '/individual_timeline?page=' + self.currentPage;
-
-            axios.get(api).then(function (response) {
-                if (response.data.data) {
-                    self.posts = self.posts.concat(response.data.data);
-                    self.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded');
-                    if (self.posts.length / 20 === 10) {
-                        self.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
-                    }
-                    Vue.nextTick(function () {
-                        $('[rel="tooltip"]').tooltip();
-                    });
-                } else {
-                    self.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
-                }
-            }).catch(function (error) {
-                console.log(error);
-            });
-
-            self.currentPage = self.currentPage + 1;
-        },
-        abbreviateNumber: function abbreviateNumber(value) {
-            var newValue = value;
-            if (value >= 1000) {
-                var suffixes = ["", "k", "m", "b", "t"];
-                var suffixNum = Math.floor(("" + value).length / 3);
-                var shortValue = '';
-                for (var precision = 2; precision >= 1; precision--) {
-                    shortValue = parseFloat((suffixNum != 0 ? value / Math.pow(1000, suffixNum) : value).toPrecision(precision));
-                    var dotLessShortValue = (shortValue + '').replace(/[^a-zA-Z 0-9]+/g, '');
-                    if (dotLessShortValue.length <= 2) {
-                        break;
-                    }
-                }
-                if (shortValue % 1 != 0) shortNum = shortValue.toFixed(1);
-                newValue = shortValue + suffixes[suffixNum];
-            }
-            return newValue;
-        }
+    UserId: {
+      type: Number,
+      required: true
     }
+  },
+
+  data: function data() {
+    return {
+      posts: [],
+      distance: 1,
+      currentPage: 1,
+      loggedIn: $('meta[name=loggedIn]').attr('content')
+    };
+  },
+
+
+  methods: {
+    blockUser: function blockUser(userId) {
+      axios.post(route('users.blocks.store', userId), {
+        current_user_id: this.currentUserId,
+        user_id: userId
+      });
+    },
+    deletePost: function deletePost(postId) {
+      axios.delete('/p/' + postId, {
+        user_id: this.userId,
+        post_id: this.postId
+      });
+
+      this.content = '';
+      this.changesDetected = false;
+    },
+    onInfinite: function onInfinite() {
+      var _this = this;
+
+      var api = '/api/' + this.userId + '/individual_timeline?page=' + this.currentPage;
+
+      axios.get(api).then(function (response) {
+        if (response.data.data) {
+          _this.posts = _this.posts.concat(response.data.data);
+          _this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded');
+          if (_this.posts.length / 20 === 10) {
+            _this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
+          }
+          Vue.nextTick(function () {
+            $('[rel="tooltip"]').tooltip();
+          });
+        } else {
+          _this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
+        }
+      });
+
+      this.currentPage = this.currentPage + 1;
+    },
+    abbreviateNumber: function abbreviateNumber(value) {
+      var newValue = value;
+      var suffixNum = Math.floor(('' + value).length / 3);
+      if (value >= 1000) {
+        var suffixes = ['', 'k', 'm', 'b', 't'];
+        var shortValue = '';
+        for (var precision = 2; precision >= 1; precision--) {
+          shortValue = parseFloat((suffixNum !== 0 ? value / (1000, suffixNum) : value).toPrecision(precision));
+          var dotLessShortValue = (shortValue + '').replace(/[^a-zA-Z 0-9]+/g, '');
+          if (dotLessShortValue.length <= 2) {
+            break;
+          }
+        }
+        if (shortValue % 1 !== 0) shortNum = shortValue.toFixed(1);
+        newValue = shortValue + suffixes[suffixNum];
+      }
+      return newValue;
+    }
+  }
 });
 
 /***/ }),
@@ -3557,27 +3701,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    methods: {
-        onChange: function onChange(e) {
-            var _this = this;
+  methods: {
+    onChange: function onChange(e) {
+      var _this = this;
 
-            if (!e.target.files.length) return;
+      if (!e.target.files.length) return;
 
-            var file = e.target.files[0];
+      var file = e.target.files[0];
 
-            var reader = new FileReader();
+      var reader = new FileReader();
 
-            reader.readAsDataURL(file);
+      reader.readAsDataURL(file);
 
-            reader.onload = function (e) {
-                var src = e.target.result;
+      reader.onload = function (event) {
+        var src = event.target.result;
 
-                _this.$emit('loaded', { src: src, file: file, e: e });
-            };
-        }
+        _this.$emit('loaded', { src: src, file: file, e: e });
+      };
     }
+  }
 });
 
 /***/ }),
@@ -72076,9 +72224,9 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\n                                " +
+                            "\n                " +
                               _vm._s(post.user.name) +
-                              "\n                            "
+                              "\n              "
                           )
                         ]
                       ),
@@ -72119,9 +72267,9 @@ var render = function() {
                         [
                           _c("li", { staticClass: "list-inline-item" }, [
                             _vm._v(
-                              "\n                                    @" +
+                              "\n                  @" +
                                 _vm._s(post.user.username) +
-                                "\n                                "
+                                "\n                "
                             )
                           ])
                         ]
@@ -72162,10 +72310,7 @@ var render = function() {
                                                   attrs: { href: "#" },
                                                   on: {
                                                     click: function($event) {
-                                                      $event.preventDefault()
-                                                      _vm.blockUser(
-                                                        post.user_id
-                                                      )
+                                                      _vm.block(post.user_id)
                                                     }
                                                   }
                                                 },
@@ -72257,9 +72402,9 @@ var render = function() {
                           [_c("i", { staticClass: "fa fa-comment" })]
                         ),
                         _vm._v(
-                          "\n                                " +
+                          "\n                " +
                             _vm._s(post.comment_count) +
-                            "\n                            "
+                            "\n              "
                         )
                       ]),
                       _vm._v(" "),
@@ -72679,8 +72824,8 @@ var render = function() {
       _c(
         "ul",
         { staticClass: "list-unstyled posts" },
-        _vm._l(_vm.posts, function(post, index) {
-          return _c("li", { staticClass: "post", attrs: { index: index } }, [
+        _vm._l(_vm.posts, function(post, i) {
+          return _c("li", { key: i, staticClass: "post" }, [
             _c(
               "a",
               {
@@ -72723,9 +72868,9 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\n                                " +
+                            "\n                " +
                               _vm._s(post.user.name) +
-                              "\n                            "
+                              "\n              "
                           )
                         ]
                       ),
@@ -72766,9 +72911,9 @@ var render = function() {
                         [
                           _c("li", { staticClass: "list-inline-item" }, [
                             _vm._v(
-                              "\n                                    @" +
+                              "\n                  @" +
                                 _vm._s(post.user.username) +
-                                "\n                                "
+                                "\n                "
                             )
                           ])
                         ]
@@ -72786,67 +72931,62 @@ var render = function() {
                         [
                           _c("li", { staticClass: "list-inline-item" }, [
                             _vm.loggedIn
-                              ? _c("div", [
-                                  _c("div", { staticClass: "dropdown" }, [
-                                    _vm._m(0, true),
-                                    _vm._v(" "),
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass: "dropdown-menu",
-                                        attrs: {
-                                          "aria-labelledby":
-                                            "dropdownMenuButton"
-                                        }
-                                      },
-                                      [
-                                        _vm.currentUserId !== post.user_id
-                                          ? _c("span", [
-                                              _c(
-                                                "a",
-                                                {
-                                                  staticClass: "dropdown-item",
-                                                  attrs: { href: "#" },
-                                                  on: {
-                                                    click: function($event) {
-                                                      $event.preventDefault()
-                                                      _vm.blockUser(
-                                                        post.user_id
-                                                      )
-                                                    }
+                              ? _c("div", { staticClass: "dropdown" }, [
+                                  _vm._m(0, true),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass: "dropdown-menu",
+                                      attrs: {
+                                        "aria-labelledby": "dropdownMenuButton"
+                                      }
+                                    },
+                                    [
+                                      _vm.currentUserId !== post.user_id
+                                        ? _c("span", [
+                                            _c(
+                                              "a",
+                                              {
+                                                staticClass: "dropdown-item",
+                                                attrs: { href: "#" },
+                                                on: {
+                                                  click: function($event) {
+                                                    $event.preventDefault()
+                                                    _vm.blockUser(post.user_id)
                                                   }
-                                                },
-                                                [
-                                                  _vm._v(
-                                                    "Block @" +
-                                                      _vm._s(post.user.username)
-                                                  )
-                                                ]
-                                              )
-                                            ])
-                                          : _vm._e(),
-                                        _vm._v(" "),
-                                        _vm.currentUserId == post.user_id
-                                          ? _c("span", [
-                                              _c(
-                                                "a",
-                                                {
-                                                  staticClass: "dropdown-item",
-                                                  attrs: { href: "#" },
-                                                  on: {
-                                                    click: function($event) {
-                                                      $event.preventDefault()
-                                                      _vm.deletePost(post.id)
-                                                    }
+                                                }
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "Block @" +
+                                                    _vm._s(post.user.username)
+                                                )
+                                              ]
+                                            )
+                                          ])
+                                        : _vm._e(),
+                                      _vm._v(" "),
+                                      _vm.currentUserId == post.user_id
+                                        ? _c("span", [
+                                            _c(
+                                              "a",
+                                              {
+                                                staticClass: "dropdown-item",
+                                                attrs: { href: "#" },
+                                                on: {
+                                                  click: function($event) {
+                                                    $event.preventDefault()
+                                                    _vm.deletePost(post.id)
                                                   }
-                                                },
-                                                [_vm._v("Delete Post")]
-                                              )
-                                            ])
-                                          : _vm._e()
-                                      ]
-                                    )
-                                  ])
+                                                }
+                                              },
+                                              [_vm._v("Delete Post")]
+                                            )
+                                          ])
+                                        : _vm._e()
+                                    ]
+                                  )
                                 ])
                               : _vm._e()
                           ])
@@ -72876,9 +73016,9 @@ var render = function() {
                           [_c("i", { staticClass: "fa fa-comment" })]
                         ),
                         _vm._v(
-                          "\n                                " +
+                          "\n                " +
                             _vm._s(post.comment_count) +
-                            "\n                            "
+                            "\n              "
                         )
                       ]),
                       _vm._v(" "),
@@ -89106,16 +89246,18 @@ module.exports = function(module) {
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__("./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_autosize__ = __webpack_require__("./node_modules/vue-autosize/src/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_autosize___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_autosize__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__event_bus_js__ = __webpack_require__("./resources/assets/js/event-bus.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__("./node_modules/axios/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_autosize__ = __webpack_require__("./node_modules/vue-autosize/src/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_autosize___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_autosize__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_bootstrap_vue__ = __webpack_require__("./node_modules/bootstrap-vue/es/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_moment__ = __webpack_require__("./node_modules/moment/moment.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_moment__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vue_moment__ = __webpack_require__("./node_modules/vue-moment/dist/vue-moment.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vue_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_vue_moment__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_bootstrap_vue_dist_bootstrap_vue_css__ = __webpack_require__("./node_modules/bootstrap-vue/dist/bootstrap-vue.css");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_bootstrap_vue_dist_bootstrap_vue_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_bootstrap_vue_dist_bootstrap_vue_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_bootstrap_vue_dist_bootstrap_vue_css__ = __webpack_require__("./node_modules/bootstrap-vue/dist/bootstrap-vue.css");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_bootstrap_vue_dist_bootstrap_vue_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_bootstrap_vue_dist_bootstrap_vue_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_moment__ = __webpack_require__("./node_modules/moment/moment.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_moment__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_vue_moment__ = __webpack_require__("./node_modules/vue-moment/dist/vue-moment.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_vue_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_vue_moment__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__event_bus__ = __webpack_require__("./resources/assets/js/event-bus.js");
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -89123,23 +89265,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 __webpack_require__("./resources/assets/js/bootstrap.js");
 
-window.Vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
-
-
-
-
-
-
-
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_axios___default.a);
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_3_bootstrap_vue__["a" /* default */]);
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_autosize___default.a);
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2__event_bus_js__["a" /* EventBus */]);
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_4_moment___default.a);
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_5_vue_moment___default.a);
-
-
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vue_autosize___default.a);
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_7__event_bus__["a" /* EventBus */]);
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_5_moment___default.a);
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_6_vue_moment___default.a);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -89165,13 +89314,11 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('follow-request-actions', 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('image-upload', __webpack_require__("./resources/assets/js/components/utilities/ImageUpload.vue"));
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.mixin({
-    methods: {
-        route: route
-    }
+  methods: { route: route }
 });
 
 var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
-    el: '#app'
+  el: '#app'
 });
 
 /***/ }),
@@ -89820,7 +89967,9 @@ module.exports = Component.exports
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__("./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 
+
 var EventBus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
+/* unused harmony default export */ var _unused_webpack_default_export = ('EventBus');
 
 /***/ }),
 

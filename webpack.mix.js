@@ -25,3 +25,17 @@ mix.js('resources/assets/js/app.js', 'public/js')
         proxy: 'http://twitterclone.test',
         notify: false,
     });
+
+if (process.env.NODE_ENV === 'development') {
+    mix.webpackConfig({
+        module: {
+            rules: [
+                {
+                    test: /\\.(js)$/,
+                    exclude: /node_modules/,
+                    loader: 'eslint-loader',
+                },
+            ],
+        },
+    });
+}

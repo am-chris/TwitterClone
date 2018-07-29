@@ -5,23 +5,30 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+import Vue from 'vue';
 
-window.Vue = require('vue');
-import Vue from 'vue'
+import axios from 'axios';
+
 import VueAutosize from 'vue-autosize';
-import { EventBus } from './event-bus.js';
+
 import BootstrapVue from 'bootstrap-vue';
+
+import 'bootstrap-vue/dist/bootstrap-vue.css';
+
 import Moment from 'moment';
+
 import VueMoment from 'vue-moment';
 
+import { EventBus } from './event-bus';
+
+require('./bootstrap');
+
+Vue.use(axios);
 Vue.use(BootstrapVue);
 Vue.use(VueAutosize);
 Vue.use(EventBus);
 Vue.use(Moment);
 Vue.use(VueMoment);
-
-import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -47,11 +54,9 @@ Vue.component('follow-request-actions', require('./components/users/FollowReques
 Vue.component('image-upload', require('./components/utilities/ImageUpload.vue'));
 
 Vue.mixin({
-    methods: {
-        route: route
-    }
+  methods: { route },
 });
 
 const app = new Vue({
-    el: '#app'
+  el: '#app',
 });
