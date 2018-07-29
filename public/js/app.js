@@ -2659,7 +2659,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   methods: {
     block: function block(userId) {
-      axios.post('/u/' + userId + '/block', {
+      axios.post(route('users.blocks.store', userId), {
         current_user_id: this.currentUserId,
         user_id: userId
       });
@@ -2679,7 +2679,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       });
     },
     deletePost: function deletePost(postId) {
-      axios.delete('/p/' + postId, {
+      axios.delete(route('posts.destroy', postId), {
         user_id: this.currentUserId,
         post_id: this.postId
       });
@@ -3415,7 +3415,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
       this.following = true;
 
-      axios.post('/u/' + this.userId + '/follow', {
+      axios.post(route('users.follows.store', this.userId), {
         user_id: this.userId,
         current_user_id: this.currentUserId
       }).catch(function (error) {
@@ -3431,7 +3431,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
       this.following = false;
 
-      axios.post('/u/' + this.userId + '/unfollow', {
+      axios.post(route('users.follows.destroy', this.userId), {
         user_id: this.userId,
         current_user_id: this.currentUserId
       }).catch(function (error) {
@@ -3443,7 +3443,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
       this.requested = false;
 
-      axios.post('/u/' + this.userId + '/cancel_follow_request', {
+      axios.post(route('users.follows.deny_follow_request', this.userId), {
         user_id: this.userId,
         current_user_id: this.currentUserId
       }).catch(function (error) {
@@ -3824,7 +3824,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       });
     },
     deletePost: function deletePost(postId) {
-      axios.delete('/p/' + postId, {
+      axios.delete(route('posts.destroy', postId), {
         user_id: this.userId,
         post_id: this.postId
       });

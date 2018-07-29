@@ -18,7 +18,7 @@
             </a>
             <div class="media-body">
               <div v-if="post.post_id > 0">
-              <div class="text-muted">Replying to </div>
+                <div class="text-muted">Replying to </div>
               </div>
               <h6 class="mt-0">
                 <a
@@ -157,7 +157,7 @@ export default {
     },
 
     deletePost(postId) {
-      axios.delete('/p/' + postId, {
+      axios.delete(route('posts.destroy', postId), {
         user_id: this.userId,
         post_id: this.postId,
       });
@@ -187,7 +187,7 @@ export default {
 
     abbreviateNumber(value) {
       let newValue = value;
-      var suffixNum = Math.floor(('' + value).length / 3);
+      const suffixNum = Math.floor(('' + value).length / 3);
       if (value >= 1000) {
         const suffixes = ['', 'k', 'm', 'b', 't'];
         let shortValue = '';

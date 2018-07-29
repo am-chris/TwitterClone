@@ -179,7 +179,7 @@ export default {
 
   methods: {
     block(userId) {
-      axios.post(`/u/${userId}/block`, {
+      axios.post(route('users.blocks.store', userId), {
         current_user_id: this.currentUserId,
         user_id: userId,
       });
@@ -200,7 +200,7 @@ export default {
     },
 
     deletePost(postId) {
-      axios.delete(`/p/${postId}`, {
+      axios.delete(route('posts.destroy', postId), {
         user_id: this.currentUserId,
         post_id: this.postId,
       });

@@ -62,7 +62,7 @@ export default {
     follow() {
       this.following = true;
 
-      axios.post('/u/' + this.userId + '/follow', {
+      axios.post(route('users.follows.store', this.userId), {
         user_id: this.userId,
         current_user_id: this.currentUserId,
       })
@@ -78,7 +78,7 @@ export default {
     unfollow() {
       this.following = false;
 
-      axios.post('/u/' + this.userId + '/unfollow', {
+      axios.post(route('users.follows.destroy', this.userId), {
         user_id: this.userId,
         current_user_id: this.currentUserId,
       })
@@ -90,7 +90,7 @@ export default {
     cancelFollowRequest() {
       this.requested = false;
 
-      axios.post('/u/' + this.userId + '/cancel_follow_request', {
+      axios.post(route('users.follows.deny_follow_request', this.userId), {
         user_id: this.userId,
         current_user_id: this.currentUserId,
       })
