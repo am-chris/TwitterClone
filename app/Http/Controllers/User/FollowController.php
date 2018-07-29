@@ -41,7 +41,7 @@ class FollowController extends Controller
 
         $user = User::findOrFail($userId);
 
-        if ($user->private == 1) {
+        if ($user->private == true) {
             $follow_request = new FollowRequest;
             $follow_request->followed_id = $request->user_id;
             $follow_request->follower_id = $request->current_user_id;

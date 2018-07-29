@@ -2642,10 +2642,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     currentUserId: {
       type: Number,
       required: true
-    },
-    userId: {
-      type: Number,
-      required: true
     }
   },
 
@@ -2684,7 +2680,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     deletePost: function deletePost(postId) {
       axios.delete('/p/' + postId, {
-        user_id: this.userId,
+        user_id: this.currentUserId,
         post_id: this.postId
       });
 
@@ -2703,9 +2699,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           if (_this2.posts.length / 20 === 10) {
             _this2.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
           }
-          Vue.nextTick(function () {
-            $('[rel="tooltip"]').tooltip();
-          });
         } else {
           _this2.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
         }
@@ -2764,51 +2757,74 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['countOriginal', 'likedOriginal', 'postId', 'userId'],
-
-    data: function data() {
-        return {
-            liked: this.likedOriginal,
-            count: this.countOriginal,
-            loggedIn: $("meta[name=loggedIn]").attr('content')
-        };
+  props: {
+    countOriginal: {
+      type: Number,
+      required: true
     },
-
-
-    mounted: function mounted() {
-        if (isNaN(this.count)) this.count = 0;
+    postId: {
+      type: Number,
+      required: true
     },
-
-    methods: {
-        like: function like() {
-            axios.post(route('posts.likes.store', this.postId), {
-                user_id: this.userId,
-                post_id: this.postId
-            }).then(function (response) {}).catch(function (error) {
-                console.log(error.response);
-            });
-
-            if (isNaN(this.count)) this.count = 0;
-
-            this.count = this.count + 1;
-            this.liked = true;
-        },
-        unlike: function unlike() {
-            axios.post(route('posts.likes.destroy', this.postId), {
-                user_id: this.userId,
-                post_id: this.postId
-            }).then(function (response) {}).catch(function (error) {
-                console.log(error.response);
-            });
-
-            if (isNaN(this.count)) this.count = 0;
-
-            this.count = this.count - 1;
-            this.liked = false;
-        }
+    userId: {
+      type: Number,
+      required: true
     }
+  },
+
+  data: function data() {
+    return {
+      liked: false,
+      count: this.countOriginal,
+      loggedIn: $('meta[name=loggedIn]').attr('content')
+    };
+  },
+  mounted: function mounted() {
+    if (isNaN(this.count)) this.count = 0;
+  },
+
+
+  methods: {
+    like: function like() {
+      axios.post(route('posts.likes.store', this.postId), {
+        user_id: this.userId,
+        post_id: this.postId
+      });
+
+      if (isNaN(this.count)) this.count = 0;
+
+      this.count = this.count + 1;
+      this.liked = true;
+    },
+    unlike: function unlike() {
+      axios.post(route('posts.likes.destroy', this.postId), {
+        user_id: this.userId,
+        post_id: this.postId
+      });
+
+      if (isNaN(this.count)) this.count = 0;
+
+      this.count = this.count - 1;
+      this.liked = false;
+    }
+  }
 });
 
 /***/ }),
@@ -2847,31 +2863,38 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['userId'],
-
-    data: function data() {
-        return {
-            content: '',
-            changesDetected: false
-        };
-    },
-
-
-    methods: {
-        save: function save() {
-            axios.post(route('posts.store'), {
-                user_id: this.userId,
-                content: this.content
-            }).then(function (response) {}).catch(function (error) {
-                console.log(error.response);
-            });
-
-            this.content = '';
-            this.changesDetected = false;
-        }
+  props: {
+    userId: {
+      type: Number,
+      required: true
     }
+  },
+
+  data: function data() {
+    return {
+      content: '',
+      changesDetected: false
+    };
+  },
+
+
+  methods: {
+    save: function save() {
+      axios.post(route('posts.store'), {
+        user_id: this.userId,
+        content: this.content
+      });
+
+      this.content = '';
+      this.changesDetected = false;
+    }
+  }
 });
 
 /***/ }),
@@ -2911,51 +2934,80 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['countOriginal', 'postId', 'private', 'sharedOriginal', 'userId'],
-
-    data: function data() {
-        return {
-            shared: this.sharedOriginal,
-            count: this.countOriginal,
-            loggedIn: $("meta[name=loggedIn]").attr('content')
-        };
+  props: {
+    countOriginal: {
+      type: Number,
+      required: true
     },
-
-
-    mounted: function mounted() {
-        if (isNaN(this.count)) this.count = 0;
+    postId: {
+      type: Number,
+      required: true
     },
-
-    methods: {
-        share: function share() {
-            axios.post(route('posts.shares.store', this.postId), {
-                post_id: this.postId,
-                user_id: this.userId
-            }).then(function (response) {}).catch(function (error) {
-                console.log(error.response);
-            });
-
-            if (isNaN(this.count)) this.count = 0;
-
-            this.count = this.count + 1;
-            this.shared = true;
-        },
-        unshare: function unshare() {
-            axios.post(route('posts.shares.destroy', this.postId), {
-                post_id: this.postId,
-                user_id: this.userId
-            }).then(function (response) {}).catch(function (error) {
-                console.log(error.response);
-            });
-
-            if (isNaN(this.count)) this.count = 0;
-
-            this.count = this.count - 1;
-            this.shared = false;
-        }
+    private: {
+      type: Number,
+      required: true
+    },
+    userId: {
+      type: Number,
+      required: true
     }
+  },
+
+  data: function data() {
+    return {
+      shared: false,
+      count: this.countOriginal,
+      loggedIn: $('meta[name=loggedIn]').attr('content')
+    };
+  },
+  mounted: function mounted() {
+    if (isNaN(this.count)) this.count = 0;
+  },
+
+
+  methods: {
+    share: function share() {
+      axios.post(route('posts.shares.store', this.postId), {
+        post_id: this.postId,
+        user_id: this.userId
+      });
+
+      if (isNaN(this.count)) this.count = 0;
+
+      this.count = this.count + 1;
+      this.shared = true;
+    },
+    unshare: function unshare() {
+      axios.post(route('posts.shares.destroy', this.postId), {
+        post_id: this.postId,
+        user_id: this.userId
+      });
+
+      if (isNaN(this.count)) this.count = 0;
+
+      this.count = this.count - 1;
+      this.shared = false;
+    }
+  }
 });
 
 /***/ }),
@@ -2965,7 +3017,48 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__event_bus_js__ = __webpack_require__("./resources/assets/js/event-bus.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__event_bus__ = __webpack_require__("./resources/assets/js/event-bus.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3022,45 +3115,54 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['currentUser', 'user'],
-
-    data: function data() {
-        return {
-            newUser: this.user,
-            editing: false,
-            working: false
-        };
+  props: {
+    currentUser: {
+      type: Object,
+      required: true
     },
-    mounted: function mounted() {
-        var self = this;
-
-        __WEBPACK_IMPORTED_MODULE_0__event_bus_js__["a" /* EventBus */].$on('editing-profile', function (editing) {
-            self.editing = editing;
-        });
-
-        __WEBPACK_IMPORTED_MODULE_0__event_bus_js__["a" /* EventBus */].$on('saved-changes-profile', function (editing) {
-            self.update();
-        });
-    },
-
-
-    methods: {
-        update: function update() {
-            var _this = this;
-
-            this.working = true;
-
-            axios.put(route('users.update', this.user.id), {
-                name: this.newUser.name,
-                username: this.newUser.username,
-                bio: this.newUser.bio,
-                private: this.newUser.private
-            }).then(function (response) {}).finally(function (response) {
-                _this.editing = false;
-                _this.working = false;
-            });
-        }
+    user: {
+      type: Object,
+      required: true
     }
+  },
+
+  data: function data() {
+    return {
+      newUser: this.user,
+      editing: false,
+      working: false
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    __WEBPACK_IMPORTED_MODULE_0__event_bus__["a" /* EventBus */].$on('editing-profile', function (editing) {
+      _this.editing = editing;
+    });
+
+    __WEBPACK_IMPORTED_MODULE_0__event_bus__["a" /* EventBus */].$on('saved-changes-profile', function (editing) {
+      _this.update();
+    });
+  },
+
+
+  methods: {
+    update: function update() {
+      var _this2 = this;
+
+      this.working = true;
+
+      axios.put(route('users.update', this.user.id), {
+        name: this.newUser.name,
+        username: this.newUser.username,
+        bio: this.newUser.bio,
+        private: this.newUser.private
+      }).finally(function (response) {
+        _this2.editing = false;
+        _this2.working = false;
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -3070,7 +3172,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__event_bus_js__ = __webpack_require__("./resources/assets/js/event-bus.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__event_bus__ = __webpack_require__("./resources/assets/js/event-bus.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3105,52 +3231,61 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['src', 'user'],
-
-    data: function data() {
-        return {
-            editing: false,
-            image: {},
-            coverPhotoSrc: this.src
-        };
+  props: {
+    src: {
+      type: String,
+      required: true
     },
-    mounted: function mounted() {
-        var self = this;
-
-        __WEBPACK_IMPORTED_MODULE_0__event_bus_js__["a" /* EventBus */].$on('editing-profile', function (editing) {
-            self.editing = editing;
-        });
-    },
-
-
-    methods: {
-        onLoad: function onLoad(image) {
-            this.store(image);
-        },
-        store: function store(image) {
-            var _this = this;
-
-            var data = new FormData();
-
-            data.append('file', image.file);
-
-            axios.post(route('api.users.cover_photos.store', this.user.id), data).then(function (response) {
-                // Set the current cover photo url's <img src> equal to the uploaded cover photo url
-                _this.coverPhotoSrc = image.src;
-            }).catch(function (error) {});
-        },
-        destroy: function destroy() {
-            var _this2 = this;
-
-            this.working = true;
-
-            axios.delete(route('api.users.cover_photos.destroy', this.user.id)).then(function (response) {
-                _this2.coverPhotoSrc = image.src;
-            }).finally(function (response) {
-                _this2.working = false;
-            });
-        }
+    user: {
+      type: Object,
+      required: true
     }
+  },
+
+  data: function data() {
+    return {
+      editing: false,
+      image: {},
+      coverPhotoSrc: this.src
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    __WEBPACK_IMPORTED_MODULE_0__event_bus__["a" /* EventBus */].$on('editing-profile', function (editing) {
+      _this.editing = editing;
+    });
+  },
+
+
+  methods: {
+    onLoad: function onLoad(image) {
+      this.store(image);
+    },
+    store: function store(image) {
+      var _this2 = this;
+
+      var data = new FormData();
+
+      data.append('file', image.file);
+
+      axios.post(route('api.users.cover_photos.store', this.user.id), data).then(function (response) {
+        // Set the current cover photo url's <img src> equal to the uploaded cover photo url
+        _this2.coverPhotoSrc = image.src;
+      });
+    },
+    destroy: function destroy() {
+      var _this3 = this;
+
+      this.working = true;
+
+      axios.delete(route('api.users.cover_photos.destroy', this.user.id)).then(function (response) {
+        _this3.coverPhotoSrc = image.src;
+      }).finally(function (response) {
+        _this3.working = false;
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -3160,10 +3295,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__event_bus_js__ = __webpack_require__("./resources/assets/js/event-bus.js");
-//
-//
-//
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__event_bus__ = __webpack_require__("./resources/assets/js/event-bus.js");
 //
 //
 //
@@ -3190,26 +3322,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            editing: false
-        };
+  data: function data() {
+    return {
+      editing: false
+    };
+  },
+
+
+  methods: {
+    saveChanges: function saveChanges() {
+      this.editing = false;
+      this.changedEditingStatus();
+      __WEBPACK_IMPORTED_MODULE_0__event_bus__["a" /* EventBus */].$emit('saved-changes-profile', this.editing);
     },
-
-
-    methods: {
-        saveChanges: function saveChanges() {
-            var self = this;
-
-            self.editing = false;
-            self.changedEditingStatus();
-            __WEBPACK_IMPORTED_MODULE_0__event_bus_js__["a" /* EventBus */].$emit('saved-changes-profile', self.editing);
-        },
-        changedEditingStatus: function changedEditingStatus() {
-            var self = this;
-            __WEBPACK_IMPORTED_MODULE_0__event_bus_js__["a" /* EventBus */].$emit('editing-profile', self.editing);
-        }
+    changedEditingStatus: function changedEditingStatus() {
+      __WEBPACK_IMPORTED_MODULE_0__event_bus__["a" /* EventBus */].$emit('editing-profile', this.editing);
     }
+  }
 });
 
 /***/ }),
@@ -3235,58 +3364,93 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['oFollowing', 'oRequested', 'private', 'userId', 'currentUserId'],
-
-    data: function data() {
-        return {
-            following: this.oFollowing,
-            requested: this.oRequested
-        };
+  props: {
+    oFollowing: {
+      type: Boolean,
+      required: true
     },
-
-
-    methods: {
-        follow: function follow() {
-            var self = this;
-            this.following = true;
-
-            axios.post('/u/' + this.userId + '/follow', {
-                user_id: this.userId,
-                current_user_id: this.currentUserId
-            }).then(function (response) {}).catch(function (error) {
-                console.log(error);
-                this.following = false;
-            });
-
-            if (this.private == 1) {
-                this.requested = true;
-            }
-        },
-        unfollow: function unfollow() {
-            this.following = false;
-
-            axios.post('/u/' + this.userId + '/unfollow', {
-                user_id: this.userId,
-                current_user_id: this.currentUserId
-            }).then(function (response) {}).catch(function (error) {
-                console.log(error);
-                this.following = true;
-            });
-        },
-        cancelFollowRequest: function cancelFollowRequest() {
-            this.requested = false;
-
-            axios.post('/u/' + this.userId + '/cancel_follow_request', {
-                user_id: this.userId,
-                current_user_id: this.currentUserId
-            }).then(function (response) {}).catch(function (error) {
-                console.log(error);
-                this.requested = true;
-            });
-        }
+    oRequested: {
+      type: Boolean,
+      required: true
+    },
+    private: {
+      type: Number,
+      required: true
+    },
+    userId: {
+      type: Number,
+      required: true
+    },
+    currentUserId: {
+      type: Number,
+      required: false
     }
+  },
+
+  data: function data() {
+    return {
+      following: this.oFollowing,
+      requested: this.oRequested
+    };
+  },
+
+
+  methods: {
+    follow: function follow() {
+      var _this = this;
+
+      this.following = true;
+
+      axios.post('/u/' + this.userId + '/follow', {
+        user_id: this.userId,
+        current_user_id: this.currentUserId
+      }).catch(function (error) {
+        _this.following = false;
+      });
+
+      if (this.private === 1) {
+        this.requested = true;
+      }
+    },
+    unfollow: function unfollow() {
+      var _this2 = this;
+
+      this.following = false;
+
+      axios.post('/u/' + this.userId + '/unfollow', {
+        user_id: this.userId,
+        current_user_id: this.currentUserId
+      }).catch(function (error) {
+        _this2.following = true;
+      });
+    },
+    cancelFollowRequest: function cancelFollowRequest() {
+      var _this3 = this;
+
+      this.requested = false;
+
+      axios.post('/u/' + this.userId + '/cancel_follow_request', {
+        user_id: this.userId,
+        current_user_id: this.currentUserId
+      }).catch(function (error) {
+        _this3.requested = true;
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -3310,41 +3474,62 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['userId', 'currentUserId'],
-
-    data: function data() {
-        return {
-            visible: true
-        };
+  props: {
+    userId: {
+      type: Number,
+      required: true
     },
-
-
-    methods: {
-        approve: function approve() {
-            this.visible = false;
-
-            axios.post(route('users.follow_requests.approve', this.userId), {
-                user_id: this.userId,
-                current_user_id: this.currentUserId
-            }).then(function (response) {}).catch(function (error) {
-                console.log(error);
-                this.visible = true;
-            });
-        },
-        deny: function deny() {
-            this.visible = false;
-
-            axios.post(route('users.follow_requests.deny', this.userId), {
-                user_id: this.userId,
-                current_user_id: this.currentUserId
-            }).then(function (response) {}).catch(function (error) {
-                console.log(error);
-                this.visible = true;
-            });
-        }
+    currentUserId: {
+      type: Number,
+      required: true
     }
+  },
+
+  data: function data() {
+    return {
+      visible: true
+    };
+  },
+
+
+  methods: {
+    approve: function approve() {
+      var _this = this;
+
+      this.visible = false;
+
+      axios.post(route('users.follow_requests.approve', this.userId), {
+        user_id: this.userId,
+        current_user_id: this.currentUserId
+      }).catch(function (error) {
+        _this.visible = true;
+      });
+    },
+    deny: function deny() {
+      var _this2 = this;
+
+      this.visible = false;
+
+      axios.post(route('users.follow_requests.deny', this.userId), {
+        user_id: this.userId,
+        current_user_id: this.currentUserId
+      }).catch(function (error) {
+        _this2.visible = true;
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -3659,9 +3844,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           if (_this.posts.length / 20 === 10) {
             _this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
           }
-          Vue.nextTick(function () {
-            $('[rel="tooltip"]').tooltip();
-          });
         } else {
           _this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
         }
@@ -72020,7 +72202,7 @@ var render = function() {
               ])
         ])
       : _c("span", [_vm._m(0)]),
-    _vm._v("\n    " + _vm._s(this.count) + "\n")
+    _vm._v("\n  " + _vm._s(this.count) + "\n")
   ])
 }
 var staticRenderFns = [
@@ -72115,7 +72297,7 @@ var render = function() {
             : _c("span", [_vm._m(0)])
         ])
       : _c("span", [_vm._m(1)]),
-    _vm._v("\n    " + _vm._s(this.count) + "\n")
+    _vm._v("\n  " + _vm._s(this.count) + "\n")
   ])
 }
 var staticRenderFns = [
@@ -72449,11 +72631,8 @@ var render = function() {
       _vm._v(" "),
       _c("infinite-loading", {
         ref: "infiniteLoading",
-        attrs: {
-          "on-infinite": _vm.onInfinite,
-          distance: _vm.distance,
-          spinner: "spiral"
-        }
+        attrs: { distance: _vm.distance, spinner: "spiral" },
+        on: { infinite: _vm.onInfinite }
       }),
       _vm._v(" "),
       _c(
@@ -72639,7 +72818,7 @@ var render = function() {
                     staticClass: "fa fa-exclamation-circle text-danger"
                   }),
                   _vm._v(
-                    " Your account will lose it's Verification status if your Username changes.\n            "
+                    "\n        Your account will lose it's Verification status if your Username changes.\n      "
                   )
                 ])
               : _vm._e(),
@@ -72722,14 +72901,14 @@ var render = function() {
                   attrs: { id: "passwordHelpBlock" }
                 },
                 [
-                  _vm._v("\n                    Non-followers "),
+                  _vm._v("\n          Non-followers\n          "),
                   _c("strong", [
                     _vm.newUser.private
                       ? _c("span", [_vm._v("won't")])
                       : _c("span", [_vm._v("will")])
                   ]),
                   _vm._v(
-                    " be able to see your posts, likes, and shares.\n                "
+                    "\n          be able to see your posts, likes, and shares.\n        "
                   )
                 ]
               )
@@ -72792,7 +72971,7 @@ var render = function() {
         _vm._v(
           " Joined " +
             _vm._s(_vm._f("moment")(_vm.newUser.created_at, "MMM DD YYYY")) +
-            "\n        "
+            "\n    "
         )
       ])
     ])
@@ -73063,11 +73242,8 @@ var render = function() {
       _vm._v(" "),
       _c("infinite-loading", {
         ref: "infiniteLoading",
-        attrs: {
-          "on-infinite": _vm.onInfinite,
-          distance: _vm.distance,
-          spinner: "spiral"
-        }
+        attrs: { distance: _vm.distance, spinner: "spiral" },
+        on: { infinite: _vm.onInfinite }
       })
     ],
     1

@@ -115,7 +115,7 @@
       </li>
     </ul>
     <infinite-loading
-      :on-infinite="onInfinite"
+      @infinite="onInfinite"
       :distance="distance"
       ref="infiniteLoading"
       spinner="spiral"/>
@@ -177,9 +177,6 @@ export default {
             if (this.posts.length / 20 === 10) {
               this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
             }
-            Vue.nextTick(function () {
-              $('[rel="tooltip"]').tooltip();
-            });
           } else {
             this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
           }

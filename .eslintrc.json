@@ -2,5 +2,13 @@
     "extends": [
         "airbnb-base",
         "plugin:vue/strongly-recommended"
-    ]
+    ],
+    "rules": {
+        "import/no-extraneous-dependencies": [
+            "error",
+            {
+                "devDependencies": true
+            }
+        ]
+    }
 }

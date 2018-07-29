@@ -100,11 +100,11 @@ class PostController extends Controller
         $post = Post::findOrFail($postId);
 
         if (Auth::check()) {
-            if ($post->user->private == 1 && Auth::user()->followingUser($post->user->id) == 0) {
+            if ($post->user->private == true && Auth::user()->followingUser($post->user->id) == 0) {
                 abort(404);
             }
         } else {
-            if ($post->user->private == 1) {
+            if ($post->user->private == true) {
                 abort(404);
             }
         }

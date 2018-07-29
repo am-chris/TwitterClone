@@ -122,7 +122,7 @@
       </li>
     </ul>
     <infinite-loading
-      :on-infinite="onInfinite"
+      @infinite="onInfinite"
       :distance="distance"
       ref="infiniteLoading"
       spinner="spiral"/>
@@ -164,10 +164,6 @@ export default {
       type: Number,
       required: true,
     },
-    userId: {
-      type: Number,
-      required: true,
-    },
   },
 
   data() {
@@ -205,7 +201,7 @@ export default {
 
     deletePost(postId) {
       axios.delete(`/p/${postId}`, {
-        user_id: this.userId,
+        user_id: this.currentUserId,
         post_id: this.postId,
       });
 
@@ -224,9 +220,6 @@ export default {
             if (this.posts.length / 20 === 10) {
               this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
             }
-            Vue.nextTick(() => {
-              $('[rel="tooltip"]').tooltip();
-            });
           } else {
             this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
           }
