@@ -62,18 +62,7 @@ class UserController extends Controller
      */
     public function edit($username)
     {
-        $user = User::where('username', $username)
-            ->first();
-
-        if (is_null($user)) {
-            abort(404);
-        }
-
-        if (Auth::id() !== $user->id) {
-            return redirect('/');
-        }
-
-        return view('users.edit', compact('user'));
+        //
     }
 
     /**
@@ -87,16 +76,14 @@ class UserController extends Controller
     {
         $user = User::findOrFail($userId);
 
-        if (Auth::user()->id !== $user->id && !Auth::user()->hasRole('admin')) {
-            abort(403);
-        }
-
         $request->validate([
             'name' => 'required',
             'username' => 'required',
             'bio' => 'nullable|max:100',
             'private' => 'nullable',
         ]);
+
+        $this->authorize('update', $user);
 
         // Strip symbols from new username
         $desiredUsername = str_replace(['~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '|', '{', '}', ',', '.', '?', ' '], '', $request->username);

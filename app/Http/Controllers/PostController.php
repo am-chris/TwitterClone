@@ -42,21 +42,21 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $last_post = Post::where('user_id', Auth::id())
+        $lastPost = Post::where('user_id', Auth::id())
             ->orderBy('created_at', 'desc')
             ->first();
 
         // If last post and this post are within
-        if (!is_null($last_post)) {
+        if (!is_null($lastPost)) {
             $now = Carbon::now();
-            $length = $last_post->created_at->diffInSeconds($now);
+            $length = $lastPost->created_at->diffInSeconds($now);
 
             if ($length <= config('posts.min_seconds_between_posts')) {
                 return redirect()->back();
             }
 
             // If last post and new post are identical
-            if ($request->content == $last_post->content) {
+            if ($request->content == $lastPost->content) {
                 return redirect()->back();
             }
         }
@@ -99,15 +99,7 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($postId);
 
-        if (Auth::check()) {
-            if ($post->user->private == true && Auth::user()->followingUser($post->user->id) == 0) {
-                abort(404);
-            }
-        } else {
-            if ($post->user->private == true) {
-                abort(404);
-            }
-        }
+        $this->authorize('view', $post);
 
         $comments = Post::where('post_id', $post->id)
             ->orderBy('created_at', 'asc')
@@ -147,12 +139,9 @@ class PostController extends Controller
      */
     public function destroy(Request $request, $postId)
     {
-        $post = Post::where('id', $postId)
-            ->first();
+        $post = Post::findOrFail($postId);
 
-        if (Auth::id() !== $post->user_id && !Auth::user()->hasRole('admin')) {
-            abort(403);
-        }
+        $this->authorize('delete', $post);
 
         $post->delete();
 
