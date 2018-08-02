@@ -2,6 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
+use Redis;
+use App\Models\Follow;
+use App\Models\User\Block;
+use App\User;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class HashtagController extends Controller
@@ -11,9 +17,33 @@ class HashtagController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($query)
     {
-        //
+        $posts = Post::where('content', 'like', '%' . '#' . $query . '%')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $usersImFollowing = [];
+
+        $usersImFollowing = Follow::where('follower_id', Auth::id())
+            ->pluck('followed_id')
+            ->toArray();
+
+        array_push($usersImFollowing, Auth::id()); // Add current user to array
+
+        $blockedUserIds = Block::where('blocker_id', Auth::id())
+            ->pluck('blocked_id')
+            ->toArray();
+
+        $followSuggestions = User::where('id', '!=', Auth::id())
+            ->whereNotIn('id', $usersImFollowing)
+            ->whereNotIn('id', $blockedUserIds)
+            ->get()
+            ->take(3);
+
+        $trendingHashtags = array_map('json_decode', Redis::zrevrange('trending_hashtags', 0, 4, 'WITHSCORES'));
+        
+        return view('hashtags.index', compact('posts', 'followSuggestions', 'trendingHashtags'));
     }
 
     /**

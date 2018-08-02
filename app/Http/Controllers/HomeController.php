@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use Redis;
 use App\User;
 use App\Models\Follow;
 use App\Models\Post;
@@ -28,24 +29,26 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $users_im_following = [];
+        $usersImFollowing = [];
 
-        $users_im_following = Follow::where('follower_id', Auth::id())
+        $usersImFollowing = Follow::where('follower_id', Auth::id())
             ->pluck('followed_id')
             ->toArray();
 
-        array_push($users_im_following, Auth::id()); // Add current user to array
+        array_push($usersImFollowing, Auth::id()); // Add current user to array
 
-        $blocked_user_ids = Block::where('blocker_id', Auth::id())
+        $blockedUserIds = Block::where('blocker_id', Auth::id())
             ->pluck('blocked_id')
             ->toArray();
 
-        $follow_suggestions = User::where('id', '!=', Auth::id())
-            ->whereNotIn('id', $users_im_following)
-            ->whereNotIn('id', $blocked_user_ids)
+        $followSuggestions = User::where('id', '!=', Auth::id())
+            ->whereNotIn('id', $usersImFollowing)
+            ->whereNotIn('id', $blockedUserIds)
             ->get()
             ->take(3);
 
-        return view('home', compact('follow_suggestions'));
+        $trendingHashtags = array_map('json_decode', Redis::zrevrange('trending_hashtags', 0, 4, 'WITHSCORES'));
+
+        return view('home', compact('followSuggestions', 'trendingHashtags'));
     }
 }

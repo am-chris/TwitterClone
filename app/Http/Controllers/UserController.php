@@ -62,18 +62,7 @@ class UserController extends Controller
      */
     public function edit($username)
     {
-        $user = User::where('username', $username)
-            ->first();
-
-        if (is_null($user)) {
-            abort(404);
-        }
-
-        if (Auth::id() !== $user->id) {
-            return redirect('/');
-        }
-
-        return view('users.edit', compact('user'));
+        //
     }
 
     /**
@@ -83,28 +72,24 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $username)
+    public function update(Request $request, $userId)
     {
-        $user = User::where('username', $username)
-            ->first();
-
-        if (is_null($user)) {
-            abort(404);
-        }
-
-        if (Auth::id() !== $user->id) {
-            return redirect('/');
-        }
+        $user = User::findOrFail($userId);
 
         $request->validate([
+            'name' => 'required',
+            'username' => 'required',
             'bio' => 'nullable|max:100',
+            'private' => 'nullable',
         ]);
 
+        $this->authorize('update', $user);
+
         // Strip symbols from new username
-        $desired_username = str_replace(['~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '|', '{', '}', ',', '.', '?', ' '], '', $request->username);
+        $desiredUsername = str_replace(['~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '|', '{', '}', ',', '.', '?', ' '], '', $request->username);
 
         // If the username is already taken, throw an error
-        $user2 = User::where('username', $desired_username)
+        $user2 = User::where('username', $desiredUsername)
             ->first();
 
         if (!is_null($user2) && $user->id !== $user2->id) {
@@ -112,19 +97,20 @@ class UserController extends Controller
             return redirect()->back();
         }
 
-        // If the user changes their username, remove "Verified" status from their account
-        // to prevent verified users from pretending to be other people
-        if ($desired_username !== $user->username && $user->verified == 1) {
+        /**
+         * If the user changes their username, remove "Verified" status from their account
+         * to prevent verified users from pretending to be other people.
+         * If an admin causes this change, don't change the verified status.
+         */
+        if ($desiredUsername !== $user->username && $user->verified == 1 && !Auth::user()->hasRole('admin')) {
             $user->verified = 0;
         }
 
         $user->name = $request->name;
-        $user->username = $desired_username;
+        $user->username = $desiredUsername;
         $user->bio = preg_replace('/\r|\n/', '', $request->bio);
+        $user->private = $request->private ?? 0;
         $user->save();
-
-        Session::flash('success', 'Your profile was updated.');
-        return redirect('/' . $user->username . '/edit');
     }
 
     /**

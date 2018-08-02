@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use Redis;
 use App\Models\Follow;
 use App\Models\FollowRequest;
 use App\Models\Post;
@@ -19,38 +20,40 @@ class NotificationController extends Controller
      */
     public function index()
     {
-        $users_im_following = [];
+        $usersImFollowing = [];
 
-        $users_im_following = Follow::where('follower_id', Auth::id())
+        $usersImFollowing = Follow::where('follower_id', Auth::id())
             ->pluck('followed_id')
             ->toArray();
 
-        array_push($users_im_following, Auth::id()); // Add current user to array
+        array_push($usersImFollowing, Auth::id()); // Add current user to array
 
-        $blocked_user_ids = Block::where('blocker_id', Auth::id())
+        $blockedUserIds = Block::where('blocker_id', Auth::id())
             ->pluck('blocked_id')
             ->toArray();
 
-        $follow_suggestions = User::where('id', '!=', Auth::id())
-            ->whereNotIn('id', $users_im_following)
-            ->whereNotIn('id', $blocked_user_ids)
+        $followSuggestions = User::where('id', '!=', Auth::id())
+            ->whereNotIn('id', $usersImFollowing)
+            ->whereNotIn('id', $blockedUserIds)
             ->get()
             ->take(3);
 
-        $mentioned_post_ids = [];
+        $mentionedPostIds = [];
         foreach (Auth::user()->notifications as $notification) {
-            array_push($mentioned_post_ids, $notification->data['post_id']);
+            array_push($mentionedPostIds, $notification->data['post_id']);
         }
 
-        $posts = Post::whereIn('id', $mentioned_post_ids)
+        $posts = Post::whereIn('id', $mentionedPostIds)
             ->orderBy('created_at', 'desc')
             ->get();
 
-        $follow_requests = FollowRequest::with('follower')
+        $followRequests = FollowRequest::with('follower')
             ->where('followed_id', Auth::id())
             ->get();
 
-        return view('notifications.index', compact('follow_requests', 'follow_suggestions', 'posts'));
+        $trendingHashtags = array_map('json_decode', Redis::zrevrange('trending_hashtags', 0, 4, 'WITHSCORES'));
+
+        return view('notifications.index', compact('followRequests', 'followSuggestions', 'posts', 'trendingHashtags'));
     }
 
     /**

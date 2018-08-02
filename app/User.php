@@ -5,11 +5,14 @@ namespace App;
 use Auth;
 use App\Models\Follow;
 use App\Models\FollowRequest;
+use App\Models\User\Report;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laratrust\Traits\LaratrustUserTrait;
 
 class User extends Authenticatable
 {
+    use LaratrustUserTrait;
     use Notifiable;
 
     /**
@@ -18,7 +21,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'username', 'name', 'email', 'password',
+        'username', 'name', 'email', 'password', 'photo_url', 'cover_photo_url'
     ];
 
     /**
@@ -27,7 +30,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'email', 'password', 'remember_token', 'created_at',
+        'email', 'password', 'remember_token',
     ];
 
     public function posts()

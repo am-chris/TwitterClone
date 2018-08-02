@@ -68,7 +68,7 @@
                                         <a class="text-dark" href="{{ url('/' . $follow->username) }}" title="{{ $follow->name }}">
                                             {{ $follow->name }}
                                         </a>
-                                        @if ($follow->private == 1)
+                                        @if ($follow->private == true)
                                             <i class="fa fa-lock text-dark" rel="tooltip" data-original-title="Private"></i>
                                         @endif
                                         @if ($follow->verified)

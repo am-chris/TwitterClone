@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use Auth;
 use Session;
 use Carbon\Carbon;
+use App\Models\Notification;
 use App\Models\Post;
 use App\Models\Post\Comment;
 use App\User;
 use App\Notifications\YouWereMentioned;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -41,39 +43,31 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $last_post = Post::where('user_id', Auth::id())
+        $lastPost = Post::where('user_id', Auth::id())
             ->orderBy('created_at', 'desc')
             ->first();
 
-        // If last post and this post are within
-        if (!is_null($last_post)) {
-            $now = Carbon::now();
-            $length = $last_post->created_at->diffInSeconds($now);
+        preg_match_all('/(?:^|\s)#(\w+)/', $request->content, $postHashtags);
 
-            if ($length <= config('posts.min_seconds_between_posts')) {
-                return redirect()->back();
-            }
-
-            // If last post and new post are identical
-            if ($request->content == $last_post->content) {
-                return redirect()->back();
-            }
+        foreach (array_unique($postHashtags[1]) as $key => $value) {
+            Redis::zincrby('trending_hashtags', 1, str_replace('#', '', $value));
         }
+
+        // Parse hashtags and add them to Redis
+        $postContent = preg_replace('/(?:^|\s)#(\w+)/', ' <a href="/hashtag/$1">#$1</a>', $request->content);
 
         $post = new Post;
         if (isset($request->post_id)) {
             $post->post_id = $request->post_id;
         }
         $post->user_id = Auth::id();
-        $post->content = $request->content;
+        $post->content = $postContent;
         $post->save();
 
         // Check the body of the post for mentioned users
-        preg_match_all('/\@([^\s\.]+)/', $post->content, $matches);
+        preg_match_all('/\@([^\s\.]+)/', $post->content, $mentionedUsers);
 
-        $usernames = $matches[1];
-
-        foreach ($usernames as $username) {
+        foreach ($mentionedUsers[1] as $username) {
             $user = User::whereUsername($username)->first();
 
             if ($user) {
@@ -94,19 +88,11 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($postId)
     {
-        $post = Post::findOrFail($id);
+        $post = Post::findOrFail($postId);
 
-        if (Auth::check()) {
-            if ($post->user->private == 1 && Auth::user()->followingUser($post->user->id) == 0) {
-                abort(404);
-            }
-        } else {
-            if ($post->user->private == 1) {
-                abort(404);
-            }
-        }
+        $this->authorize('view', $post);
 
         $comments = Post::where('post_id', $post->id)
             ->orderBy('created_at', 'asc')
@@ -144,17 +130,22 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $post_id)
+    public function destroy(Request $request, $postId)
     {
-        $post = Post::where('id', $post_id)
-            ->first();
+        $post = Post::findOrFail($postId);
 
-        if (Auth::user()->admin !== 1 && Auth::id() !== $post->user_id) {
-            if ($request->ajax()) {
-                return response(['status' => 'You lack the permissions to complete this action.']);
-            } else {
-                Session::flash('error', 'You lack the permissions to complete this action.');
-                return redirect()->back();
+        $this->authorize('delete', $post);
+
+        preg_match_all('/#(\w+)/', $post->content, $postHashtags);
+        
+        // Decrement each hashtag's post count by one in the sorted list
+        foreach (array_unique($postHashtags[1]) as $key => $value) {
+            $hashtagCount = Redis::zscore('trending_hashtags', str_replace('#', '', $value));
+
+            Redis::zrem('trending_hashtags', str_replace('#', '', $value));
+
+            if ($hashtagCount - 1 >= 0) {
+                Redis::zincrby('trending_hashtags', $hashtagCount - 1, str_replace('#', '', $value));
             }
         }
 

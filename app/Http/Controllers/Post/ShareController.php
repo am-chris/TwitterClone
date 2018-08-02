@@ -18,7 +18,7 @@ class ShareController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function share(Request $request, $post_id)
+    public function store(Request $request, $postId)
     {
         $post_share = new Share;
         $post_share->post_id = $request->post_id;
@@ -45,7 +45,7 @@ class ShareController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function unshare(Request $request, $post_id)
+    public function destroy(Request $request, $postId)
     {
         $post_share = Share::where('post_id', $request->post_id)
             ->where('user_id', $request->user_id)

@@ -15,48 +15,44 @@ class PhotoController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param int $userId
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $user_id)
+    public function store(Request $request, $userId)
     {
         $request->validate([
-            'file' => 'dimensions:min_width=80,min_height=80,max_width=400,max_height=400'
+            'file' => ['required', 'image', 'mimes:jpeg,jpg,png', 'max:500', 'dimensions:min_width=100,min_height=100,max_width=403,max_height=403'],
         ]);
 
-        $path = Storage::putFile('users/photos', $request->file('file'));
+        $user = User::findOrFail($userId);
+        
+        // Get original cover photo's path, we will use it to delete the original photo after the new photo is uploaded
+        $originalPhoto = $user->photo_url;
 
-        $user = User::findOrFail($user_id);
-        $user->photo_url = $path;
-        $user->save();
+        $user->update([
+            'photo_url' => $request->file('file')->store('users/photos')
+        ]);
 
-        if ($request->ajax()) {
-            return response(['status' => 'The photo was uploaded.']);
-        } else {
-            Session::flash('success', 'The photo was uploaded.');
-            return redirect()->back();
-        }
+        Storage::delete($originalPhoto);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int  $userId
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $user_id)
+    public function destroy(Request $request, int $userId)
     {
-        $user = User::findOrFail($user_id);
+        $user = User::findOrFail($userId);
+
+        if (Auth::id() !== $userId && !Auth::user()->hasRole('admin')) {
+            abort(403);
+        }
 
         Storage::delete($user->photo_url);
 
         $user->photo_url = 'users/photos/mysteryman.png';
         $user->save();
-
-        if ($request->ajax()) {
-            return response(['status' => 'The photo was deleted.']);
-        } else {
-            Session::flash('success', 'The photo was deleted.');
-            return redirect()->back();
-        }
     }
 }

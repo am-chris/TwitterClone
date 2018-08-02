@@ -12,19 +12,15 @@ use App\Http\Controllers\Controller;
 class LikeController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Store a newly created resource in storage.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
-    }
-
-    public function like(Request $request, $post_id)
+    public function store(Request $request, $postId)
     {
         // If the post IDs do not match, the user is up to some shenanigans
-        if ($post_id != $request->post_id) {
+        if ($postId != $request->post_id) {
             if ($request->ajax()) {
                 return response(['status' => 'The post IDs do not match.']);
             } else {
@@ -38,7 +34,7 @@ class LikeController extends Controller
         $like->post_id = $request->post_id;
         $like->save();
 
-        $post = Post::where('id', $post_id)
+        $post = Post::where('id', $postId)
             ->first();
 
         $post->like_count = $post->like_count + 1;
@@ -58,7 +54,7 @@ class LikeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function unlike(Request $request, $post_id)
+    public function destroy(Request $request, $postId)
     {
         $post_like = Like::where('post_id', $request->post_id)
             ->where('user_id', $request->user_id)
