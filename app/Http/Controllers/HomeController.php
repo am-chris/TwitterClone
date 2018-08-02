@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use Redis;
 use App\User;
 use App\Models\Follow;
 use App\Models\Post;
@@ -46,6 +47,8 @@ class HomeController extends Controller
             ->get()
             ->take(3);
 
-        return view('home', compact('followSuggestions'));
+        $trendingHashtags = array_map('json_decode', Redis::zrevrange('trending_hashtags', 0, 4, 'WITHSCORES'));
+
+        return view('home', compact('followSuggestions', 'trendingHashtags'));
     }
 }

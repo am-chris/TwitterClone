@@ -65,11 +65,11 @@ class PostPolicy
      */
     public function delete(User $user, Post $post)
     {
-        if ($user->id !== $post->user_id) {
-            return false;
+        if ($user->id === $post->user_id) {
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     /**
@@ -93,10 +93,10 @@ class PostPolicy
      */
     public function forceDelete(User $user, Post $post)
     {
-        if ($user->id !== $post->user_id) {
-            return false;
+        if ($user->id === $post->user_id) {
+            return true;
         }
 
-        return true;
+        return false;
     }
 }

@@ -90,7 +90,7 @@
                 </ul>
               </h6>
               <pre
-                v-text="post.content"
+                v-html="post.content"
                 class="mb-1"
                 style="font-family: 'Roboto', arial; font-size: 14px; white-space: pre-wrap;"/>
               <ul class="list-inline text-dark">

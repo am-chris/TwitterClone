@@ -65,6 +65,8 @@ Route::get('{username}/edit', 'UserController@edit');
 Route::get('{username}/followers', 'UserController@followers');
 Route::get('{username}/following', 'UserController@following');
 
+Route::get('hashtag/{hashtag}', 'HashtagController@index')->name('hashtags.index');
+
 Route::get('api/{user_id}/timeline', 'Api\TimelineController@index');
 Route::get('api/{user_id}/individual_timeline', 'Api\TimelineController@individual');
 Route::get('api/{user_id}/p/liked', 'Api\Post\LikeController@index');

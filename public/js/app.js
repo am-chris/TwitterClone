@@ -72569,7 +72569,7 @@ var render = function() {
                         "font-size": "14px",
                         "white-space": "pre-wrap"
                       },
-                      domProps: { textContent: _vm._s(post.content) }
+                      domProps: { innerHTML: _vm._s(post.content) }
                     }),
                     _vm._v(" "),
                     _c("ul", { staticClass: "list-inline text-dark" }, [

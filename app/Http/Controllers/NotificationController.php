@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use Redis;
 use App\Models\Follow;
 use App\Models\FollowRequest;
 use App\Models\Post;
@@ -50,7 +51,9 @@ class NotificationController extends Controller
             ->where('followed_id', Auth::id())
             ->get();
 
-        return view('notifications.index', compact('followRequests', 'followSuggestions', 'posts'));
+        $trendingHashtags = array_map('json_decode', Redis::zrevrange('trending_hashtags', 0, 4, 'WITHSCORES'));
+
+        return view('notifications.index', compact('followRequests', 'followSuggestions', 'posts', 'trendingHashtags'));
     }
 
     /**
