@@ -29,13 +29,14 @@ Vue.use(EventBus);
 Vue.use(Moment);
 Vue.use(VueMoment);
 
-y/**
+/**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
 Vue.component('new-post', require('./components/posts/New.vue'));
+Vue.component('post', require('./components/Post.vue'));
 Vue.component('posts', require('./components/Posts.vue'));
 Vue.component('post-like', require('./components/posts/Like.vue'));
 Vue.component('post-share', require('./components/posts/Share.vue'));
