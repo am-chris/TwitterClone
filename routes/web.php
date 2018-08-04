@@ -42,8 +42,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('u/{user}/unfollow', 'User\FollowController@destroy')->name('users.follows.destroy');
     Route::post('u/{user}/approve_follow_request', 'User\FollowController@approve_follow_request')->name('users.follow_requests.approve');
     Route::post('u/{user}/deny_follow_request', 'User\FollowController@deny_follow_request')->name('users.follow_requests.deny');
-    Route::post('p/{post}/share', 'Post\ShareController@share');
-    Route::post('p/{post}/unshare', 'Post\ShareController@unshare');
 
     Route::post('u/{user}/photo', 'User\PhotoController@store')->name('users.photos.store');
     Route::delete('u/{user}/photo', 'User\PhotoController@destroy')->name('users.photos.destroy');
@@ -51,10 +49,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('u/{user}/report', 'User\ReportController@store')->name('users.reports.store');
 
     Route::put('users/{user}', 'UserController@update')->name('users.update');
-    Route::post('u/{user}/follow', 'User\FollowController@follow');
-    Route::post('u/{user}/unfollow', 'User\FollowController@unfollow');
-    Route::post('u/{user}/approve_follow_request', 'User\FollowController@approve_follow_request');
-    Route::post('u/{user}/cancel_follow_request', 'User\FollowController@cancel_follow_request');
 
     Route::get('settings', 'SettingController@index')->name('settings.index');
     Route::put('settings/{user}/password', 'Setting\PasswordController@update')->name('settings.passwords.update');
