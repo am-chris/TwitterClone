@@ -14,8 +14,6 @@ import BootstrapVue from 'bootstrap-vue';
 
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 
-import Moment from 'moment';
-
 import VueMoment from 'vue-moment';
 
 import { EventBus } from './event-bus';
@@ -26,7 +24,6 @@ Vue.use(axios);
 Vue.use(BootstrapVue);
 Vue.use(VueAutosize);
 Vue.use(EventBus);
-Vue.use(Moment);
 Vue.use(VueMoment);
 
 /**
