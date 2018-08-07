@@ -61,22 +61,21 @@ export default {
       this.changesDetected = false;
     },
 
-    onInfinite() {
-      const api = `/api/${this.userId}/individual_timeline?page=${this.currentPage}`;
-
-      axios.get(api)
-        .then((response) => {
-          if (response.data.data) {
-            this.posts = this.posts.concat(response.data.data);
-            this.$state.infiniteLoading.$emit('$InfiniteLoading:loaded');
-            if (this.posts.length / 20 === 10) {
-              this.$state.infiniteLoading.$emit('$InfiniteLoading:complete');
-            }
-          } else {
-            this.$state.infiniteLoading.$emit('$InfiniteLoading:complete');
+    onInfinite($state) {
+      axios.get(route('api.user_timeline', this.userId) + '?page=' + this.currentPage, {
+        params: {page: this.posts.length / 20 + 1,},
+      }).then(({ data }) => {
+        if (data.data.length) {
+          this.posts = this.posts.concat(data.data);
+          $state.loaded();
+          if (this.posts.length / 20 === 10) {
+            $state.complete();
           }
-        });
-
+        } else {
+          $state.complete();
+        }
+      });
+  
       this.currentPage += 1;
     },
 

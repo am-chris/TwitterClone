@@ -2721,20 +2721,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.content = '';
       this.changesDetected = false;
     },
-    onInfinite: function onInfinite() {
+    onInfinite: function onInfinite($state) {
       var _this2 = this;
 
-      var api = '/api/' + this.currentUserId + '/timeline?page=' + this.currentPage;
+      axios.get(route('api.timeline', this.currentUserId) + '?page=' + this.currentPage, {
+        params: { page: this.posts.length / 20 + 1 }
+      }).then(function (_ref) {
+        var data = _ref.data;
 
-      axios.get(api).then(function (response) {
-        if (response.data.data) {
-          _this2.posts = _this2.posts.concat(response.data.data);
-          _this2.$state.infiniteLoading.$emit('$InfiniteLoading:loaded');
+        if (data.data.length) {
+          _this2.posts = _this2.posts.concat(data.data);
+          $state.loaded();
           if (_this2.posts.length / 20 === 10) {
-            _this2.$state.infiniteLoading.$emit('$InfiniteLoading:complete');
+            $state.complete();
           }
         } else {
-          _this2.$state.infiniteLoading.$emit('$InfiniteLoading:complete');
+          $state.complete();
         }
       });
 
@@ -3761,20 +3763,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.content = '';
       this.changesDetected = false;
     },
-    onInfinite: function onInfinite() {
+    onInfinite: function onInfinite($state) {
       var _this = this;
 
-      var api = '/api/' + this.userId + '/individual_timeline?page=' + this.currentPage;
+      axios.get(route('api.user_timeline', this.userId) + '?page=' + this.currentPage, {
+        params: { page: this.posts.length / 20 + 1 }
+      }).then(function (_ref) {
+        var data = _ref.data;
 
-      axios.get(api).then(function (response) {
-        if (response.data.data) {
-          _this.posts = _this.posts.concat(response.data.data);
-          _this.$state.infiniteLoading.$emit('$InfiniteLoading:loaded');
+        if (data.data.length) {
+          _this.posts = _this.posts.concat(data.data);
+          $state.loaded();
           if (_this.posts.length / 20 === 10) {
-            _this.$state.infiniteLoading.$emit('$InfiniteLoading:complete');
+            $state.complete();
           }
         } else {
-          _this.$state.infiniteLoading.$emit('$InfiniteLoading:complete');
+          $state.complete();
         }
       });
 
