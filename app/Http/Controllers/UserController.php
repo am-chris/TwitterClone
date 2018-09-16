@@ -129,7 +129,10 @@ class UserController extends Controller
         $user = User::where('username', $username)
             ->first();
 
-        return view('users.followers', compact('user'));
+        $followers = User::whereIn('id', $user->followers())
+            ->simplePaginate(20);
+
+        return view('users.followers', compact('user', 'followers'));
     }
 
     public function following($username)
@@ -137,6 +140,9 @@ class UserController extends Controller
         $user = User::where('username', $username)
             ->first();
 
-        return view('users.following', compact('user'));
+        $follows = User::whereIn('id', $user->following())
+            ->simplePaginate(20);
+
+        return view('users.following', compact('user', 'follows'));
     }
 }

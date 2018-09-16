@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use Auth;
+use Redis;
 use Session;
 use App\Models\Follow;
 use App\Models\User\Block;
@@ -54,7 +55,8 @@ class BlockController extends Controller
         }
 
         // Block the user
-        Auth::user()->block($request->user_id);
+        Redis::zadd('blockers:' . $request->user_id, time(), $request->current_user_id);
+        Redis::zadd('blocking:' . $request->current_user_id, time(), $request->user_id);
 
         if ($request->ajax()) {
             return response(['status' => 'Blocked the user.']);
@@ -87,7 +89,8 @@ class BlockController extends Controller
         }
 
         // Unblock the user
-        $blockedUser->delete();
+        Redis::zrem('blockers:' . $request->user_id, time(), $request->current_user_id);
+        Redis::zrem('blocking:' . $request->current_user_id, time(), $request->user_id);
 
         if ($request->ajax()) {
             return response(['status' => 'Unblocked the user.']);

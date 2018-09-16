@@ -221,7 +221,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
-        'Carbon' => 'Carbon\Carbon'
+        'Carbon' => 'Carbon\Carbon',
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
 
     ],
 

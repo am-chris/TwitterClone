@@ -30,11 +30,11 @@
                         </div>
                         <div class="col-lg-4">
                             <a class="text-bold text-muted text-primary-hover" href="{{ url('/' . Auth::user()->username . '/following') }}" style="font-size: 13px;">Following</a><br>
-                            <b>{{ number_shorten(Auth::user()->follows->count()) }}</b>
+                            <b>{{ number_shorten(Redis::zcard('following:' . Auth::id())) }}</b>
                         </div>
                         <div class="col-lg-4">
                             <a class="text-bold text-muted text-primary-hover" href="{{ url('/' . Auth::user()->username . '/followers') }}" style="font-size: 13px;">Followers</a><br>
-                            <b>{{ number_shorten(Auth::user()->followers->count()) }}</b>
+                            <b>{{ number_shorten(Redis::zcard('followers:' . Auth::id())) }}</b>
                         </div>
                     </div>
                 </div>
@@ -43,9 +43,9 @@
 
             </div>
             <div class="col-md-6">
-                @if (Auth::user()->follows->count() <= 3)
+                @if (number_shorten(Redis::zcard('following:' . Auth::id())) <= 5)
                     <div class="p-3 mb-0 bg-warning">
-                        To get the full {{ config('app.name') }} experience, follow some people.
+                        To get the full {{ config('app.name') }} experience, follow more people.
                     </div>
                 @endif
                 <div class="p-3 mb-0" style="background-color: #FCFCFC; border: 1px solid #DDD; border-bottom: 0;">

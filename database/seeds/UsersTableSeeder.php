@@ -29,7 +29,7 @@ class UsersTableSeeder extends Seeder
         foreach (range(1, 5000) as $index) {
             $first_name = $faker->firstName;
             $full_name = $first_name . ' ' . $faker->lastName;
-            $username = str_replace([' ', '-', '.'], '_', $faker->username) . rand(1, 99);
+            $username = str_replace([' ', '-', '.'], '_', $faker->username) . rand(1, 999);
 
             $random_num = rand(0, 100);
 

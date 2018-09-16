@@ -98,7 +98,7 @@ export default {
   props: {
     currentUser: {
       type: Object,
-      required: true,
+      required: false,
     },
     user: {
       type: Object,

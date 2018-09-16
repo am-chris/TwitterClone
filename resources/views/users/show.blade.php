@@ -25,11 +25,11 @@
                     </a>
                     <a class="nav-link text-center text-dark" href="{{ url('/' . $user->username . '/following') }}">
                         <div class="profile-nav-link">Following</div>
-                        <span class="text-bold">{{ number_shorten($user->follows->count(), 0) }}</span>
+                        <span class="text-bold">{{ number_shorten(Redis::zcard('following:' . $user->id), 0) }}</span>
                     </a>
                     <a class="nav-link text-center text-dark" href="{{ url('/' . $user->username . '/followers') }}">
                         <div class="profile-nav-link">Followers</div>
-                        <span class="text-bold">{{ number_shorten($user->followers->count(), 0) }}</span>
+                        <span class="text-bold">{{ number_shorten(Redis::zcard('followers:' . $user->id), 0) }}</span>
                     </a>
                     @if (Auth::id() == $user->id || Auth::check() && Auth::user()->hasRole('admin'))
                         <user-edit></user-edit>
@@ -37,7 +37,7 @@
                         <span class="ml-auto">
                             @if (Auth::check())
                                 <user-follow 
-                                    :o-following="{{ json_encode(Auth::user()->followingUser($user->id)) }}" 
+                                    :o-following="{{ json_encode(Redis::zscore("following:" . Auth::id(), $user->id) ? true : false) }}" 
                                     :o-requested="{{ json_encode(Auth::user()->followRequested($user->id)) }}" 
                                     :private="{{ $user->private }}" 
                                     :user-id="{{ $user->id }}" 
@@ -47,20 +47,13 @@
                         </span>
                     @endif
                 </nav>
-                @if (Auth::check())
-                    @if ($user->private == 0 || $user->private == true && Auth::user()->followingUser($user->id) != 0 || Auth::id() == $user->id)
-                        <div class="bg-white">
-                            <user-posts :current-user-id="{{ json_encode(Auth::id()) }}" :user-id="{{ json_encode($user->id) }}"></user-posts>
-                        </div>
-                    @else
-                        <h5>This account's Posts are private.</h5>
-                        <p>Only confirmed followers can view {{ '@' . $user->username }}'s Posts and profile. Click the Follow button to send a follow request.</p>
-                    @endif
+                @if ($user->private == false || $user->private == true && ((Redis::zscore("following:" . Auth::id(), $user->id) ? true : false) == true) || Auth::id() == $user->id)
+                    <div class="bg-white">
+                        <user-posts :current-user-id="{{ json_encode(Auth::id()) }}" :user-id="{{ json_encode($user->id) }}"></user-posts>
+                    </div>
                 @else
-                    @if ($user->private)
-                        <h5>This account's Posts are private.</h5>
-                        <p>Only confirmed followers can view {{ '@' . $user->username }}'s Posts and profile. Click the Follow button to send a follow request.</p>
-                    @endif
+                    <h5>This account's Posts are private.</h5>
+                    <p>Only confirmed followers can view {{ '@' . $user->username }}'s Posts and profile. Click the Follow button to send a follow request.</p>
                 @endif
             </div>
         </div>

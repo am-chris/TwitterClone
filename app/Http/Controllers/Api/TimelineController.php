@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Auth;
+use Redis;
 use Response;
 use App\Models\Follow;
 use App\Models\Post;
@@ -20,26 +21,13 @@ class TimelineController extends Controller
      */
     public function index($userId)
     {
-        $blockedUserIds = Block::where('blocker_id', $userId)
-            ->pluck('blocked_id')
-            ->toArray();
-
-        $usersImFollowing = [];
-
-        $usersImFollowing = Follow::where('follower_id', $userId)
-            ->whereNotIn('followed_id', $blockedUserIds)
-            ->pluck('followed_id')
-            ->toArray();
-
-        array_push($usersImFollowing, $userId); // Add current user to array
-
-        $sharedPostIds = Share::whereIn('user_id', $usersImFollowing)
+        $sharedPostIds = Share::whereIn('user_id', Auth::user()->following())
             ->pluck('post_id');
 
         $posts = Post::with('user')
-            ->whereIn('user_id', $usersImFollowing)
+            ->whereNotIn('user_id', Auth::user()->blocking())
+            ->whereIn('user_id', array_merge(Auth::user()->following(), ['0' => Auth::id()]))
             ->orWhereIn('id', $sharedPostIds)
-            ->whereNotIn('user_id', $blockedUserIds)
             ->orderBy('created_at', 'desc')
             ->paginate(20);
 

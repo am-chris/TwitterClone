@@ -3,6 +3,7 @@
 namespace App;
 
 use Auth;
+use Redis;
 use App\Models\Follow;
 use App\Models\FollowRequest;
 use App\Models\User\Report;
@@ -94,8 +95,18 @@ class User extends Authenticatable
         return false;
     }
 
+    public function following()
+    {
+        return Redis::zrange('following:' . $this->id, 0, -1);
+    }
+
     public function followers()
     {
-       return $this->belongsToMany(self::class, 'follows', 'followed_id', 'follower_id');
+        return Redis::zrange('followers:' . $this->id, 0, -1);
+    }
+
+    public function blocking()
+    {
+        return Redis::zrange('blocking:' . $this->id, 0, -1);
     }
 }

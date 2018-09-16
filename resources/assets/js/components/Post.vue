@@ -45,7 +45,7 @@
               class="list-inline d-inline-block float-right"
               style="font-size: 19px; font-weight: 400;">
               <li class="list-inline-item">
-                <div v-if="loggedIn">
+                <div v-if="loggedIn && currentUserId > 0">
                   <div class="dropdown">
                     <a
                       class="text-muted"
@@ -126,7 +126,7 @@ export default {
     },
     currentUserId: {
       type: Number,
-      required: true,
+      required: false,
     },
   },
 
@@ -135,5 +135,14 @@ export default {
       loggedIn: $('meta[name=loggedIn]').attr('content'),
     };
   },
+
+  methods: {
+    block(userId) {
+      axios.post(route('users.blocks.store', userId), {
+        current_user_id: this.currentUserId,
+        user_id: userId,
+      });
+    },
+  }
 }
 </script>

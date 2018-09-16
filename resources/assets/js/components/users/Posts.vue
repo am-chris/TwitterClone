@@ -26,7 +26,7 @@ export default {
   props: {
     currentUserId: {
       type: Number,
-      required: true,
+      required: false,
     },
     userId: {
       type: Number,
@@ -44,13 +44,6 @@ export default {
   },
 
   methods: {
-    blockUser(userId) {
-      axios.post(route('users.blocks.store', userId), {
-        current_user_id: this.currentUserId,
-        user_id: userId,
-      });
-    },
-
     deletePost(postId) {
       axios.delete(route('posts.destroy', postId), {
         user_id: this.userId,
@@ -63,7 +56,7 @@ export default {
 
     onInfinite($state) {
       axios.get(route('api.user_timeline', this.userId) + '?page=' + this.currentPage, {
-        params: {page: this.posts.length / 20 + 1,},
+        params: { page: this.posts.length / 20 + 1, },
       }).then(({ data }) => {
         if (data.data.length) {
           this.posts = this.posts.concat(data.data);

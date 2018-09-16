@@ -29,21 +29,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $usersImFollowing = [];
-
-        $usersImFollowing = Follow::where('follower_id', Auth::id())
-            ->pluck('followed_id')
-            ->toArray();
-
-        array_push($usersImFollowing, Auth::id()); // Add current user to array
-
-        $blockedUserIds = Block::where('blocker_id', Auth::id())
-            ->pluck('blocked_id')
-            ->toArray();
+        $usersImFollowing = Redis::zrange('following:' . Auth::id(), 0, -1);
+        $usersImBlocking = Redis::zrange('blocking:' . Auth::id(), 0, -1);
 
         $followSuggestions = User::where('id', '!=', Auth::id())
             ->whereNotIn('id', $usersImFollowing)
-            ->whereNotIn('id', $blockedUserIds)
+            ->whereNotIn('id', $usersImBlocking)
             ->get()
             ->take(3);
 

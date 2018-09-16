@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use Auth;
+use Redis;
 use Session;
 use App\Models\Follow;
 use App\Models\FollowRequest;
@@ -46,25 +47,9 @@ class FollowController extends Controller
             $follow_request->followed_id = $request->user_id;
             $follow_request->follower_id = $request->current_user_id;
             $follow_request->save();
-
-            if ($request->ajax()) {
-                return response(['status' => 'Sent follow request.']);
-            } else {
-                Session::flash('success', 'Sent follow request.');
-                return redirect()->back();
-            }
         } else {
-            $follow = new Follow;
-            $follow->followed_id = $request->user_id;
-            $follow->follower_id = $request->current_user_id;
-            $follow->save();
-
-            if ($request->ajax()) {
-                return response(['status' => 'Followed the user.']);
-            } else {
-                Session::flash('success', 'Followed the user.');
-                return redirect()->back();
-            }
+            Redis::zadd('followers:' . $request->user_id, time(), $request->current_user_id);
+            Redis::zadd('following:' . $request->current_user_id, time(), $request->user_id);
         }
     }
 
@@ -77,11 +62,8 @@ class FollowController extends Controller
      */
     public function destroy(Request $request, $userId)
     {
-        $follow = Follow::where('followed_id', $userId)
-            ->where('follower_id', $request->current_user_id)
-            ->first();
-
-        $follow->delete();
+        Redis::zrem('followers:' . $userId, time(), $request->current_user_id);
+        Redis::zrem('following:' . $request->current_user_id, time(), $userId);
 
         if ($request->ajax()) {
             return response(['status' => 'Unfollowed the user.']);
@@ -104,19 +86,12 @@ class FollowController extends Controller
             ->where('followed_id', $request->current_user_id)
             ->first();
 
-        $follow = new Follow;
-        $follow->followed_id = $request->current_user_id;
-        $follow->follower_id = $request->user_id;
-        $follow->save();
+        Redis::zadd('followers:' . $request->user_id, time(), $request->current_user_id);
+        Redis::zadd('following:' . $request->current_user_id, time(), $request->user_id);
 
         $follow_request->delete();
 
-        if ($request->ajax()) {
-            return response(['status' => 'Approved the follow request.']);
-        } else {
-            Session::flash('success', 'Approved the follow request.');
-            return redirect()->back();
-        }
+        return redirect()->back();
     }
 
     /**
@@ -134,11 +109,6 @@ class FollowController extends Controller
 
         $followRequest->delete();
 
-        if ($request->ajax()) {
-            return response(['status' => 'Canceled the follow request.']);
-        } else {
-            Session::flash('success', 'Canceled the follow request.');
-            return redirect()->back();
-        }
+        return redirect()->back();
     }
 }
