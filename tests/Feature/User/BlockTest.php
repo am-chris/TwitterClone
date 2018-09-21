@@ -4,11 +4,19 @@ namespace Tests\Feature\User;
 
 use App\User;
 use Tests\TestCase;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class BlockTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        Redis::flushall();
+    }
 
     /** @test */
     public function user_can_block_another_user()
@@ -22,10 +30,7 @@ class BlockTest extends TestCase
                 'user_id' => $user2->id,
             ]);
 
-        $this->assertDatabaseHas('blocked_users', [
-            'blocker_id' => $user->id,
-            'blocked_id' => $user2->id,
-        ]);
+        $this->assertTrue($user->blockingUser($user2));
     }
 
     /** @test */
@@ -46,10 +51,8 @@ class BlockTest extends TestCase
                 'user_id' => $user2->id,
             ]);
 
-        $this->assertDatabaseMissing('follows', [
-            'followed_id' => $user2->id,
-            'follower_id' => $user->id,
-        ]);
+        $this->assertTrue($user->blockingUser($user2));
+        $this->assertFalse($user->followingUser($user2));
     }
 
     /** @test */
@@ -70,10 +73,7 @@ class BlockTest extends TestCase
                 'user_id' => $user2->id,
             ]);
 
-        $this->assertDatabaseMissing('blocked_users', [
-            'blocker_id' => $user->id,
-            'blocked_id' => $user2->id,
-        ]);
+        $this->assertFalse($user->blockingUser($user2));
     }
 
     /** @test */
@@ -87,9 +87,6 @@ class BlockTest extends TestCase
                 'user_id' => $user->id,
             ]);
 
-        $this->assertDatabaseMissing('blocked_users', [
-            'blocker_id' => $user->id,
-            'blocked_id' => $user->id,
-        ]);
+        $this->assertFalse($user->blockingUser($user));
     }
 }

@@ -51,6 +51,10 @@ export default {
       type: Number,
       required: true,
     },
+    likedOriginal: {
+      type: Boolean,
+      required: false,
+    }
   },
 
   data() {
@@ -63,6 +67,10 @@ export default {
 
   mounted() {
     if (isNaN(this.count)) this.count = 0;
+
+    if (this.likedOriginal) {
+      this.liked = true;
+    }
   },
 
   methods: {
@@ -79,7 +87,7 @@ export default {
     },
 
     unlike() {
-      axios.post(route('posts.likes.destroy', this.postId), {
+      axios.delete(route('posts.likes.destroy', this.postId), {
         user_id: this.userId,
         post_id: this.postId,
       });

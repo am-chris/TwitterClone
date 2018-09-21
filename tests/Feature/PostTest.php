@@ -16,9 +16,7 @@ class PostTest extends TestCase
     {
         parent::setUp();
 
-        $admin = new Role;
-        $admin->name = 'admin';
-        $admin->save();
+        Role::create(['name' => 'admin']);
     }
 
     /** @test */

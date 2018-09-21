@@ -22,15 +22,11 @@ class NotificationController extends Controller
     {
         $usersImFollowing = [];
 
-        $usersImFollowing = Follow::where('follower_id', Auth::id())
-            ->pluck('followed_id')
-            ->toArray();
+        $usersImFollowing = Auth::user()->following();
 
         array_push($usersImFollowing, Auth::id()); // Add current user to array
 
-        $blockedUserIds = Block::where('blocker_id', Auth::id())
-            ->pluck('blocked_id')
-            ->toArray();
+        $blockedUserIds = Auth::user()->blocking();
 
         $followSuggestions = User::where('id', '!=', Auth::id())
             ->whereNotIn('id', $usersImFollowing)
@@ -47,9 +43,7 @@ class NotificationController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        $followRequests = FollowRequest::with('follower')
-            ->where('followed_id', Auth::id())
-            ->get();
+        $followRequests = Auth::user()->followRequests();
 
         $trendingHashtags = array_map('json_decode', Redis::zrevrange('trending_hashtags', 0, 4, 'WITHSCORES'));
 

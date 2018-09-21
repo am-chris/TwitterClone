@@ -19,8 +19,8 @@
                     <span class="text-muted font-weight-regular" style="font-size: 13px;" title="{{ $followSuggestion->username }}">{{ '@' . $followSuggestion->username }}</span>
                 </h6>
                 <user-follow 
-                    :o-following="{{ json_encode(Redis::zscore("following:" . Auth::id(), $followSuggestion->id) ? true : false) }}" 
-                    :o-requested="{{ json_encode(Auth::user()->followRequested($followSuggestion->id)) }}" 
+                    :o-following="{{ json_encode(Auth::user()->followingUser($followSuggestion) ? true : false) }}" 
+                    :o-requested="{{ json_encode(Auth::user()->followRequested($followSuggestion) ? true : false) }}" 
                     :private="{{ $followSuggestion->private }}" 
                     :user-id="{{ $followSuggestion->id }}" 
                     :current-user-id="{{ Auth::id() }}"

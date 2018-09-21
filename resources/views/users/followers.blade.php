@@ -22,11 +22,11 @@
                     </a>
                     <a class="nav-link text-center text-dark" href="{{ url('/' . $user->username . '/following') }}">
                         <div class="profile-nav-link">Following</div>
-                        <span class="text-bold">{{ number_shorten(Redis::zcard('following:' . $user->id), 0) }}</span>
+                        <span class="text-bold">{{ number_shorten(count($user->following()), 0) }}</span>
                     </a>
                     <a class="nav-link text-center active" href="#">
                         <div class="profile-nav-link">Followers</div>
-                        <span class="text-bold">{{ number_shorten(Redis::zcard('followers:' . $user->id), 0) }}</span>
+                        <span class="text-bold">{{ number_shorten(count($user->followers()), 0) }}</span>
                     </a>
                     @if (Auth::id() == $user->id)
                         <a class="nav-link ml-auto btn btn-outline-primary" href="{{ url('/' . $user->username . '/edit') }}" style="max-height: 40px;">Edit Profile</a>
@@ -59,8 +59,8 @@
                                         <div class="media-body" style="text-overflow: clip;">
                                             @if (Auth::id() !== $follower->id && Auth::check())                                        
                                                 <user-follow 
-                                                    :o-following="{{ json_encode(Auth::user()->followingUser($follower->id)) }}" 
-                                                    :o-requested="{{ json_encode(Auth::user()->followRequested($follower->id)) }}" 
+                                                    :o-following="{{ json_encode(Auth::user()->followingUser($follower)) }}" 
+                                                    :o-requested="{{ json_encode(Auth::user()->followRequested($follower)) }}" 
                                                     :private="{{ $follower->private }}" 
                                                     :user-id="{{ $follower->id }}" 
                                                     :current-user-id="{{ Auth::id() }}"

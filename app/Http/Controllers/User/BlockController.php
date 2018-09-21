@@ -19,10 +19,10 @@ class BlockController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $userId)
+    public function store(Request $request, User $user)
     {
         // If the user is trying to block themself, throw an error
-        if (Auth::id() == $request->user_id) {
+        if (Auth::id() == $user->id) {
             if ($request->ajax()) {
                 return response(['status' => 'You can\'t block yourself.']);
             } else {
@@ -31,32 +31,11 @@ class BlockController extends Controller
             }
         }
 
-        // If the user is already blocked, throw an error
-        $blockedUser = Block::where('blocker_id', $request->current_user_id)
-            ->where('blocked_id', $request->user_id)
-            ->first();
-
-        if (!is_null($blockedUser)) {
-            if ($request->ajax()) {
-                return response(['status' => 'The user is already blocked.']);
-            } else {
-                Session::flash('error', 'The user is already blocked.');
-                return redirect()->back();
-            }
-        }
-
         // Unfollow the user if applicable
-        $follow = Follow::where('followed_id', $request->user_id)
-            ->where('follower_id', $request->current_user_id)
-            ->first();
-
-        if (!is_null($follow)) {
-            $follow->delete();
-        }
+        Auth::user()->unfollow($user);
 
         // Block the user
-        Redis::zadd('blockers:' . $request->user_id, time(), $request->current_user_id);
-        Redis::zadd('blocking:' . $request->current_user_id, time(), $request->user_id);
+        Auth::user()->block($user);
 
         if ($request->ajax()) {
             return response(['status' => 'Blocked the user.']);
@@ -72,25 +51,10 @@ class BlockController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $userId)
+    public function destroy(Request $request, User $user)
     {
-        // If the user isn't blocked, throw an error
-        $blockedUser = Block::where('blocker_id', $request->current_user_id)
-            ->where('blocked_id', $request->user_id)
-            ->first();
-
-        if (is_null($blockedUser)) {
-            if ($request->ajax()) {
-                return response(['status' => 'The user isn\'t blocked.']);
-            } else {
-                Session::flash('error', 'The user isn\'t blocked.');
-                return redirect()->back();
-            }
-        }
-
         // Unblock the user
-        Redis::zrem('blockers:' . $request->user_id, time(), $request->current_user_id);
-        Redis::zrem('blocking:' . $request->current_user_id, time(), $request->user_id);
+        Auth::user()->unblock($user);
 
         if ($request->ajax()) {
             return response(['status' => 'Unblocked the user.']);

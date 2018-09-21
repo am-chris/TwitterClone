@@ -19,8 +19,6 @@ class CreatePostsTable extends Migration
             $table->integer('post_id')->nullable();
             $table->text('content');
             $table->integer('comment_count')->default(0);
-            $table->integer('share_count')->default(0);
-            $table->integer('like_count')->default(0);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

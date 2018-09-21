@@ -6,7 +6,6 @@ use Redis;
 use App\User;
 use App\Models\Post;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class TrendingHashtagTest extends TestCase

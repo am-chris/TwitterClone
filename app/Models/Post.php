@@ -4,10 +4,14 @@ namespace App\Models;
 
 use App\Models\Post\Like;
 use App\Models\Post\Share;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
+    protected $appends = ['share_count', 'like_count', 'shared_by_user', 'liked_by_user'];
+
     public function user()
     {
         return $this->belongsTo('App\User');
@@ -15,42 +19,56 @@ class Post extends Model
 
     public function likes()
     {
-        return $this->hasMany('App\Model\Post\Like');
+        return Redis::zrange('post_likes:' . $this->id, 0, -1);
+    }
+
+    public function getLikeCountAttribute()
+    {
+        return count(Redis::zrange('post_likes:' . $this->id, 0, -1));
     }
 
     public function shares()
     {
-        return $this->hasMany('App\Model\Post\Share');
+        return Redis::zrange('post_shares:' . $this->id, 0, -1);
     }
 
-    public function likedByUser($user_id)
+    public function getShareCountAttribute()
     {
-        $user_liked_post = Like::where('post_id', $this->post_id)
-            ->where('user_id', $user_id)
-            ->first();
-
-        if (is_null($user_liked_post)) {
-            return 0;
-        }
-        
-        return 1;
+        return count(Redis::zrange('post_shares:' . $this->id, 0, -1));
     }
 
-    public function sharedByUser($user_id)
+    public function getSharedByUserAttribute()
     {
-        $user_shared_post = Share::where('post_id', $this->post_id)
-            ->where('user_id', $user_id)
-            ->first();
+        return Redis::zscore('post_shares:' . $this->id, Auth::id()) ? true : false;
+    }
 
-        if (is_null($user_shared_post)) {
-            return 0;
-        }    
+    public function getLikedByUserAttribute()
+    {
+        return Redis::zscore('post_likes:' . $this->id, Auth::id()) ? true : false;
+    }
 
-        return 1;
+    public function sharedByUser($user)
+    {
+        return Redis::zscore('post_shares:' . $this->id, $user->id) ? true : false;
+    }
+
+    public function likedByUser($user)
+    {
+        return Redis::zscore('post_likes:' . $this->id, $user->id) ? true : false;
+    }
+
+    public function postsSharedByUser($userId)
+    {
+        return Redis::zrange('post_shares:' . $this->id, 0, -1);
     }
 
     public function post()
     {
         return $this->hasOne('App\Models\Post');
+    }
+
+    public static function timeline()
+    {
+        return $this->postsSharedByUser();
     }
 }

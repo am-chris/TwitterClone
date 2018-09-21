@@ -102,13 +102,15 @@
                 :post-id="post.id"
                 :user-id="currentUserId"
                 :count-original="post.share_count"
+                :shared-original="post.shared_by_user"
                 :private="post.user.private"/>
             </li>
             <li class="list-inline-item">
               <post-like
                 :post-id="post.id"
                 :user-id="currentUserId"
-                :count-original="post.like_count"/>
+                :count-original="post.like_count"
+                :liked-original="post.liked_by_user"/>
             </li>
           </ul>
         </div>

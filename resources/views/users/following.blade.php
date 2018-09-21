@@ -34,8 +34,8 @@
                         <span class="ml-auto">
                             @if (Auth::check())
                                 <user-follow 
-                                    :o-following="{{ json_encode(Redis::zscore("following:" . Auth::id(), $user->id) ? true : false) }}" 
-                                    :o-requested="{{ json_encode(Auth::user()->followRequested($user->id)) }}" 
+                                    :o-following="{{ json_encode(Auth::user()->followingUser($user)) }}" 
+                                    :o-requested="{{ json_encode(Auth::user()->followRequested($user)) }}" 
                                     :private="{{ $user->private }}" 
                                     :user-id="{{ $user->id }}" 
                                     :current-user-id="{{ Auth::id() }}"
@@ -59,8 +59,8 @@
                                         <div class="media-body" style="text-overflow: clip;">
                                             @if (Auth::id() !== $follow->id && Auth::check())
                                                 <user-follow 
-                                                    :o-following="{{ json_encode(Auth::user()->followingUser($follow->id)) }}" 
-                                                    :o-requested="{{ json_encode(Auth::user()->followRequested($follow->id)) }}" 
+                                                    :o-following="{{ json_encode(Auth::user()->followingUser($follow)) }}" 
+                                                    :o-requested="{{ json_encode(Auth::user()->followRequested($follow)) }}" 
                                                     :private="{{ $follow->private }}" 
                                                     :user-id="{{ $follow->id }}" 
                                                     :current-user-id="{{ Auth::id() }}"

@@ -17,28 +17,9 @@ class LikeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $postId)
+    public function store(Request $request, Post $post)
     {
-        // If the post IDs do not match, the user is up to some shenanigans
-        if ($postId != $request->post_id) {
-            if ($request->ajax()) {
-                return response(['status' => 'The post IDs do not match.']);
-            } else {
-                Session::flash('error', 'The post IDs do not match.');
-                return redirect()->back();
-            }
-        }
-
-        $like = new Like;
-        $like->user_id = $request->user_id;
-        $like->post_id = $request->post_id;
-        $like->save();
-
-        $post = Post::where('id', $postId)
-            ->first();
-
-        $post->like_count = $post->like_count + 1;
-        $post->save();
+        Auth::user()->likePost($post);
 
         if ($request->ajax()) {
             return response(['status' => 'The post was liked.']);
@@ -54,18 +35,9 @@ class LikeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $postId)
+    public function destroy(Request $request, Post $post)
     {
-        $post_like = Like::where('post_id', $request->post_id)
-            ->where('user_id', $request->user_id)
-            ->first();
-        $post_like->delete();
-
-        $post = Post::where('id', $request->post_id)
-            ->first();
-
-        $post->like_count = $post->like_count - 1;
-        $post->save();
+        Auth::user()->unlikePost($post);
 
         if ($request->ajax()) {
             return response(['status' => 'The post was unliked.']);

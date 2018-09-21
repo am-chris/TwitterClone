@@ -26,7 +26,7 @@ class PostPolicy
      */
     public function view(User $user, Post $post)
     {
-        if ($post->user->private == true && $user->followingUser($post->user->id) == false) {
+        if ($post->user->private == true && $user->followingUser($post->user) == false) {
             return false;
         }
 
@@ -68,8 +68,6 @@ class PostPolicy
         if ($user->id === $post->user_id) {
             return true;
         }
-
-        return false;
     }
 
     /**
@@ -96,7 +94,5 @@ class PostPolicy
         if ($user->id === $post->user_id) {
             return true;
         }
-
-        return false;
     }
 }

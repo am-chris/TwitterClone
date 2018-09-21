@@ -20,9 +20,9 @@ class FollowController extends Controller
      * @param  int  $userId
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $userId)
+    public function store(Request $request, User $user)
     {
-        if (Auth::id() == $userId) {
+        if (Auth::id() == $user->id) {
             if ($request->ajax()) {
                 return response(['status' => 'You can\'t follow yourself.']);
             } else {
@@ -31,26 +31,9 @@ class FollowController extends Controller
             }
         }
 
-        // Check if current user is already following this user
-        $currentUserFollowingUser = Follow::where('followed_id', $userId)
-            ->where('follower_id', Auth::id())
-            ->first();
+        Auth::user()->follow($user);
 
-        if (!empty($currentUserFollowingUser)) {
-            abort(403);
-        }
-
-        $user = User::findOrFail($userId);
-
-        if ($user->private == true) {
-            $follow_request = new FollowRequest;
-            $follow_request->followed_id = $request->user_id;
-            $follow_request->follower_id = $request->current_user_id;
-            $follow_request->save();
-        } else {
-            Redis::zadd('followers:' . $request->user_id, time(), $request->current_user_id);
-            Redis::zadd('following:' . $request->current_user_id, time(), $request->user_id);
-        }
+        return redirect()->back();
     }
 
     /**
@@ -60,10 +43,9 @@ class FollowController extends Controller
      * @param  int  $userId
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $userId)
+    public function destroy(Request $request, User $user)
     {
-        Redis::zrem('followers:' . $userId, time(), $request->current_user_id);
-        Redis::zrem('following:' . $request->current_user_id, time(), $userId);
+        Auth::user()->unfollow($user);
 
         if ($request->ajax()) {
             return response(['status' => 'Unfollowed the user.']);
@@ -80,16 +62,9 @@ class FollowController extends Controller
      * @param  int  $userId
      * @return \Illuminate\Http\Response
      */
-    public function approve_follow_request(Request $request, $userId)
+    public function approve_follow_request(Request $request, User $user)
     {
-        $follow_request = FollowRequest::where('follower_id', $userId)
-            ->where('followed_id', $request->current_user_id)
-            ->first();
-
-        Redis::zadd('followers:' . $request->user_id, time(), $request->current_user_id);
-        Redis::zadd('following:' . $request->current_user_id, time(), $request->user_id);
-
-        $follow_request->delete();
+        Auth::user()->approveFollowRequest($user);
 
         return redirect()->back();
     }
@@ -101,13 +76,9 @@ class FollowController extends Controller
      * @param  int  $userId
      * @return \Illuminate\Http\Response
      */
-    public function deny_follow_request(Request $request, $userId)
+    public function deny_follow_request(Request $request, User $user)
     {
-        $followRequest = FollowRequest::where('follower_id', $userId)
-            ->where('followed_id', $request->current_user_id)
-            ->first();
-
-        $followRequest->delete();
+        Auth::user()->denyFollowRequest($user);
 
         return redirect()->back();
     }

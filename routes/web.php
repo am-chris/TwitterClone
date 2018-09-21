@@ -30,16 +30,16 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('notifications', 'NotificationController@index')->name('notifications.index');
 
     Route::post('p/{post}/like', 'Post\LikeController@store')->name('posts.likes.store');
-    Route::post('p/{post}/unlike', 'Post\LikeController@destroy')->name('posts.likes.destroy');
+    Route::delete('p/{post}/unlike', 'Post\LikeController@destroy')->name('posts.likes.destroy');
 
     Route::post('p/{post}/share', 'Post\ShareController@store')->name('posts.shares.store');
-    Route::post('p/{post}/unshare', 'Post\ShareController@destroy')->name('posts.shares.destroy');
+    Route::delete('p/{post}/unshare', 'Post\ShareController@destroy')->name('posts.shares.destroy');
 
     Route::post('u/{user}/block', 'User\BlockController@store')->name('users.blocks.store');
     Route::post('u/{user}/unblock', 'User\BlockController@destroy')->name('users.blocks.destroy');
 
     Route::post('u/{user}/follow', 'User\FollowController@store')->name('users.follows.store');
-    Route::post('u/{user}/unfollow', 'User\FollowController@destroy')->name('users.follows.destroy');
+    Route::delete('u/{user}/unfollow', 'User\FollowController@destroy')->name('users.follows.destroy');
     Route::post('u/{user}/approve_follow_request', 'User\FollowController@approve_follow_request')->name('users.follow_requests.approve');
     Route::post('u/{user}/deny_follow_request', 'User\FollowController@deny_follow_request')->name('users.follow_requests.deny');
 

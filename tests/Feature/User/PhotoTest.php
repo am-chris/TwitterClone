@@ -7,7 +7,6 @@ use App\Role;
 use App\User;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class PhotoTest extends TestCase

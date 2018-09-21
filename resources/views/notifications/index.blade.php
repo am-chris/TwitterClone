@@ -27,7 +27,10 @@
                                                 data-original-title="{{ '@' . $followRequest->follower->username }}"
                                             >
                                         </a>
-                                        <follow-request-actions :user-id="{{ $followRequest->follower->id }}" :current-user-id="{{ Auth::id() }}"></follow-request-actions>
+                                        <follow-request-actions
+                                            :user-id="{{ $followRequest->follower->id }}"
+                                            :current-user-id="{{ Auth::id() }}"
+                                        ></follow-request-actions>
                                     </li>
                                 @endforeach
                             </ul>

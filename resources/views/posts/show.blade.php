@@ -34,7 +34,11 @@
                                         @if (Auth::id() !== $post->user->id)
                                             <li class="list-inline-item">
                                                 @if (Auth::check())
-                                                    <user-follow :user-id="{{ $post->user->id }}" :current-user-id="{{ Auth::id() }}" :original-following="{{ json_encode(Auth::user()->followingUser($post->user->id)) }}"></user-follow>
+                                                    <user-follow
+                                                        :user-id="{{ $post->user->id }}"
+                                                        :current-user-id="{{ Auth::id() }}"
+                                                        :original-following="{{ json_encode(Auth::user()->followingUser($post->user)) }}"
+                                                    ></user-follow>
                                                 @endif
                                             </li>
                                         @endif
@@ -48,10 +52,20 @@
                                         </a>
                                     </li>
                                     <li class="list-inline-item mr-3">
-                                        <post-share :post-id="{{ $post->id }}" :user-id="{{ json_encode(Auth::id()) }}" :count-original="{{ json_encode($post->share_count) }}" :shared-original="{{ $post->sharedByUser(Auth::id()) }}"></post-share>
+                                        <post-share
+                                            :post-id="{{ $post->id }}"
+                                            :user-id="{{ json_encode(Auth::id()) }}"
+                                            :count-original="{{ json_encode(count($post->shares())) }}"
+                                            :shared-original="{{ json_encode($post->sharedByUser(Auth::user())) }}"
+                                        ></post-share>
                                     </li>
                                     <li class="list-inline-item">
-                                        <post-like :post-id="{{ $post->id }}" :user-id="{{ json_encode(Auth::id()) }}" :count-original="{{ json_encode($post->like_count) }}" :liked-original="{{ $post->likedByUser(Auth::id()) }}"></post-like>
+                                        <post-like
+                                            :post-id="{{ $post->id }}"
+                                            :user-id="{{ json_encode(Auth::id()) }}"
+                                            :count-original="{{ json_encode(count($post->likes())) }}"
+                                            :liked-original="{{ json_encode($post->likedByUser(Auth::user())) }}"
+                                        ></post-like>
                                     </li>
                                 </ul>
                             </div>

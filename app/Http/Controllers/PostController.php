@@ -130,10 +130,8 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $postId)
+    public function destroy(Request $request, Post $post)
     {
-        $post = Post::findOrFail($postId);
-
         $this->authorize('delete', $post);
 
         preg_match_all('/#(\w+)/', $post->content, $postHashtags);

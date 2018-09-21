@@ -4,11 +4,19 @@ namespace Tests\Feature\User;
 
 use App\User;
 use Tests\TestCase;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class FollowTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        Redis::flushall();
+    }
 
     /** @test */
     public function user_can_follow_another_user()
@@ -22,10 +30,7 @@ class FollowTest extends TestCase
                 'current_user_id' => $user->id,
             ]);
 
-        $this->assertDatabaseHas('follows', [
-            'followed_id' => $user2->id,
-            'follower_id' => $user->id,
-        ]);
+        $this->assertTrue($user->followingUser($user2));
     }
 
     /** @test */
@@ -35,15 +40,17 @@ class FollowTest extends TestCase
         $user2 = factory(User::class)->create();
 
         $this->actingAs($user)
-            ->json('DELETE', route('users.follows.destroy', $user2->id), [
+            ->json('POST', route('users.follows.store', $user2->id), [
                 'user_id' => $user2->id,
                 'current_user_id' => $user->id,
             ]);
 
-        $this->assertDatabaseMissing('follows', [
-            'followed_id' => $user2->id,
-            'follower_id' => $user->id,
-        ]);
+        $this->assertTrue($user->followingUser($user2));
+
+        $this->actingAs($user)
+            ->json('DELETE', route('users.follows.destroy', $user2->id));
+
+        $this->assertFalse($user->followingUser($user2));
     }
 
     /** @test */
@@ -57,10 +64,7 @@ class FollowTest extends TestCase
                 'current_user_id' => $user->id,
             ]);
 
-        $this->assertDatabaseMissing('follows', [
-            'followed_id' => $user->id,
-            'follower_id' => $user->id,
-        ]);
+        $this->assertFalse($user->followingUser($user));
     }
 
     /** @test */
@@ -81,15 +85,28 @@ class FollowTest extends TestCase
                 'current_user_id' => $user->id,
             ]);
 
-        $this->assertDatabaseHas('follows', [
-            'id' => 1,
-            'followed_id' => $user2->id,
-            'follower_id' => $user->id,
-        ]);
+        $this->assertTrue($user->followingUser($user2));
+    }
 
-        $this->assertDatabaseMissing('follows', [
-            'id' => 2,
-            'user_id' => $user->id,
-        ]);
+    /** @test */
+    public function user_can_have_multiple_followers()
+    {
+        $user = factory(User::class)->create();
+        $user2 = factory(User::class)->create();
+        $user3 = factory(User::class)->create();
+
+        $this->actingAs($user)
+            ->json('POST', route('users.follows.store', $user3->id), [
+                'user_id' => $user3->id,
+                'current_user_id' => $user->id,
+            ]);
+
+        $this->actingAs($user2)
+            ->json('POST', route('users.follows.store', $user3->id), [
+                'user_id' => $user3->id,
+                'current_user_id' => $user->id,
+            ]);
+
+        $this->assertCount(2, $user3->followers());
     }
 }

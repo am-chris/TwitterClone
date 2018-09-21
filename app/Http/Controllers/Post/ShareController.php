@@ -18,18 +18,9 @@ class ShareController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $postId)
+    public function store(Request $request, Post $post)
     {
-        $post_share = new Share;
-        $post_share->post_id = $request->post_id;
-        $post_share->user_id = $request->user_id;
-        $post_share->save();
-
-        $post = Post::where('id', $request->post_id)
-            ->first();
-
-        $post->share_count = $post->share_count + 1;
-        $post->save();
+        Auth::user()->sharePost($post);
 
         if ($request->ajax()) {
             return response(['status' => 'The post was shared.']);
@@ -45,18 +36,9 @@ class ShareController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $postId)
+    public function destroy(Request $request, Post $post)
     {
-        $post_share = Share::where('post_id', $request->post_id)
-            ->where('user_id', $request->user_id)
-            ->first();
-        $post_share->delete();
-
-        $post = Post::where('id', $request->post_id)
-            ->first();
-
-        $post->share_count = $post->share_count - 1;
-        $post->save();
+        Auth::user()->unsharePost($post);
 
         if ($request->ajax()) {
             return response(['status' => 'The post was unshared.']);
